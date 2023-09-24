@@ -5,3 +5,4 @@ export default function Discuss() {
     <div>Discuss</div>
   )
 }
+
