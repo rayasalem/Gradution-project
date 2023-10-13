@@ -5,8 +5,8 @@ import connectDB from './DB/connection';
 import * as indexRouter from './routes/indexRouter'
 const app = express()
 const PORT=process.env.PORT
-app.use(express.json());
 connectDB();
+app.use(express.json());
 dotenv.config()
 const baseurl=process.env.BASEURL
 app.use(`${baseurl}user`,indexRouter.courseRouter)

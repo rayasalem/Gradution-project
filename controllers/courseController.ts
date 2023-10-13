@@ -16,13 +16,11 @@ declare global {
 export const rateCourse = async (req: Request, res: Response) => {
   try {
     const userId: string | undefined = req.user?._id;
-
+    const courseId = req.params.courseId;
+    const rating = req.body.rating;
     if (!userId) {
       return res.status(404).json({ error: 'User not found' });
     }
-
-    const courseId = req.params.courseId;
-    const rating = req.body.rating;
 
     const user = await User.findById(userId);
 
