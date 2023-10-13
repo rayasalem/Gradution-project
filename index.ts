@@ -9,7 +9,10 @@ connectDB();
 app.use(express.json());
 dotenv.config()
 const baseurl=process.env.BASEURL
+
 app.use(`${baseurl}user`,indexRouter.courseRouter)
+app.use(`${baseurl}user`,indexRouter.lessonRouter)
+
 app.use('*',(req:Request,res:Response,)=>{
     res.status(404).json({message:"page not found"})
 })

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import {Course,Lesson,ILesson} from './db/schemas';
-
+import Lesson,{ILesson} from '../db/schemas/lessonSchema';
+import Course from '../db/schemas/courseSchema';
 
 
 export const createLesson = async (req: Request, res: Response) => {
@@ -33,7 +33,6 @@ export const createLesson = async (req: Request, res: Response) => {
   }
 };
 
-// Edit lesson details
 export const editLesson = async (req: Request, res: Response) => {
   const lessonId = req.params.lessonId;
 
@@ -50,7 +49,6 @@ export const editLesson = async (req: Request, res: Response) => {
   }
 };
 
-// Delete a lesson
 export const deleteLesson = async (req: Request, res: Response) => {
   const lessonId = req.params.lessonId;
 
