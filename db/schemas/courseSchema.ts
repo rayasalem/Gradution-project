@@ -54,13 +54,12 @@ const courseSchema= new Schema<ICourse>({
   },
   lessons: [{
     type: Types.ObjectId,
-    ref: 'Lesson', // Replace 'Lesson' with the actual reference model name
+    ref: 'Lesson',
   }],
   quizzes: [{
     type: Types.ObjectId,
-    ref: 'Quiz', // Replace 'Quiz' with the actual reference model name
+    ref: 'Quiz', 
   }],
-  // Include the ratings array in the schema
   ratings: [
     {
       userId: {
@@ -76,5 +75,4 @@ const courseSchema= new Schema<ICourse>({
 });
 
 const Course: Model<ICourse> = model<ICourse>('Course', courseSchema);
-
 export default Course;
