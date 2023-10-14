@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
-import userModel from '../db/schemas/userSchema';
+import userModel,{IUser} from '../db/schemas/userSchema';
 import { NextFunction, Request, Response } from 'express';
 
 declare module 'express-serve-static-core' {
     interface Request {
-      user?: any;
+      user?: IUser;
     }
   }
 
