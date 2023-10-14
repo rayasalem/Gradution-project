@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model,Model, Document, Types } from 'mongoose';
 
 export interface ILesson extends Document {
   title: string;
@@ -26,6 +26,6 @@ const lessonSchema: Schema = new Schema<ILesson>({
   },
 });
 
-const Lesson = model<ILesson>('Lesson', lessonSchema);
+const Lesson:Model<ILesson> = model<ILesson>('Lesson', lessonSchema);
 
 export default Lesson;
