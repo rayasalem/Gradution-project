@@ -140,7 +140,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
       const newUser = new userModel({ username, email, password: hashedPassword, confirmEmail: true });
       const token = jwt.sign({ id: newUser._id }, process.env.EMAILTOKEN, { expiresIn: '1h' });
       const savedUser = await newUser.save();
-      res.status(201).json({ message: 'User created successfully', user: savedUser });
+      res.status(201).json({ message: 'User created successfully', user: token });
     }
   } catch (error) {
     next(Object.assign(new Error('Server error'), { cause: 500 }));

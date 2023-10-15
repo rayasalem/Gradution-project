@@ -35,7 +35,7 @@ export const authorizeUser = (accessRole: string[] = []) => {
         throw new Error('Required environment variables are not defined.');
       }
 
-      const token = req.headers.token as string;
+      const token = req.headers.token ;
 
       validateToken(token, authbearertoken);
       const userId = await getUserFromToken(token, AUTHTOKEN);
