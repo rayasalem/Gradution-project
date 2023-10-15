@@ -7,39 +7,35 @@ import SendEmail from './../services/email';
 import { v4 as uuidv4 } from 'uuid';
 dotenv.config();
 
-
 export const signUp = async (req: Request, res: Response,next: NextFunction) => {
  try{
-    const { userName, email, password, dateOfBirth } = req.body ;
+    const { username, email, password, dateOfBirth } = req.body ;
     const user = await userModel.findOne({ email }).select("email");
     if (user) {
-       next(Object.assign(new Error("Email already exists"), { cause: 409 }));
-    }
+      return res.status(409).json({ message: 'Email already exists' });    }
+
     if (!process.env.SALTROUNT || !process.env.EMAILTOKEN) {
       throw new Error('SALTROUNT | EMAILTOKEN environment variable is not defined.');
     }
     const SALTROUNT = parseInt(process.env.SALTROUNT);
-    const hash = await bcrypt.hashSync(password, SALTROUNT);
-    const newUser = new userModel({ userName, email, password: hash, dateOfBirth });
+    const hash = bcrypt.hashSync(password, SALTROUNT);
+    const newUser = new userModel({ username, email, password: hash, dateOfBirth });
     const token = jwt.sign({ id: newUser._id }, process.env.EMAILTOKEN, {
       expiresIn: '1h',
     });
     const link = `${req.protocol}://${req.headers.host}${process.env.BASEURL}auth/confirmEmail/${token}`;
     const message = `<a href="${link}">Confirm Email</a>`;
     const info = await SendEmail(email, 'Verify email', message);
-
     if (info.accepted.length) {
       const savedUser = await newUser.save();
       res.status(201).json({ message: 'Success', savedUser: savedUser._id });
     } else {
       return next(Object.assign(new Error("Email rejected"), { cause: 404 }));
-
     }
- 
 }
  catch (err) {
-   next(Object.assign(new Error("Server error"), { cause: 500 }));
-}
+  console.log("ll",err)
+  return res.status(500).json({ message: 'Server error' });}
 
 }
 export const confirmEmail = async (req: Request, res: Response,next: NextFunction) => {
@@ -75,29 +71,26 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
     if (!process.env.AUTHTOKEN) {
       throw new Error('AUTHTOKEN environment variable is not defined.');
     }
-
     const { email, password } = req.body;
     const user = await userModel.findOne({ email });
-
     if (!user) {
        next(Object.assign(new Error("Not registered user"), { cause: 404}));
-
     } else {
       if (!user.confirmEmail) {
        next(Object.assign(new Error("Email not confirmed"), { cause: 403}));
-
       } else {
         const compare = await bcrypt.compare(password, user.password);
         if (!compare) {
        next(Object.assign(new Error("Invalid password"), { cause: 401}));
 
         } else {
-          const token = jwt.sign({ id: user._id }, process.env.AUTHTOKEN, { expiresIn: "60*60*24" });
+          const token = jwt.sign({ id: user._id }, process.env.AUTHTOKEN, { expiresIn: "1d" });
           res.status(200).json({ message: "Success", token });
         }
       }
     }
   }   catch (error) {
+    console.log(error);
      next(Object.assign(new Error("Server error"), { cause: 500 }));
   }
 };

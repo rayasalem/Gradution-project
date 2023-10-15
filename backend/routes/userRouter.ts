@@ -3,12 +3,12 @@ const router =Router();
 import {authorizeUser} from "../middleware/authentication";
 import { roles } from "../services/roles";
 import * as userController from './../controllers/userController';
-import { myMulter,fileValidation, handleErrorMiddleware } from '../services/multer';
+import { myMulter,fileValidation, handleErrorMiddleware } from '../services/multers';
 import { validation } from "../middleware/requestValidation";
 import * as validators from './../validation/userValidation'
 
-router.get('/profile',authorizeUser([roles.user]),userController.getProfile)
-router.patch('/profilePic', authorizeUser([roles.user]),
+router.get('/profile',authorizeUser([roles.user,roles.admin]),userController.getProfile)
+router.patch('/profilePic', authorizeUser([roles.user,roles.admin]),
 myMulter(fileValidation.image).single('image'),handleErrorMiddleware,
  userController.uploadImage)
 router.patch('/updatePassword',authorizeUser([roles.user,roles.admin]),validation(validators.updatePassword),userController.updatePassword)

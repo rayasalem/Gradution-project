@@ -21,15 +21,14 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
     }
     res.status(200).json({ message: "Success", user });
   } catch (error) {
+    console.log(error);
     next(Object.assign(new Error("Server error"), { cause: 500 }));
   }
 };
 
-
-
 export const updatePassword = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (!process.env.SALTROUNDS) {
+    if (!process.env.SALTROUNT) {
       throw new Error('SALTROUNDS environment variable is not defined.');
     }
     if (!req.user) {
@@ -44,7 +43,7 @@ export const updatePassword = async (req: Request, res: Response, next: NextFunc
       if (!match) {
         res.json({ message: "Old password is invalid" });
       } else {
-        const hash = await bcrypt.hash(newPassword, parseInt(process.env.SALTROUNDS));
+        const hash = await bcrypt.hash(newPassword, parseInt(process.env.SALTROUNT));
         const updateUser = await userModel.findByIdAndUpdate(req.user._id, { password: hash });
         if (!updateUser) {
           res.json({ message: "Failed to update password" });
@@ -54,6 +53,7 @@ export const updatePassword = async (req: Request, res: Response, next: NextFunc
       }
     }
   } catch (error) {
+    console.error('Error:', error);
     next(Object.assign(new Error("server error"), { cause: 500 }));
   }
 };
@@ -106,7 +106,6 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
     next(Object.assign(new Error('Server error'), { cause: 500 }));
   }
 };
-
 export const uploadImage = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
@@ -128,14 +127,14 @@ export const uploadImage = async (req: Request, res: Response, next: NextFunctio
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { username, email, password } = req.body;
-    if (!process.env.SALTROUNDS || !process.env.EMAILTOKEN) {
+    if (!process.env.SALTROUNT || !process.env.EMAILTOKEN) {
       throw new Error('SALTROUNDS or EMAILTOKEN environment variable is not defined.');
     }
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return next(Object.assign(new Error('Email already exists'), { cause: 409 }));
     } else {
-      const saltRounds = parseInt(process.env.SALTROUNDS);
+      const saltRounds = parseInt(process.env.SALTROUNT);
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       const newUser = new userModel({ username, email, password: hashedPassword, confirmEmail: true });
       const token = jwt.sign({ id: newUser._id }, process.env.EMAILTOKEN, { expiresIn: '1h' });

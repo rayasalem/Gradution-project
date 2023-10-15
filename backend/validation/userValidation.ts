@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 export const createUser ={
     body:Joi.object().required().keys({
-        userName:Joi.string().min(3).max(15).required().messages({
+        username:Joi.string().min(3).max(15).required().messages({
             'any.required':'please send your name',
             'string.empty':'name is required'
         }),

@@ -14,10 +14,10 @@ const validateToken = (token: string, authbearertoken: string) => {
   }
 };
 
-const getUserFromToken = async (token: string, AUTHTOKEN: string) => {
-  const extractedToken = token.split(AUTHTOKEN)[1];
+const getUserFromToken = async (token: string, AUTHTOKEN: string,authbearertoken: string) => {
+    const extractedToken = token.split(authbearertoken)[1];
   const decoded: any = jwt.verify(extractedToken, AUTHTOKEN);
-  return decoded.id;
+  return decoded.id; 
 };
 
 const checkUserRole = (user: IUser, accessRole: string[]) => {
@@ -38,7 +38,7 @@ export const authorizeUser = (accessRole: string[] = []) => {
       const token = req.headers.token as string;
 
       validateToken(token, authbearertoken);
-      const userId = await getUserFromToken(token, AUTHTOKEN);
+      const userId = await getUserFromToken(token, AUTHTOKEN,authbearertoken);
       const user = await userModel.findById(userId).select('role');
 
       if (!user) {
@@ -50,6 +50,7 @@ export const authorizeUser = (accessRole: string[] = []) => {
       req.user = user;
       next();
     } catch (error) {
+      console.error('JWT Verification Error:', error);
       res.status(500).json({ message: "catch error" });
     }
   };
