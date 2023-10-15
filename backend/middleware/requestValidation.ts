@@ -36,6 +36,7 @@ export const validation = (schema: any) => {
 
       if (validationArray.length > 0) {
         return res.status(400).json({ message: 'Validation error', errors: validationArray });
+
       }
 
       next();
