@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
-
 import Lesson,{ILesson} from '../db/schemas/lessonSchema';
 import Course from '../db/schemas/courseSchema';
-
 
 export const createLesson = async (req: Request, res: Response) => {
   try {
@@ -35,7 +33,6 @@ export const createLesson = async (req: Request, res: Response) => {
 
 export const editLesson = async (req: Request, res: Response) => {
   const lessonId = req.params.lessonId;
-
   try {
     const updatedLesson = await Lesson.findByIdAndUpdate(lessonId, req.body, { new: true });
 
@@ -67,14 +64,11 @@ export const deleteLesson = async (req: Request, res: Response) => {
 
 export const viewLessonDetails = async (req: Request, res: Response) => {
   const lessonId = req.params.lessonId;
-
   try {
     const lesson = await Lesson.findById(lessonId);
-
     if (!lesson) {
       return res.status(404).json({ error: 'Lesson not found' });
     }
-
     res.status(200).json({ message: 'Lesson details', lesson });
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve lesson details' });
@@ -83,7 +77,6 @@ export const viewLessonDetails = async (req: Request, res: Response) => {
 
 export const listLessonsInCourse = async (req: Request, res: Response) => {
   const courseId = req.params.courseId;
-
   try {
     const lessons = await Lesson.find({ course: courseId });
 

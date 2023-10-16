@@ -1,7 +1,7 @@
 import express ,{Request,Response, NextFunction}from 'express'
 
 import * as dotenv from 'dotenv';
-import connectDB from './DB/connection';
+import connectDB from './db/connection';
 import * as indexRouter from './routes/indexRouter'
 const app = express()
 const PORT=process.env.PORT
