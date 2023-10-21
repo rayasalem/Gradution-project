@@ -1,19 +1,14 @@
 import { Schema, model,Model, Document, Types } from 'mongoose';
-import QuestionModel ,{IQuestion} from './questionSchema';
 
 export interface IQuiz extends Document {
-    quizId: string;
     title: string;
     description: string;
     duration?: number; 
-    questions: IQuestion[];
+    questions: Types.ObjectId[];
     passingScore: number;
-  }
+  } 
+  
   const quizSchema = new Schema<IQuiz>({
-    quizId: {
-      type: String,
-      required: true,
-    },
     title: {
       type: String,
       required: true,
@@ -25,10 +20,10 @@ export interface IQuiz extends Document {
     duration: {
       type: Number,
     },
-    questions: {
-      type: [QuestionModel],
-      required: true,
-    },
+    questions: [{
+      type:Schema.Types.ObjectId,
+     ref: 'QuestionModel',
+    }],
     passingScore: {
       type: Number,
       required: true,

@@ -1,4 +1,4 @@
-import express ,{Request,Response, NextFunction}from 'express'
+import express ,{Request,Response,NextFunction}from 'express'
 
 import * as dotenv from 'dotenv';
 import connectDB from './db/connection';
@@ -13,6 +13,12 @@ app.use(`${baseurl}auth`,indexRouter.authRouter)
 app.use(`${baseurl}user`,indexRouter.userRouter)
 app.use(`${baseurl}user`,indexRouter.courseRouter)
 app.use(`${baseurl}user`,indexRouter.lessonRouter)
+app.use(`${baseurl}user-bits-and-hearts`,indexRouter.bitsAndHeartsRouter)
+app.use(`${baseurl}courses`,indexRouter.progressRouter)
+app.use(`${baseurl}use`,indexRouter.quizRouter)
+app.use(`${baseurl}us`,indexRouter.questionRouter)
+
+
 app.use('*',(req:Request,res:Response,)=>{
     res.status(404).json({message:"page not found"})
 })

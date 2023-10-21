@@ -4,7 +4,6 @@ interface IRating {
   userId: string;
   rating: number;
 }
-
 export interface ICourse extends Document {
   title: string;
   description: string;
@@ -17,6 +16,8 @@ export interface ICourse extends Document {
   lessons: Types.ObjectId[];
   quizzes: Types.ObjectId[];
   ratings: IRating[];
+  is_completed: boolean; 
+
 }
 
 const courseSchema= new Schema<ICourse>({
@@ -72,6 +73,10 @@ const courseSchema= new Schema<ICourse>({
       },
     },
   ],
+  is_completed: {
+    type: Boolean,
+    default: false, 
+  }
 });
 
 const Course: Model<ICourse> = model<ICourse>('Course', courseSchema);
