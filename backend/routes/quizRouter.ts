@@ -7,13 +7,13 @@ import { Router } from 'express';
 
 const quizRouter = Router();
 
-quizRouter.post('/createquiz/:courseId', authorizeUser([roles.admin]), validation(validators.createQuiz), quizController.creatQuiz);
+quizRouter.post('/createquiz', authorizeUser([roles.admin]), validation(validators.createQuiz), quizController.creatQuiz);
 
-quizRouter.get('/getQuiz/:quizId',authorizeUser([roles.admin]), quizController.getQuiz);
+quizRouter.get('/getQuiz',authorizeUser([roles.admin]), quizController.getQuiz);
 
-quizRouter.put('/updateQuiz/:quizId', authorizeUser([roles.admin]), validation(validators.updateQuiz), quizController.updateQuiz);
+quizRouter.put('/updateQuiz', authorizeUser([roles.admin]), validation(validators.updateQuiz), quizController.updateQuiz);
 
-quizRouter.delete('/deleteQuiz/:quizId', authorizeUser([roles.admin]), quizController.deleteQuiz);
+quizRouter.delete('/deleteQuiz', authorizeUser([roles.admin]), quizController.deleteQuiz);
 
 quizRouter.get('/Quizzes', authorizeUser([roles.admin]),quizController.listQuizzes);
 

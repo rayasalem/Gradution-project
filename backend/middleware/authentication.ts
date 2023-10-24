@@ -7,7 +7,6 @@ declare module 'express-serve-static-core' {
     user?: IUser;
   }
 }
-
 const validateToken = (token: string, authbearertoken: string) => {
   if (!token.startsWith(authbearertoken)) {
     throw new Error("Invalid bearer token");

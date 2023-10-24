@@ -27,7 +27,7 @@ const quizTakerSchema = new Schema<IQuizTaker>({
         },
       },
     ],
-  });
+  },{ timestamps: true });
 
   const QuizTakerModel = model<IQuizTaker>('QuizTaker', quizTakerSchema);
   export default QuizTakerModel;

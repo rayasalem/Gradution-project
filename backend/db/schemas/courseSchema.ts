@@ -4,26 +4,30 @@ interface IRating {
   userId: string;
   rating: number;
 }
+
 export interface ICourse extends Document {
   title: string;
   description: string;
   author: Types.ObjectId;
   createdDate: Date;
-  category: string;
+  category: Types.ObjectId;
   difficultyLevel: string;
   rating: number;
   enrollmentCount: number;
   lessons: Types.ObjectId[];
   quizzes: Types.ObjectId[];
   ratings: IRating[];
-  is_completed: boolean; 
-
+  is_completed: boolean;
 }
 
 const courseSchema= new Schema<ICourse>({
   title: {
     type: String,
     required: true,
+  },
+  category:{
+   type:Schema.Types.ObjectId,
+   ref :'category',
   },
   description: {
     type: String,
@@ -32,14 +36,6 @@ const courseSchema= new Schema<ICourse>({
   author: {
     type:  Schema.Types.ObjectId,
     ref: 'User', 
-  },
-  createdDate: {
-    type: Date,
-    default: Date.now,
-  },
-  category: {
-    type: String,
-    required: true,
   },
   difficultyLevel: {
     type: String,
@@ -72,12 +68,11 @@ const courseSchema= new Schema<ICourse>({
         required: true,
       },
     },
-  ],
-  is_completed: {
+  ],is_completed: {
     type: Boolean,
     default: false, 
   }
-});
+},{ timestamps: true });
 
-const Course: Model<ICourse> = model<ICourse>('Course', courseSchema);
-export default Course;
+const CourseModel: Model<ICourse> = model<ICourse>('Course', courseSchema);
+export default CourseModel;

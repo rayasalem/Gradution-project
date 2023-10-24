@@ -4,7 +4,7 @@ import Course from '../db/schemas/courseSchema';
 
 export const createLesson = async (req: Request, res: Response) => {
   try {
-    const courseId = req.params.courseId; 
+    const courseId = req.query.courseId; 
     const { title, content, order } = req.body;
 
     const course = await Course.findById(courseId);
@@ -32,7 +32,7 @@ export const createLesson = async (req: Request, res: Response) => {
 };
 
 export const editLesson = async (req: Request, res: Response) => {
-  const lessonId = req.params.lessonId;
+  const lessonId = req.query.lessonId;
   try {
     const updatedLesson = await Lesson.findByIdAndUpdate(lessonId, req.body, { new: true });
 
@@ -47,7 +47,7 @@ export const editLesson = async (req: Request, res: Response) => {
 };
 
 export const deleteLesson = async (req: Request, res: Response) => {
-  const lessonId = req.params.lessonId;
+  const lessonId = req.query.lessonId;
 
   try {
     const deletedLesson = await Lesson.findByIdAndRemove(lessonId);
@@ -63,7 +63,7 @@ export const deleteLesson = async (req: Request, res: Response) => {
 };
 
 export const viewLessonDetails = async (req: Request, res: Response) => {
-  const lessonId = req.params.lessonId;
+  const lessonId = req.query.lessonId;
   try {
     const lesson = await Lesson.findById(lessonId);
     if (!lesson) {
@@ -76,7 +76,7 @@ export const viewLessonDetails = async (req: Request, res: Response) => {
 };
 
 export const listLessonsInCourse = async (req: Request, res: Response) => {
-  const courseId = req.params.courseId;
+  const courseId = req.query.courseId;
   try {
     const lessons = await Lesson.find({ course: courseId });
 

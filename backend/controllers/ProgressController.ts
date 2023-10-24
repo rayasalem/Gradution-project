@@ -44,7 +44,7 @@ export const trackCourseProgress = async (req: Request, res: Response) => {
       }
       res.json({ message: 'Course progress tracked successfully' });
     } catch (error) {
-      res.status(500).json({ message: 'Internal server error', error });
+      res.status(500).json({ message: 'Server error', error });
     }
   };
 export const getUserProgress = async (req: Request, res: Response) => {
@@ -102,7 +102,7 @@ export const completeLesson = async (req: Request, res: Response) => {
   
       res.json({ message: 'Lesson marked as completed' });
     } catch (error) {
-      res.status(500).json({ message: 'Internal server error', error });
+      res.status(500).json({ message: 'Server error', error });
     }
   };
 export const completeQuiz = async (req: Request, res: Response) => {
@@ -127,7 +127,7 @@ export const completeQuiz = async (req: Request, res: Response) => {
   
       res.json({ message: 'Quiz marked as completed' });
     } catch (error) {
-      res.status(500).json({ message: 'Internal server error', error });
+      res.status(500).json({ message: 'Server error', error });
     }
   }; 
 export const deleteProgress = async (req: Request, res: Response) => {
@@ -140,7 +140,7 @@ export const deleteProgress = async (req: Request, res: Response) => {
         res.json({ message: 'All progress entries deleted successfully' });
     } catch (error) {
         console.error('Error deleting progress entries:', error);
-        res.status(500).json({ message: 'Internal server error', error });
+        res.status(500).json({ message: 'Server error', error });
     }
 };
 export const checkCourseCompletion = async (req: Request, res: Response) => {
@@ -191,6 +191,6 @@ export const checkCourseCompletion = async (req: Request, res: Response) => {
       }
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: 'Internal server error', error });    }
+      res.status(500).json({ message: 'Server error', error });    }
   };
   
