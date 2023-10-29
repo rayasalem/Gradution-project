@@ -1,9 +1,12 @@
 import React from 'react'
+import HeroSection from './heroSection/HeroSection'
 
-type Props = {}
 
-const HomePage = (props: Props) => {
+const HomePage:React.FC= () => {
   return (
-    <div>HomePage</div>
+    <div>
+      <HeroSection/>
+    </div>
   )
 }
+export default HomePage;

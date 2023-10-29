@@ -1,15 +1,18 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model, Types, Document, ObjectId } from 'mongoose';
+
 export interface IPost extends Document {
   title: string;
   content: string;
-  author: Types.ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
-  comments: Types.ObjectId[]
+  tags: ObjectId[]; 
+  author: ObjectId;
+  timestamp: Date;
+  likes: ObjectId[];
+  comments: ObjectId[];
+  created_at: Date;
 }
 
-const postSchema = new Schema<IPost>(
-  {
+
+const postSchema = new Schema<IPost>({
     title: {
       type: String,
       required: true,
@@ -18,28 +21,41 @@ const postSchema = new Schema<IPost>(
       type: String,
       required: true,
     },
+    tags: [
+      {
+        type: Types.ObjectId,
+        ref: 'Tag',
+        required: true,
+      }],
     author: {
-      type: Schema.Types.ObjectId,
-      ref: 'User', 
+      type: Types.ObjectId,
+      ref: 'User',
       required: true,
     },
-    createdAt: {
+    timestamp: {
       type: Date,
       default: Date.now,
     },
-    updatedAt: {
+    likes: [
+      {
+        type: Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    comments: [
+      {
+        type: Types.ObjectId,
+        ref: 'Comment', 
+        required: true,
+      },
+    ],
+    created_at: {
       type: Date,
       default: Date.now,
-    }, comments: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: 'Comment', 
-        },
-      ],
-  },
-  { timestamps: true }
-);
+    },
+  });
+  
 
-const PostModel = model<IPost>('Post', postSchema);
+const Post = model<IPost>('Post', postSchema);
 
-export default PostModel;
+export default Post;

@@ -21,8 +21,8 @@ app.use(`${baseurl}category`,indexRouter.categoryRouter)
 app.use(`${baseurl}blog`,indexRouter.blogRouter)
 app.use(`${baseurl}Discuss`,indexRouter.commentRouter)
 app.use(`${baseurl}Discuss`,indexRouter.postRouter)
-
-
+app.use(`${baseurl}usertag`,indexRouter.tagRouter)
+app.use(`${baseurl}userpost`,indexRouter.postRouter)
 
 app.use('*',(req:Request,res:Response,)=>{
     res.status(404).json({message:"page not found"})

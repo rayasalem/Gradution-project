@@ -7,11 +7,10 @@ interface ProgressData {
     lesson?: IL; 
     quiz?: IQ; 
   }
-  export interface IL extends Document {
+export interface IL extends Document {
     title: string;
   }
-  
-  export interface IQ extends Document {
+export interface IQ extends Document {
     title: string;
   }
 export const trackCourseProgress = async (req: Request, res: Response) => {
@@ -21,25 +20,20 @@ export const trackCourseProgress = async (req: Request, res: Response) => {
           }
         const userId = req.user._id   
         const {courseId} = req.params; 
-      
       const course = await Course.findById(courseId);
       if (!course) {
         return res.status(404).json({ message: 'Course not found' });
       }
-  
       for (const lesson of course.lessons) {
         const lessonProgress = await UserProgress.findOne({ userId, lesson_id: lesson._id });
-  
         if (!lessonProgress) {
           await UserProgress.create({ user_id:userId, lesson_id: lesson._id, is_completed: false }); 
         }
       }
-  
       for (const quiz of course.quizzes) {
         const quizProgress = await UserProgress.findOne({ userId, quiz_id: quiz._id });
-  
         if (!quizProgress) {
-          await UserProgress.create({ user_id:userId, quiz_id: quiz._id, is_completed: false }); // Set is_completed to false initially.
+          await UserProgress.create({ user_id:userId, quiz_id: quiz._id, is_completed: false }); 
         }
       }
       res.json({ message: 'Course progress tracked successfully' });
@@ -53,27 +47,22 @@ export const getUserProgress = async (req: Request, res: Response) => {
         return res.status(401).json({ message: 'Authentication required' });
       }
       const userId = req.user._id;
-  
       const completedLessons = await UserProgress
         .find({ user_id: userId, is_completed: true })
-        .populate('lesson_id', 'title')
-        .populate('quiz_id', 'title');
-  
+        .populate('lesson_id','title')
+        .populate('quiz_id','title');
       const progressData = completedLessons.map((entry) => {
         const data: ProgressData = {
           is_completed: entry.is_completed,
           timestamp: entry.timestamp,
         };
-  
         if (entry.lesson_id) {
           data['lesson'] = entry.lesson_id as unknown as IL;
         } else if (entry.quiz_id) {
           data['quiz'] = entry.quiz_id as unknown as IQ;
         }
-  
         return data;
       });
-  
       res.json({ message: 'User progress retrieved successfully', progress: progressData });
     } catch (error) {
       res.status(500).json({ message: 'Internal server error', error });
@@ -84,22 +73,17 @@ export const completeLesson = async (req: Request, res: Response) => {
       if (!req.user) {
         return res.status(401).json({ message: 'Authentication required' });
       }
-  
       const userId = req.user._id;
       const lessonId = req.params.lessonId;
-  
       const userProgress = await UserProgress.findOne({
         user_id: userId,
         lesson_id: lessonId,
       });
-  
       if (!userProgress) {
         return res.status(404).json({ message: 'Progress entry not found' });
       }
-  
       userProgress.is_completed = true;
       await userProgress.save();
-  
       res.json({ message: 'Lesson marked as completed' });
     } catch (error) {
       res.status(500).json({ message: 'Server error', error });
@@ -112,19 +96,15 @@ export const completeQuiz = async (req: Request, res: Response) => {
       }
       const userId = req.user._id;
       const quizId = req.params.quizId; 
-  
       const userProgress = await UserProgress.findOne({
         user_id: userId,
         quiz_id: quizId,
       });
-  
       if (!userProgress) {
         return res.status(404).json({ message: 'Progress entry not found' });
       }
-  
       userProgress.is_completed = true;
       await userProgress.save();
-  
       res.json({ message: 'Quiz marked as completed' });
     } catch (error) {
       res.status(500).json({ message: 'Server error', error });
@@ -150,7 +130,7 @@ export const checkCourseCompletion = async (req: Request, res: Response) => {
       }
       const userId = req.user._id;
       const courseId = req.params.courseId;
-      const course = await Course.findById(courseId).populate('lessons').populate('quizzes');
+      const course = await Course.findById(courseId)
       if (!course) {
         return res.status(404).json({ message: 'Course not found' });
       }
@@ -162,7 +142,6 @@ export const checkCourseCompletion = async (req: Request, res: Response) => {
         });
         return !entry;
       });
-      
       const quizzesPromises = course.quizzes.map(async (quiz) => {
         const entry = await UserProgress.findOne({
           user_id: userId,
@@ -171,20 +150,16 @@ export const checkCourseCompletion = async (req: Request, res: Response) => {
         });
         return !entry;
       });
-      
       const [lessonsCompleted, quizzesCompleted] = await Promise.all([
         Promise.all(lessonsPromises),
         Promise.all(quizzesPromises)
       ]);
-  
       if (lessonsCompleted.every(Boolean) && quizzesCompleted.every(Boolean)) {
         const course = await Course.findById(courseId);
-  
         if (course) {
           course.is_completed = true;
           await course.save();
         }
-  
         res.json({ message: 'Course marked as completed' });
       } else {
         res.json({ message: 'Course not completed yet' });

@@ -4,11 +4,10 @@ import CourseModel from "../db/schemas/courseSchema";
 
 export const creatQuiz=async  (req :Request,res:Response) =>{
     try{
-        const {courseId} = req.query;
+        const courseId = req.query.courseId;
         const {quizId, title, description, duration, passingScore } = req.body;
         const newQuiz :IQuiz=  new QuizModel({quizId,title, description, duration, passingScore});
         const savedQuiz=await newQuiz.save();
-        res.status(201).json({message :"sucessfull",savedQuiz});
         const course = await CourseModel.findById(courseId);
         if (!course) {
           return res.status(404).json({ error: 'Course not found' });
