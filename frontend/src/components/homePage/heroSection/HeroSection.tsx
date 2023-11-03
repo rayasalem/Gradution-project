@@ -1,13 +1,13 @@
 import React from 'react';
-import { Button, Typography, Container, Grid, Box, Paper } from '@mui/material';
+import { Button,Typography,Container, Grid, Box} from '@mui/material';
 
 const HeroSection: React.FC = () => {
   return (
-    <Box
+       <Box
       sx={{
         backgroundImage: `url('../../images/background.png')`,
         color: 'white',
-        minHeight: 'calc(100vh)',
+        minHeight: 'calc(100vh )',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -17,7 +17,8 @@ const HeroSection: React.FC = () => {
       <Grid container >
         <Grid item xs={12} sm={6} >
           <Typography variant="h3" component="div" >
-          Welcome to <span style={{ color: '#3CB371' }}>DevLoom</span>: Your Path to Coding Mastery!          </Typography>
+          Welcome to <span style={{ color: '#3CB371' }}>DevLoom</span>: Your Path to Coding Mastery!      
+              </Typography>
           <Button variant="contained"  
           style={{ backgroundColor: '#3CB371', color: '#ffffff' }}
            size="large" sx={{ mt: 3 }}>
