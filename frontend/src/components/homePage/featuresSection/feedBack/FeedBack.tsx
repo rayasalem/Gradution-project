@@ -7,13 +7,13 @@ import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import './feed.css'
 const Feedback: React.FC = () => {
   return (
-    <div style={{ marginTop: '30px', minHeight: 'calc(100vh - 180px)'}}>
+    <div style={{ marginTop: '30px', minHeight: 'calc(100vh - 200px)'}}>
     <Paper component="section" className="client" id="client" sx={{backgroundColor:'#f9f9ff'}}>
     <Container>
-      <Typography variant="h3">
+      <Typography variant="h4" className='title' >
         our <span style={{fontWeight:'bold'}}>client</span>
       </Typography>
-      <Typography variant="body2" sx={{color:'#6c757d'}}>
+      <Typography variant="body2" sx={{color:'#6c757d'}} className='description'>
       Feedback from Clients about DevLoom
       </Typography>
       <Grid container spacing={3}>
@@ -38,19 +38,21 @@ const Feedback: React.FC = () => {
           },
         ].map((item, index) => (
           <Grid item xs={12} md={4} key={index}>
-            <FormatQuoteIcon sx={{ fontSize: '70px', color: '#3CB371'}} />
-            <div  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center',margin:'2' }}>
-              <Avatar alt="client" src={item.img} style={{ width: '100px', height: '100px' }} />
+            <div className="icon-container">
+            <FormatQuoteIcon className='icon' />
+            </div>
+            <div  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Avatar alt="client" src={item.img} style={{ width: '90px', height: '90px' }} />
             </div>
            <div style={{paddingTop:'20px'}}>
-           <Typography variant="h6" style={{margin:'2px',fontWeight:'bold',color:'#000000'}}>
+           <Typography variant="h6" className='author'>
            - {item.author}
             </Typography>
-           <Typography variant="body2" sx={{color:'#6c757d',fontSize: '21px !important',minHeight:'210px'}}>
+           <Typography variant="body2" className='text' >
               {item.text}
             </Typography>
             <Typography variant="body2" >
-              <span style={{fontSize: '1rem',color:'#6c757d'}}>-{item.Date}</span>
+              <span className='span'>-{item.Date}</span>
             </Typography>
            </div>
           </Grid>

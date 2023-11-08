@@ -1,0 +1,31 @@
+.item{
+font-size: 15px !important;
+color: #2d3846 !important;
+text-transform: capitalize !important;
+}
+.title{
+text-transform:uppercase !important;
+letter-spacing: 3px !important;
+color: #2d3846 !important;
+}
+.groupItem{
+    padding-bottom: 2px !important;
+    
+}
+.groupItem:hover{
+    background-color: #3498db !important;
+}
+.test:before{
+    bottom: 0%;
+    left: 10%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-bottom-color: #ffffff;
+    border-width: 10px;
+    font-size: 14px;
+    z-index: 1 !important;
+}

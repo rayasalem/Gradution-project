@@ -8,7 +8,7 @@ const keyComponents = [
   {
     title: 'Learning Experience',
     description:
-      "DevLoom offers a dynamic and interactive approach to skill acquisition. It redefines the traditional educational process, making intricate subjects more approachable and enjoyable. Through DevLoom, you'll embark on a journey filled with coding challenges, quizzes, and projects that resemble thrilling missions rather than conventional lessons.",
+      "DevLoom provides a dynamic and interactive way to learn and acquire new skills. It transforms traditional education by simplifying complex subjects and making learning enjoyable. With DevLoom, you'll embark on a journey filled with coding challenges, quizzes, and exciting projects.",
   },
   {
     title: 'Diverse Blog Topics',
@@ -25,16 +25,20 @@ const keyComponents = [
 const About: React.FC = () => {
   return (
     <div style={{ marginTop: '50px', minHeight: 'calc(100vh - 160px)' }}>
-      <Typography variant="h3" sx={{ marginBottom: 3, padding: 3, color: '#2d3846', fontWeight: 'bold' }}>
+      <Typography variant="h4" sx={{ marginBottom: 3, padding: 3, color: '#2d3846', fontWeight: 'bold',display: 'flex',justifyContent: 'center', alignItems: 'center'  }}>
         Explore Our Platform's Key Components
       </Typography>
-      <Grid container spacing={2} >
+      <Grid container spacing={2}>
         {keyComponents.map((component, index) => (
           <Grid item key={index} xs={12} sm={12} md={4} >
             <Paper
               elevation={3}
               sx={{
                 flex: '1',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center', 
+                justifyContent: 'center', 
                 padding: '12px',
                 margin: 4,
                 backgroundColor: '#f9f9ff',
@@ -42,11 +46,11 @@ const About: React.FC = () => {
               }}
              className='hover-effect'
             >
-              <MenuBookIcon data-testid="MenuBookIcon" sx={{ fontSize: 40, color: '#3CB371' }} />
-              <Typography variant="h4" component="h1" sx={{ paddingBottom: 2, fontSize: '28px', fontWeight: 'bold', color: '#2d3846' }}>
+              <MenuBookIcon data-testid="MenuBookIcon" sx={{ fontSize: 45, color: '#3CB371' }} />
+              <Typography variant="h5" className='titlePaper' sx={{ paddingBottom: 2,fontSize: '28px', fontWeight: 'bold', color: '#2d3846' }}>
                 {component.title}
               </Typography>
-              <Typography variant="body1" sx={{ fontFamily: 'Monospace', fontWeight: 'bold' }}>
+              <Typography variant="body1" sx={{ fontFamily: 'Monospace', fontWeight: 'bold' , textAlign: 'center',}}>
                 {component.description}
               </Typography>
             </Paper>

@@ -44,11 +44,11 @@ const learningPaths: LinkItem[] = [
 const LinkSection: React.FC = () => {
   const sectionLinks = (title: string, links: LinkItem[]) => (
     <Grid item xs={12} sm={6} md={3}>
-      <Typography variant="h5" sx={{ color: '#fff', padding: '20px' }}>
+      <Typography variant="h6" sx={{ color: '#fff', padding: '20px' }}>
         {title}
       </Typography>
       {links.map((link) => (
-        <Typography variant="h6" sx={{ padding: '6px' }} key={link.text}>
+        <Typography variant="body1" sx={{ padding: '6px' }} key={link.text}>
           <Link href={link.url} sx={{ textDecoration: 'none', color: '#bac5d5' }}>
             {link.text}
           </Link>
@@ -58,7 +58,7 @@ const LinkSection: React.FC = () => {
   );
 
   return (
-    <div style={{ backgroundColor: '#18171d', padding: '20px', textAlign: 'center', minHeight: '450px' }}>
+    <div style={{ backgroundColor: '#18171d', padding: '20px', textAlign: 'center', minHeight: '400px' }}>
       <Grid container spacing={3}>
         {sectionLinks('Learning Paths', learningPaths)}
         {sectionLinks('Introduction Courses', introductionCourses)}

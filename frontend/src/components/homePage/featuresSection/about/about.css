@@ -20,4 +20,7 @@
       width: 88%;
       position: relative;
     }
+    .titlePaper{
+      font-size: 18px !important ;
+    }
   }
