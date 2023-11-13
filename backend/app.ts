@@ -2,8 +2,10 @@ import express ,{Request,Response,NextFunction}from 'express'
 import * as dotenv from 'dotenv';
 import connectDB from './db/connection';
 import * as indexRouter from './routes/indexRouter'
+import cors from 'cors';
 const app = express()
 const PORT=process.env.PORT
+app.use(cors());
 app.use(express.json());
 connectDB();
 dotenv.config()

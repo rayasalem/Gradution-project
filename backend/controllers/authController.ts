@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import SendEmail from './../services/email';
 import { v4 as uuidv4 } from 'uuid';
+import url from 'url';
 dotenv.config();
 
 export const signUp = async (req: Request, res: Response,next: NextFunction) => {
@@ -12,7 +13,8 @@ export const signUp = async (req: Request, res: Response,next: NextFunction) => 
     const { username, email, password, dateOfBirth } = req.body ;
     const user = await userModel.findOne({ email }).select("email");
     if (user) {
-      return res.status(409).json({ message: 'Email already exists' });    }
+      return res.status(409).json({ message: 'Email already exists' });   
+     }
 
     if (!process.env.SALTROUNT || !process.env.EMAILTOKEN) {
       throw new Error('SALTROUNT | EMAILTOKEN environment variable is not defined.');
@@ -34,7 +36,6 @@ export const signUp = async (req: Request, res: Response,next: NextFunction) => 
     }
 }
  catch (err) {
-  console.log("ll",err)
   return res.status(500).json({ message: 'Server error' });}
 
 }
@@ -43,6 +44,9 @@ export const confirmEmail = async (req: Request, res: Response,next: NextFunctio
     if (!process.env.EMAILTOKEN) {
       throw new Error('EMAILTOKEN environment variable is not defined.');
     }
+     if (!process.env.FEURL) {
+      throw new Error('FEURL variable is not defined.');
+    } 
     const { token } = req.params;
     const decoded: any = jwt.verify(token, process.env.EMAILTOKEN);
 
@@ -59,10 +63,13 @@ export const confirmEmail = async (req: Request, res: Response,next: NextFunctio
          next(Object.assign(new Error("Account already confirmed"), { cause: 400 }));
 
       } else {
-        res.status(200).json({ message: "Email confirmed, please login" });
+        const FEURL = process.env.FEURL;
+        const redirectURL = url.resolve(FEURL, 'signUp');
+        res.status(200).redirect(redirectURL);
       }
     }
   } catch (error) {
+     console.log(error);
      next(Object.assign(new Error("Server error"), { cause: 500 }));
   }
 };

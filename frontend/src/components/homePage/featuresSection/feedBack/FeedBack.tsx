@@ -7,11 +7,11 @@ import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import './feed.css'
 const Feedback: React.FC = () => {
   return (
-    <div style={{ marginTop: '30px', minHeight: 'calc(100vh - 200px)'}}>
+    <div style={{ marginTop: '30px', minHeight: 'calc(100vh - 180px)',marginBottom:'30px'}}>
     <Paper component="section" className="client" id="client" sx={{backgroundColor:'#f9f9ff'}}>
     <Container>
-      <Typography variant="h4" className='title' >
-        our <span style={{fontWeight:'bold'}}>client</span>
+      <Typography variant="h4" className='titleFeed' >
+        our <span style={{fontWeight:'bold',paddingLeft:'4px'}}>client</span>
       </Typography>
       <Typography variant="body2" sx={{color:'#6c757d'}} className='description'>
       Feedback from Clients about DevLoom

@@ -7,26 +7,40 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import { useMediaQuery } from '@mui/material';
+import { Link, useMediaQuery } from '@mui/material';
 import Button from '@mui/material/Button';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useNavigate } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Fade from '@mui/material/Fade';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Settings from '@mui/icons-material/Settings';
+import Logout from '@mui/icons-material/Logout';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
 import './navbar.css'
-const Navbar: React.FC = () => {
+interface SignupFormProps {
+  authenticated: boolean;
+  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const Navbar: React.FC<SignupFormProps> = ({ authenticated, setAuthenticated }) =>{
   const isSmallScreen = useMediaQuery('(max-width:900px)');
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [coursesAnchorEl, setCoursesAnchorEl] = useState<null | HTMLElement>(null);
   const [programmingLangageAnchorEl, setProgrammingLangageAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const history =useNavigate();
-
+  // const [authenticated, setAuthenticated] = useState(false);
   const toggleDrawer = (open: boolean) => {
     setDrawerOpen(open);
   };
   const handleCoursesOpen = (event: React.MouseEvent<HTMLElement>) => {
     setCoursesAnchorEl(event.currentTarget);
+  };
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
   };
   const handleProgrammingLangageOpen = (event: React.MouseEvent<HTMLElement>) => {
     setProgrammingLangageAnchorEl(event.currentTarget);
@@ -40,6 +54,7 @@ const Navbar: React.FC = () => {
   const handleMenuClose = () => {
     setCoursesAnchorEl(null);
     setProgrammingLangageAnchorEl(null);
+    setAnchorEl(null);
   };
   return (
     <div>
@@ -95,6 +110,7 @@ const Navbar: React.FC = () => {
           <MenuItem onClick={handleMenuClose}className='groupItem'>Coding Foundation</MenuItem>
           <MenuItem onClick={handleMenuClose}className='groupItem'>Data Programming</MenuItem>
           <MenuItem onClick={handleMenuClose}className='groupItem'>Web Developer with Angular</MenuItem>
+          <Link href="/learn" className='link'>View full catalog</Link>
         </Menu>
         <Menu 
          id="fade-menu"
@@ -108,20 +124,56 @@ const Navbar: React.FC = () => {
           >
           <MenuItem onClick={handleMenuClose}className='groupItem'>Beginner</MenuItem>
           <MenuItem onClick={handleMenuClose}className='groupItem'>Intermediate</MenuItem>
+          <Link href="/learn" className='link'>View full catalog</Link>
         </Menu>
               <Button className="item">Code Compiler</Button>
               <Button className="item">Discuss</Button>
               <Button className="item">Blog</Button>
-              <Button className="item" onClick={handleSignUp}>
-                Sign Up
-              </Button>
-              <Button className="item" onClick={handleSignIn}>
-                Sign In
-              </Button>
+           {authenticated ?( <>
+          <Tooltip title="Account settings">
+          <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
+            <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+          </IconButton>
+        </Tooltip>
+              <Menu
+                className='MuiPaper-root'
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                onClick={handleMenuClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+         <div className='impo'>
+          <span className='userName'>Bessan Tomeh </span>
+          <Link href='/' className='Link'>Go to profile</Link>
+         <Divider />
+         <MenuItem onClick={handleMenuClose}>
+          <ListItemIcon>
+            <Settings fontSize="small" />
+          </ListItemIcon>
+          Settings
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
+        </div>
+      </Menu>
+      </>):( <>
+              <Button className="item" onClick={handleSignUp}>Sign Up</Button>
+              <Button className="item" onClick={handleSignIn}>Sign In</Button>
+              </>
+              )} 
+            
             </div>
           </Toolbar>
         </AppBar>
       )}
+      
 <Drawer open={drawerOpen} onClose={() => toggleDrawer(false)}>
   <List>
     <ListItem button onClick={handleCoursesOpen} className="item">
@@ -141,6 +193,7 @@ const Navbar: React.FC = () => {
       <MenuItem onClick={handleMenuClose} className='groupItem'>Coding Foundation</MenuItem>
       <MenuItem onClick={handleMenuClose} className='groupItem'>Data Programming</MenuItem>
       <MenuItem onClick={handleMenuClose} className='groupItem'>Web Developer with Angular</MenuItem>
+      <Link href="/learn" className='link'>View full catalog</Link>
     </Menu>
 
     <ListItem button onClick={handleProgrammingLangageOpen} className="item">
@@ -157,6 +210,7 @@ const Navbar: React.FC = () => {
     >
       <MenuItem onClick={handleMenuClose} className='groupItem'>Beginner</MenuItem>
       <MenuItem onClick={handleMenuClose} className='groupItem'>Intermediate</MenuItem>
+      <Link href="/learn" className='link'>View full catalog</Link>
     </Menu>
     <ListItem button onClick={() => toggleDrawer(false)}>
       <Button className="item">Code Compiler</Button>

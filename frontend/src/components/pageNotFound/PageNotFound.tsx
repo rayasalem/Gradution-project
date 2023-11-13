@@ -5,8 +5,8 @@ import Link from '@mui/material/Link';
 
 const PageNotFound: React.FC = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 64px)' }}>
-      <Typography variant="h3" color="primary" gutterBottom>
+    <div style={{ paddingTop:'50px',display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 64px)' }}>
+      <Typography variant="h4" color="primary" gutterBottom>
         Oops! Page Not Found
       </Typography>
       <Typography variant="body1" color="textSecondary" style={{ textAlign: 'center', marginBottom: '20px' }}>
