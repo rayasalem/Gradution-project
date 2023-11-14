@@ -4,7 +4,7 @@ import SignupForm from './Signup';
 interface SignupFormProps {
   setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const SignupSection: React.FC<SignupFormProps> = ({ setAuthenticated }) => {
+const SignupSection: React.FC = () => {
   return (
     <Box
       sx={{
@@ -21,7 +21,7 @@ const SignupSection: React.FC<SignupFormProps> = ({ setAuthenticated }) => {
       <Container>
         <Grid container sx={{color:"black"}}>
           <Grid item xs={12} sm={6} sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-            <SignupForm   setAuthenticated={setAuthenticated}/>
+            <SignupForm />
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="h4" component="div" sx={{fontFamily: 'cursive',marginTop:"80px"}}>

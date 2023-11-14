@@ -6,12 +6,12 @@ import SignupSection from './signUp';
 
 
 const HomePage:React.FC= () => {
-  const [authenticated, setAuthenticated] = useState(false);
+ 
   return (
     <div>
      <HeroSection/> 
      <FeaturesSection/>
-     <SignupSection setAuthenticated={setAuthenticated}/>
+     <SignupSection />
      <Footer/>
     </div>
   )

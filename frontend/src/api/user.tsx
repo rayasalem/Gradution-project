@@ -24,15 +24,13 @@ export const createUser = async (userData: UserData): Promise<UserData | undefin
       return response.data;
     }
   } catch (error: any) {
-    // if (error.response?.status === 409) {
-    //     console.log("User already exists or conflict error. You can handle it here.");
-    //   } else {
-    //     console.error("create user error:", error);
-    //   }
-    console.error("create user error:", error);
+    if (error.response?.status === 409) {
+      throw new Error("User with this email already exists.");
+      } else {
+        console.error("create user error:", error);
+      }
   }
 };
-
 export const signIn = async (email: string, password: string): Promise<LoginResponse | undefined> => {
   try {
     const response: AxiosResponse<LoginResponse> = await axiosInstance.post("/api/v1/auth/signIn", {
@@ -48,33 +46,54 @@ export const signIn = async (email: string, password: string): Promise<LoginResp
   }
 };
 export const sendCode = async (email: string): Promise<LoginResponse | undefined> => {
+  try {
+    const response: AxiosResponse<LoginResponse> = await axiosInstance.patch("/api/v1/auth/sendCode", {
+      email,
+    });
+    if (response.status === 200) {
+      const { token, userId } = response.data;
+      return { token, userId };
+    }
+  } catch (error) {
+    console.log("sendCode error:", error);
+  }
+};
+
+export const forgetPassword = async (
+  email: string,
+  code: string,
+  newPassword: string
+): Promise<LoginResponse | undefined> => {
+  try {
+    const response: AxiosResponse<LoginResponse> = await axiosInstance.patch("/api/v1/auth/forgetPassword", {
+      email,
+      code,
+      newPassword,
+    });
+    if (response.status === 200) {
+      const { token, userId } = response.data;
+      return { token, userId };
+    }
+  } catch (error) {
+    console.log("forgetPassword error:", error);
+  }
+};
+  
+ /**  const handleSocialLogin = async (accessToken:string, provider:string) => {
     try {
-      const response: AxiosResponse<LoginResponse> = await axiosInstance.post("/api/v1/auth/signIn", {
-        email,
-      });
-      if (response.status === 200) {
-        const { token, userId } = response.data;
-        return { token, userId };
+      // Call the appropriate function based on the provider
+      if (provider === 'facebook') {
+        const response = await axiosInstance.post("/api/v1/auth/socialLoginFacebook", { accessToken });
+        onSocialLogin(response.data);
+      } else if (provider === 'google') {
+        const response = await axiosInstance.post("/api/v1/auth/socialLoginGoogle", { accessToken });
+        onSocialLogin(response.data);
       }
     } catch (error) {
-      console.log("login error:", error);
+      console.error('Social login error:', error);
     }
-  };
-export const forgetPassword = async (email:string, code:string, newPassword:string): Promise<LoginResponse | undefined> => {
-    try {
-      const response: AxiosResponse<LoginResponse> = await axiosInstance.post("/api/v1/auth/forgetPassword", {
-        email,
-        code,
-        newPassword
-      });
-      if (response.status === 200) {
-        const { token, userId } = response.data;
-        return { token, userId };
-      }
-    } catch (error) {
-      console.log("login error:", error);
-    }
-  };
+  };*/
+
 
 export const getCurrentUser = async (id: string): Promise<UserResponse | undefined> => {
   try {

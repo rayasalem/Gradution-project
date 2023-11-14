@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
-import Social from './SocialLoginButton';
 import { createUser } from '../../../api/user';
 import Joi from 'joi';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
-interface SignupFormProps {
-  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-}
-const SignupForm: React.FC<SignupFormProps> = ({ setAuthenticated }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+import { useAuth } from '../../AuthContext';
+
+const SignupForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const [errors, setErrors] = useState({
     email: "",
     username: "",
@@ -21,7 +19,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ setAuthenticated }) => {
     dateOfBirth: "",
   });
   const navigate = useNavigate();
-
+  const {  login } = useAuth();
   const signupSchema = Joi.object().required().keys({
     username: Joi.string().min(3).max(15).required().messages({
       'string.pattern.base': 'Username must be a string and at least 3 characters long',
@@ -75,12 +73,12 @@ const SignupForm: React.FC<SignupFormProps> = ({ setAuthenticated }) => {
         password: "",
         dateOfBirth: "",
       });
-      setAuthenticated(true);
-
+      setError('');
+      login();
       navigate('/VerifyEmailPage');
     } catch (error: any) {
         console.error('create user error:', error);
-    }
+        setError(error.message);    }
   };
 
   return (
@@ -116,12 +114,18 @@ const SignupForm: React.FC<SignupFormProps> = ({ setAuthenticated }) => {
               ...prevErrors,
               email: "",
             }));
+            setError('');
           }}
           className="input-field"
         />
         {errors.email && (
           <Typography variant="body2" color="error" sx={{ width: '350px' }}>
             {errors.email}
+          </Typography>
+        )}
+        {error && (
+          <Typography variant="body2" color="error" sx={{ width: '350px' }}>
+            {error}
           </Typography>
         )}
        <TextField
