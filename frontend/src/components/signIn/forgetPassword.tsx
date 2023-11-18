@@ -1,41 +1,16 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box,Container } from '@mui/material';
+import { TextField, Button, Typography, Box, Container } from '@mui/material';
 import { sendCode } from '../../api/user';
-import {  useNavigate } from 'react-router-dom';
-import Joi from 'joi';
-import './index.css'
+import { useNavigate } from 'react-router-dom';
+
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState({email: "",});
   const navigate = useNavigate();
-  const ForgotPasswordSchema = Joi.object().required().keys({
-    email: Joi.string()
-      .email({
-        minDomainSegments: 2,
-        tlds: { allow: ['com', 'net'] } 
-      })
-      .required()
-  });
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const validationResult = ForgotPasswordSchema.validate({ 
-        email,
-      });
-  
-      if (validationResult.error) {
-        validationResult.error.details.forEach((detail) => {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            [detail.path[0]]: detail.message,
-          }));
-        });
-        return;
-      }
     try {
       await sendCode(email);
-      setErrors({
-        email: ""
-      });
       navigate('/reset-password', { state: { email } });
     } catch (error) {
       console.error('Error:', error);
@@ -43,41 +18,58 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{minHeight: '100vh',paddingTop:'40px',display:'flex',justifyContent:'center',alignItems:'center'}}>
-    <form onSubmit={handleSubmit} className='FormSignIn'>
-      <Box display="flex" flexDirection="column" alignItems="center" gap={2} >
-        <Typography variant="h3" sx={{ marginTop: '4px' }}>
-          Forgot Password
+    <Container
+      maxWidth="sm"
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh', 
+      }}
+    >
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          border: '1px solid black',
+          backgroundColor: 'rgb(111, 143, 111)',
+          borderRadius: '3%',
+          padding: '2rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          fontWeight: 'bold',
+          fontFamily: 'Arial, Helvetica, sans-serif',
+          transform: 'scale(1.1)',
+          height: 'auto',
+          width:'22vw'
+        }}
+      >
+        <Typography variant="h3" sx={{ marginTop: '1px', fontSize: 'medium', color: 'white' }}>
+          Enter your email!
         </Typography>
 
         <TextField
           type="email"
           label="Email"
           value={email}
-          sx={{ marginTop: '50px', color: 'white' }}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              email: "",
-            }));
-          }}
+          required
+          sx={{ marginTop: '2rem', width: '80%' }}
+          onChange={(e) => setEmail(e.target.value)}
         />
-          {errors.email && (
-          <Typography variant="body2" color="error" sx={{ width: '350px' }}>
-            {errors.email}
-          </Typography>
-        )}
+
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          sx={{ backgroundColor: 'black', size: '50%', marginTop: '30px' }}
+          sx={{ width: '50%', marginTop: '2rem', backgroundColor: 'white', color: 'black' }}
         >
           Send Code
         </Button>
+        <Typography variant="body2" sx={{ color: 'white', marginTop: '1rem' }}>
+          keep your code ,dont share it with any one!
+          </Typography>
       </Box>
-    </form>
     </Container>
   );
 };

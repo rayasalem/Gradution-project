@@ -53,19 +53,28 @@ const [errors, setErrors] = useState({
         email: "",
         password: "",
       });
-      // Do something with the token
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
   const handleSocialLogin = (accessToken: string, provider: string) => {
-    // Handle social login
     console.log(`Logged in with ${provider} using access token: ${accessToken}`);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{
+      border: '1px solid white',
+      borderRadius: '3%',
+      backgroundColor: 'rgb(111, 143, 111)',
+      width: '40vw',
+      height: '90vh',
+      marginRight: 0,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontWeight: 'bold',
+    }}>
       <Box
         display="flex"
         flexDirection="column"

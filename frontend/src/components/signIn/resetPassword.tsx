@@ -53,13 +53,31 @@ const ResetPasswordPage: React.FC = () => {
 
   return (
     <Container maxWidth="sm" sx={{minHeight: '100vh',paddingTop:'40px',display:'flex',justifyContent:'center',alignItems:'center'}}>
-    <form onSubmit={handleSubmit} className='FormSignIn'>
-      <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+          <Box
+        component="form"
+        onSubmit={handleSubmit}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gap={2}
+        bgcolor="rgb(111, 143, 111)"
+        p={4}
+        borderRadius={3}
+        sx={{ width: '40vw' , height: 'auto',
+      }}
+      >
+        <Typography variant="h5" sx={{ color: 'white', marginTop: '1rem' }}>
+         Make new  Password!
+        </Typography>
         <TextField
           type="text"
           label="Code"
           value={code}
           onChange={(e) => setCode(e.target.value)}
+          sx={{
+            width: '60%',
+          }}
+          required
         />
         <TextField
           type="password"
@@ -72,6 +90,10 @@ const ResetPasswordPage: React.FC = () => {
               newPassword: "", 
             }));
           }}
+          required
+          sx={{
+            width: '60%',
+          }}
         />
         {errors.newPassword && (
           <Typography variant="body2" color="error" sx={{ width: '350px' }}>
@@ -82,12 +104,22 @@ const ResetPasswordPage: React.FC = () => {
           type="submit"
           variant="contained"
           color="primary"
-          sx={{ backgroundColor: 'black', size: '50%', marginTop: '40px' }}
+          sx={{
+            bgcolor: 'white',
+            color:'black',
+            width: '50%',
+            marginTop: '2rem',
+            '&:hover': {
+              bgcolor: 'green',
+            },
+          }}
         >
           Reset Password
         </Button>
+        <Typography variant="body2" sx={{ color: 'white', marginTop: '1rem' }}>
+          Don't forget to reset your password!
+        </Typography>
       </Box>
-    </form>
     </Container>
   );
 };
