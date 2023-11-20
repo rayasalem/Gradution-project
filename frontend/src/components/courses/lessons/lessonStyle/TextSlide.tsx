@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box } from '@mui/material';
 
 interface TextSlideProps {
   text: React.ReactNode;
@@ -6,9 +7,9 @@ interface TextSlideProps {
 
 const TextSlide: React.FC<TextSlideProps> = ({ text }) => {
   return (
-    <div style={{ paddingTop: '60px' }}>
-      <div>{React.cloneElement(text as React.ReactElement)}</div>
-    </div>
+    <Box sx={{paddingTop:'60px'}}>
+    <div>{React.cloneElement(text as React.ReactElement)}</div>
+  </Box>
   );
 };
 
