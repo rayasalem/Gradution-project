@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Answer from './Answer';
 import DropZone from './DropZone';
-
+import './questionLesson.css'
+import { Typography, Box } from '@mui/material';
 interface QuestionWithDragDropProps {
   text:React.ReactNode;
   question: React.ReactNode;
@@ -25,12 +26,8 @@ const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({ text,questi
         <span
           style={{
             backgroundColor:'#fff',
-            border: '2px solid #c8d2db',
-            padding: '8px',
-            display: 'inline-block',
-            minWidth: '50px',
-            minHeight: '25px',
-            boxSizing: 'border-box', 
+            border: '2px solid #c8d2db',padding: '8px',display: 'inline-block',
+            minWidth: '50px',minHeight: '25px',boxSizing: 'border-box', 
           }}
         >
           {selectedAnswer || ''}
@@ -44,19 +41,19 @@ const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({ text,questi
   
 
   return (
-    <div style={{display:'flex',justifyContent:'center',alignItems:'center',paddingTop: '70px'}}>
-    <div >
-        <div>{text}</div>
-      <div style={{backgroundColor:'#f2f5f7',padding:'10px',minWidth:'650px',minHeight:'100px'}}>{updatedQuestion}</div>
-      <DropZone onDrop={handleDrop} />
-      <div style={{paddingTop:'10px'}}>
-        {answers.map((answer, index) => (
-          <Answer key={index} answer={answer} onDrop={handleDrop} />
-        ))}
-      </div>
-      <p>Selected Answer: {selectedAnswer}</p>
-    </div>
-    </div>
+    <Box className="questionSlide">
+      <Box>
+        <Box>{text}</Box>
+        <Box className="qLesson">{updatedQuestion}</Box>
+        <DropZone onDrop={handleDrop} />
+        <Box className="answersLesson">
+          {answers.map((answer, index) => (
+            <Answer key={index} answer={answer} onDrop={handleDrop} />
+          ))}
+        </Box>
+        <Typography sx={{ paddingTop: '10px' }}>Selected Answer: {selectedAnswer}</Typography>
+      </Box>
+    </Box>
   
   );
 };

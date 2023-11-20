@@ -1,5 +1,7 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
+import { Box } from '@mui/material';
+import './questionLesson.css'
 
 interface AnswerProps {
   answer: string;
@@ -13,13 +15,9 @@ const Answer: React.FC<AnswerProps> = ({ answer, onDrop }) => {
   });
 
   return (
-    <div ref={drag} onClick={() => onDrop(answer)} style={{ display:'inline-block', marginRight: '10px' }}>
-      <div style={{cursor: 'grab',
-    padding: '10px',
-    border: '2px solid #c8d2db',
-    boxShadow: '0 2px 0 1px #c8d2db',
-    backgroundColor: 'white',}}>{answer}</div>
-    </div>
+    <Box ref={drag} className="dragItem" onClick={() => onDrop(answer)}>
+      <div className="draggable">{answer}</div>
+    </Box>
   );
 };
 

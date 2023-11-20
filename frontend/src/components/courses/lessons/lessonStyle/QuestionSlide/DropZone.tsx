@@ -1,5 +1,7 @@
 import React from 'react';
 import { useDrop, DropTargetMonitor, DropTargetHookSpec } from 'react-dnd';
+import { Box } from '@mui/material';
+import './questionLesson.css'
 
 interface DropZoneProps {
   onDrop: (answer: string) => void;
@@ -18,11 +20,11 @@ const DropZone: React.FC<DropZoneProps> = ({ onDrop }) => {
   const isActive = canDrop && isOver;
 
   return (
-    <div style={{paddingTop:'10px'}}>
-    <div ref={drop} style={{ border: `1px solid ${isActive ? 'green' : 'black'}`, minHeight: '30px',width:'150px',padding:'5px'}}>
+    <Box className="dropZone">
+    <Box ref={drop} className="dropZoneContainer">
       {isActive ? 'Release to drop' : 'Drag an answer here'}
-    </div>
-    </div>
+    </Box>
+  </Box>
   );
 };
 
