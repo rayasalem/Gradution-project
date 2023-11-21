@@ -4,16 +4,9 @@ import QuizModel,{IQuiz} from '../db/schemas/quizSchema';
 
  export const creatQuestion = async(req:Request,res:Response)=>{
     try{
-      const {quizId} = req.query;
   const { questionId, text, type, options, correctAnswer } = req.body;
    const newQuestion: IQuestion | null  = await new QuestionModel({ questionId, text, type, options, correctAnswer });
    const savedQuestion: IQuestion = await newQuestion.save();
-   const Quiz= await QuizModel.findById(quizId);
-   if (!Quiz) {
-     return res.status(404).json({ error: 'quiz not found' });
-   }
-   Quiz.questions.push(newQuestion._id); 
-   await Quiz.save();
    res.status(201).json(savedQuestion);
  } catch (error) {
    console.error(error);

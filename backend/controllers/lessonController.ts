@@ -5,7 +5,7 @@ import Course from '../db/schemas/courseSchema';
 export const createLesson = async (req: Request, res: Response) => {
   try {
     const courseId = req.query.courseId; 
-    const { title, content, order, questions } = req.body;
+    const { title, order, questions } = req.body;
 
     const course = await Course.findById(courseId);
 
@@ -15,7 +15,6 @@ export const createLesson = async (req: Request, res: Response) => {
 
     const newLesson: ILesson = new Lesson({
       title,
-      content,
       order,
       course: courseId, 
       questions: [],

@@ -12,10 +12,6 @@ const lessonSchema: Schema = new Schema<ILesson>({
     type: String,
     required: true,
   },
-  content: {
-    type: String,
-    required: true,
-  },
   order: {
     type: Number,
     required: true,

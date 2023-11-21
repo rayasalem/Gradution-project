@@ -1,10 +1,14 @@
 import React from 'react'
+import LessonSlide from './lessonStyle/LessonSlide';
 
 type Props = {}
 
 const lesson = (props: Props) => {
   return (
-    <div>lesson</div>
+    <div>
+
+      <LessonSlide />
+    </div>
   )
 }
 

@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Answer from './Answer';
 import DropZone from './DropZone';
 import './questionLesson.css'
 import { Typography, Box } from '@mui/material';
+import { createQuestion } from '../../../../../api/userAction';
 interface QuestionWithDragDropProps {
+  questionId:string;
   text:React.ReactNode;
   question: React.ReactNode;
-  answers: string[];
+  options: string[];
+  correctAnswer:string;
   
 }
-const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({ text,question, answers }) => {
+const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({questionId, text,question, options,correctAnswer }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
+      
+  useEffect(() => {
+    
+    createQuestion({
+      questionId,
+      text: text?.toString()?? '', 
+      type: 'dragDrop', 
+      options,
+      correctAnswer,
+    });
+  }, []); 
   const handleDrop = (droppedAnswer: string) => {
     setSelectedAnswer(droppedAnswer);
   };
@@ -47,7 +60,7 @@ const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({ text,questi
         <Box className="qLesson">{updatedQuestion}</Box>
         <DropZone onDrop={handleDrop} />
         <Box className="answersLesson">
-          {answers.map((answer, index) => (
+          {options.map((answer, index) => (
             <Answer key={index} answer={answer} onDrop={handleDrop} />
           ))}
         </Box>

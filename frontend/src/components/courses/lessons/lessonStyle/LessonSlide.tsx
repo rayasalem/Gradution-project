@@ -23,9 +23,10 @@ const LessonSlide: React.FC = () => {
   const slides = [
     {
       type: 'dragDrop',
+      questionId:'q1',
       text: <p>Text for drag-and-drop slide</p>,
       question: <p>Your drag-and-drop question</p>,
-      answers: ['Option 1', 'Option 2', 'Option 3'],
+      options: ['Option 1', 'Option 2', 'Option 3'],
       correctAnswer: 'Option 1',
     },
     {
@@ -34,6 +35,7 @@ const LessonSlide: React.FC = () => {
     },
     {
       type: 'dragDrop',
+      questionId:'q2',
       text: (
         <p>
           Headings in HTML come in different levels. <code>&lt;h1&gt;</code>
@@ -49,7 +51,8 @@ const LessonSlide: React.FC = () => {
           </p>
         </div>
       ),
-      answers: ['Heading 1', 'Heading 2', 'Heading 3'],
+      options: ['Heading 1', 'Heading 2', 'Heading 3'],
+      correctAnswer:'Heading 1',
     },
   ];
 
@@ -63,11 +66,14 @@ const LessonSlide: React.FC = () => {
     <Box>
       <Box sx={{ height: '80vh' }}>
         <DndProvider backend={HTML5Backend}>
-          {currentSlideData.type === 'dragDrop' && currentSlideData.answers && (
+          {currentSlideData.type === 'dragDrop' && currentSlideData.options && (
             <QuestionWithDragDrop
+            questionId={currentSlideData.questionId}
               text={currentSlideData.text}
               question={currentSlideData.question}
-              answers={currentSlideData.answers}
+              options={currentSlideData.options}
+              correctAnswer={currentSlideData.correctAnswer}
+              
             />
           )}
 
