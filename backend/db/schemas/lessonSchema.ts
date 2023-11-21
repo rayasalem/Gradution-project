@@ -5,8 +5,8 @@ export interface ILesson extends Document {
   content: string;
   order: number;
   course: Types.ObjectId | string;
+  questions: Types.ObjectId[];
 }
-
 const lessonSchema: Schema = new Schema<ILesson>({
   title: {
     type: String,
@@ -24,6 +24,10 @@ const lessonSchema: Schema = new Schema<ILesson>({
     type: Schema.Types.ObjectId,
     ref: 'Course', 
   },
+  questions: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Question', 
+  }],
 });
 
 const Lesson:Model<ILesson> = model<ILesson>('Lesson', lessonSchema);

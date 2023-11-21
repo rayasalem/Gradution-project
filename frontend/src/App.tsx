@@ -14,6 +14,8 @@ import { AuthProvider } from './components/AuthContext';
 import { QuestionAnswer } from '@mui/icons-material';
 import ReactionComponent from './components/courses/lessons/lessonStyle/QuestionSlide/ReactionComponent';
 import BitsLesson from './components/courses/lessons/lessonStyle/LessonHearts/BitsLesson';
+import DoneLessonPage from './components/courses/lessons/LessonDone';
+import LessonSlide from './components/courses/lessons/lessonStyle/LessonSlide';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -43,8 +45,8 @@ function App() {
           <Route path="/VerifyEmailPage" element={<VerifyEmailPage />} /> 
           <Route path="*" element={<PageNotFound />} /> 
           {/* <Route path='/test' element={<ReactionComponent/>} /> */}
-          <Route path='/test' element={<BitsLesson/>} />
-
+          {/* <Route path='/test' element={<DoneLessonPage/>} /> */}
+          <Route path='/test' element={<LessonSlide/>} />
         </Routes>
       </AuthProvider>
     </Router>

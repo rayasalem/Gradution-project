@@ -39,8 +39,7 @@ const ReactionComponent: React.FC = () => {
   return (
 
     <DndProvider backend={HTML5Backend}>
-      <QuestionWithDragDrop text={questionData[0].text} question={questionData[0].question} answers={questionData[0].answers}  />
-      {/* <QuestionWithDragDrop text={questionData[1].text} question={questionData[1].question} answers={questionData[1].answers} /> */}
+      {/* <QuestionWithDragDrop text={questionData[0].text} question={questionData[0].question} answers={questionData[0].answers}  /> */}
     </DndProvider>
 
   );

@@ -5,7 +5,7 @@ import Course from '../db/schemas/courseSchema';
 export const createLesson = async (req: Request, res: Response) => {
   try {
     const courseId = req.query.courseId; 
-    const { title, content, order } = req.body;
+    const { title, content, order, questions } = req.body;
 
     const course = await Course.findById(courseId);
 
@@ -18,15 +18,20 @@ export const createLesson = async (req: Request, res: Response) => {
       content,
       order,
       course: courseId, 
+      questions: [],
     });
 
     await newLesson.save();
 
     course.lessons.push(newLesson._id); 
     await course.save();
-
+    if (questions && questions.length > 0) {
+      newLesson.questions = questions;
+      await newLesson.save();
+    }
     res.status(201).json({ message: 'Lesson created successfully', lesson: newLesson });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to create a new lesson' });
   }
 };

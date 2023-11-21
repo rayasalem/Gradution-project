@@ -7,15 +7,15 @@ interface QuestionWithDragDropProps {
   text:React.ReactNode;
   question: React.ReactNode;
   answers: string[];
-
+  
 }
-
 const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({ text,question, answers }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
   const handleDrop = (droppedAnswer: string) => {
     setSelectedAnswer(droppedAnswer);
   };
+
 
   const replaceText = (element: React.ReactNode, isEmptySpace: boolean): React.ReactNode => {
     if (React.isValidElement(element)) {
