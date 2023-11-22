@@ -6,18 +6,43 @@ import TextSlide from './TextSlide';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import  Typography  from '@mui/material/Typography';
 import DoneLessonPage from '../LessonDone';
 
 const LessonSlide: React.FC = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+
 
   const handleAnswerCorrect = () => {
+    const currentSlideData = slides[currentSlide];
+
+    if (!currentSlideData) {
+      console.error('Invalid slide data');
+      return;
+    }
+
+    if (currentSlideData.type === 'dragDrop') {
+    const isAnswerCorrect = selectedAnswer === currentSlideData.correctAnswer;
+
+
+      setIsAnswerCorrect(isAnswerCorrect);
+
+      if (isAnswerCorrect) {
+        console.log('Correct answer!');
+      } else {
+        console.log('Incorrect answer!');
+      }
+    }
+
     setCurrentSlide((prevSlide) => prevSlide + 1);
   };
 
   const handleBack = () => {
     setCurrentSlide((prevSlide) => Math.max(0, prevSlide - 1));
+    setSelectedAnswer(null); 
+    setIsAnswerCorrect(null); 
   };
 
   const slides = [
@@ -42,6 +67,7 @@ const LessonSlide: React.FC = () => {
           <br />
           defines the most important heading.
         </p>
+
       ),
       question: (
         <div>
@@ -73,7 +99,8 @@ const LessonSlide: React.FC = () => {
               question={currentSlideData.question}
               options={currentSlideData.options}
               correctAnswer={currentSlideData.correctAnswer}
-              
+              selectedAnswer={selectedAnswer}
+              setSelectedAnswer={setSelectedAnswer}
             />
           )}
 
@@ -102,8 +129,14 @@ const LessonSlide: React.FC = () => {
           Continue
         </Button>
       </Box>
+      {isAnswerCorrect !== null && (
+        <Typography sx={{ paddingTop: '10px' }}>
+          {isAnswerCorrect ? 'Correct Answer!' : 'Incorrect Answer!'}
+        </Typography>
+      )}
     </Box>
   );
 };
 
 export default LessonSlide;
+

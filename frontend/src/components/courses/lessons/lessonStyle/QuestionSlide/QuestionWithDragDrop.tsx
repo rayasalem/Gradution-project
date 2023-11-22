@@ -10,21 +10,31 @@ interface QuestionWithDragDropProps {
   question: React.ReactNode;
   options: string[];
   correctAnswer:string;
+  selectedAnswer: string | null; 
+  setSelectedAnswer: React.Dispatch<React.SetStateAction<string | null>>;
   
 }
-const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({questionId, text,question, options,correctAnswer }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({questionId, text,question, options,correctAnswer, selectedAnswer,
+  setSelectedAnswer }) => {
+  // const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
       
-  useEffect(() => {
-    
-    createQuestion({
-      questionId,
-      text: text?.toString()?? '', 
-      type: 'dragDrop', 
-      options,
-      correctAnswer,
-    });
-  }, []); 
+    const createQuestionAndHandleErrors = async () => {
+      try {
+        await createQuestion({
+          questionId,
+          text: text?.toString() ?? '',
+          type: 'dragDrop',
+          options,
+          correctAnswer,
+        });
+      } catch (error) {
+        console.error('Failed to create question. Error:', error);
+      }
+    };
+
+    createQuestionAndHandleErrors();
+  
+
   const handleDrop = (droppedAnswer: string) => {
     setSelectedAnswer(droppedAnswer);
   };

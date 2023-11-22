@@ -4,14 +4,22 @@ import QuizModel,{IQuiz} from '../db/schemas/quizSchema';
 
  export const creatQuestion = async(req:Request,res:Response)=>{
     try{
-  const { questionId, text, type, options, correctAnswer } = req.body;
-   const newQuestion: IQuestion | null  = await new QuestionModel({ questionId, text, type, options, correctAnswer });
-   const savedQuestion: IQuestion = await newQuestion.save();
-   res.status(201).json(savedQuestion);
- } catch (error) {
-   console.error(error);
-   res.status(500).json({ message: 'Server error' });
-}
+      const { questionId, text, type, options, correctAnswer } = req.body;
+
+      const existingQuestion = await QuestionModel.findOne({ questionId });
+  
+      if (existingQuestion) {
+        return res.status(400).json({ message: 'Question with the same ID already exists' });
+      }
+  
+      const newQuestion: IQuestion | null = await new QuestionModel({ questionId, text, type, options, correctAnswer });
+      const savedQuestion: IQuestion = await newQuestion.save();
+  
+      res.status(201).json(savedQuestion);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
 }
 export const getQuestion= async (req: Request, res: Response) => {
     try {

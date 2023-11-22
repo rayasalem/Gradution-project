@@ -39,9 +39,10 @@ export const createQuestion = async (userQuestion: IQuestion): Promise<IQuestion
   try {
     const response: AxiosResponse<IQuestion> = await axiosInstance.post('/api/v1/question/createquestion', userQuestion);
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       return response.data;
     } else {
+        console.log('Failed to create question. Unexpected status:', response.status, 'Response:', response.data);
       throw new Error('Failed to create question');
     }
   } catch (error) {
