@@ -10,12 +10,40 @@ import  Typography  from '@mui/material/Typography';
 import DoneLessonPage from '../LessonDone';
 
 const LessonSlide: React.FC = () => {
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+const [currentSlide, setCurrentSlide] = useState<number>(0);
+const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
 
-  const handleAnswerCorrect = () => {
+    const handleAnswerCorrect = () => {
+      const currentSlideData = slides[currentSlide];
+  
+      if (!currentSlideData) {
+        console.error('Invalid slide data');
+        return;
+      }
+      if (currentSlideData.type === 'dragDrop') {
+        const isAnswerCorrect = selectedAnswer === currentSlideData.correctAnswer;
+        setIsAnswerCorrect(isAnswerCorrect);
+  
+        if (isAnswerCorrect) {
+          console.log('Correct answer!');
+        } else {
+          console.log('Incorrect answer!');
+        }
+      }
+  
+      setSelectedAnswer(null);
+      setCurrentSlide((prevSlide) => prevSlide + 1);
+      setIsAnswerCorrect(null);
+    };
+
+  const handleBack = () => {
+    setCurrentSlide((prevSlide) => Math.max(0, prevSlide - 1));
+    setSelectedAnswer(null); 
+    setIsAnswerCorrect(null); 
+  };
+  const handleCheckAnswer = () => {
     const currentSlideData = slides[currentSlide];
 
     if (!currentSlideData) {
@@ -24,9 +52,7 @@ const LessonSlide: React.FC = () => {
     }
 
     if (currentSlideData.type === 'dragDrop') {
-    const isAnswerCorrect = selectedAnswer === currentSlideData.correctAnswer;
-
-
+      const isAnswerCorrect = selectedAnswer === currentSlideData.correctAnswer;
       setIsAnswerCorrect(isAnswerCorrect);
 
       if (isAnswerCorrect) {
@@ -35,16 +61,7 @@ const LessonSlide: React.FC = () => {
         console.log('Incorrect answer!');
       }
     }
-
-    setCurrentSlide((prevSlide) => prevSlide + 1);
   };
-
-  const handleBack = () => {
-    setCurrentSlide((prevSlide) => Math.max(0, prevSlide - 1));
-    setSelectedAnswer(null); 
-    setIsAnswerCorrect(null); 
-  };
-
   const slides = [
     {
       type: 'dragDrop',
@@ -124,6 +141,9 @@ const LessonSlide: React.FC = () => {
       >
         <Button onClick={handleBack} disabled={currentSlide === 0} variant="outlined" sx={{ width: '100px' }}>
           Back
+        </Button>
+        <Button onClick={handleCheckAnswer} variant="contained" sx={{ width: '100px' }}>
+          Check Answer
         </Button>
         <Button onClick={handleAnswerCorrect} variant="contained" sx={{ width: '100px' }}>
           Continue
