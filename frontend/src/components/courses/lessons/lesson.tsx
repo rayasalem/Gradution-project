@@ -7,7 +7,7 @@ const lesson = (props: Props) => {
   return (
     <div>
 
-      <LessonSlide />
+      {/* <LessonSlide /> */}
     </div>
   )
 }

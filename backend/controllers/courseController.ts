@@ -44,13 +44,12 @@ export const rateCourse = async (req: Request, res: Response) => {
 }
 export const createCourse = async (req: Request, res: Response) => {
   try {
-    const { title, description,  difficultyLevel } = req.body;
+    const { title, description } = req.body;
     const author = req.user?._id;
     const newCourse: ICourse = new CourseModel({
       title,
       description,
       author,
-      difficultyLevel,
     });
    const savedcourse= await newCourse.save();
     res.status(201).json({ message: 'Course created successfully', savedcourse });

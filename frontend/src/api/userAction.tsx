@@ -7,12 +7,15 @@ interface IUserBitsAndHearts {
   hearts_earned: number;
   action_type: 'lesson' | 'codeProject' | 'codeCoach' | 'codeRepo' | 'codeChallenge';
 }
+interface ICourse {
+  title: string;
+  description: string; 
+}
 interface IUserLesson {
   title: string;
-  content: string;
   order: number;
   course: string; 
-  question: string; 
+  question?: string[]; 
 }
 interface IQuestion{
  questionId:string;
@@ -21,30 +24,46 @@ interface IQuestion{
   options?: string[];
   correctAnswer: string;
 }
-export const createLesson = async (userLesson: IUserLesson): Promise<IUserLesson | undefined> => {
+export const createCourse = async (course: ICourse): Promise<ICourse | undefined> => {
   try {
-    const response: AxiosResponse<IUserLesson> = await axiosInstance.post('/your/api/endpoint', userLesson);
+    const response: AxiosResponse<ICourse> = await axiosInstance.post('/api/v1/course/createCourse', course);
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       return response.data;
+    } else if (response.status === 404) {
+      console.error("Course not found:", response.data);
     } else {
-      throw new Error('Failed to create lesson');
+      console.error("Unexpected status code:", response.status, response.data);
     }
   } catch (error) {
-    console.log("create lesson error:", error);
+    console.error("Create course error:", error);
     throw error;
   }
 };
+export const createLesson = async (userLesson: IUserLesson): Promise<IUserLesson | undefined> => {
+  try {
+    const response: AxiosResponse<IUserLesson> = await axiosInstance.post('http://localhost:3000/api/v1/lesson/createLesson', userLesson);
+
+    if (response.status === 201) {
+      return response.data;
+    } else if (response.status === 404) {
+      console.error("Lesson not found:", response.data);
+    } else {
+      console.error("Unexpected status code:", response.status, response.data);
+    }
+  } catch (error) {
+    console.error("create lesson error:", error);
+    throw error;
+  }
+};
+
 export const createQuestion = async (userQuestion: IQuestion): Promise<IQuestion | undefined> => {
   try {
     const response: AxiosResponse<IQuestion> = await axiosInstance.post('/api/v1/question/createquestion', userQuestion);
 
     if (response.status === 201) {
       return response.data;
-    } else {
-        console.log('Failed to create question. Unexpected status:', response.status, 'Response:', response.data);
-      throw new Error('Failed to create question');
-    }
+    } 
   } catch (error) {
     console.log("create question error:", error);
     throw error;

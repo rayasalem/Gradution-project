@@ -2,7 +2,6 @@ import { Schema, model,Model, Document, Types } from 'mongoose';
 
 export interface ILesson extends Document {
   title: string;
-  content: string;
   order: number;
   course: Types.ObjectId | string;
   questions: Types.ObjectId[];

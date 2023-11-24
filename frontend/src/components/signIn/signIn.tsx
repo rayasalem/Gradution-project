@@ -45,14 +45,23 @@ const [errors, setErrors] = useState({
         });
         return;
       }
-    try {
-      const token = await signIn(email, password);
-      console.log('Successfully signed in!');
-      login();
-      setErrors({
-        email: "",
-        password: "",
-      });
+      try {
+        const loginResponse = await signIn(email, password) ;
+    
+        if (loginResponse !== undefined) {
+          const { token } = loginResponse;
+
+          console.log('Successfully signed in!');
+          login();
+          localStorage.setItem('token', token);
+    
+          setErrors({
+            email: "",
+            password: "",
+          });
+        } else {
+          console.error('Token is undefined.');
+        }
     } catch (error) {
       console.error('Error:', error);
     }

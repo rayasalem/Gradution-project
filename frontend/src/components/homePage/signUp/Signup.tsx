@@ -66,16 +66,22 @@ const SignupForm: React.FC = () => {
         dateOfBirth,
       });
 
-      console.log('Successfully created user!');
-      setErrors({
-        email: "",
-        username: "",
-        password: "",
-        dateOfBirth: "",
-      });
-      setError('');
-      login();
-      navigate('/VerifyEmailPage');
+      if (token !== undefined) {
+        console.log('Successfully created user!');
+        localStorage.setItem('token', token);
+  
+        setErrors({
+          email: "",
+          username: "",
+          password: "",
+          dateOfBirth: "",
+        });
+        setError('');
+        login();
+        navigate('/VerifyEmailPage');
+      } else {
+        console.error('Token is undefined.');
+      }
     } catch (error: any) {
         console.error('create user error:', error);
         setError(error.message);    }

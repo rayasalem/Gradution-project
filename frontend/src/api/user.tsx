@@ -5,8 +5,11 @@ interface UserData {
     email: string;
     password: string; 
     dateOfBirth: string;
-}
 
+}
+interface LoginResponse1 {
+  token: string;
+}
 interface LoginResponse {
   token: string;
   userId: string;
@@ -16,12 +19,14 @@ interface UserResponse {
     username: string;
     email: string;
   }
-export const createUser = async (userData: UserData): Promise<UserData | undefined> => {
+export const createUser = async (userData: UserData): Promise<string | undefined> => {
   try {
-    const response: AxiosResponse<UserData> = await axiosInstance.post('/api/v1/auth/signUp', userData);
+    const response: AxiosResponse<{ token: string }> = await axiosInstance.post('/api/v1/auth/signUp', userData);
 
     if (response.status === 200) {
-      return response.data;
+      const { token } = response.data;
+      return token ; 
+      // return response.data;
     }
   } catch (error: any) {
     if (error.response?.status === 409) {
@@ -31,15 +36,15 @@ export const createUser = async (userData: UserData): Promise<UserData | undefin
       }
   }
 };
-export const signIn = async (email: string, password: string): Promise<LoginResponse | undefined> => {
+export const signIn = async (email: string, password: string): Promise<LoginResponse1 | undefined> => {
   try {
-    const response: AxiosResponse<LoginResponse> = await axiosInstance.post("/api/v1/auth/signIn", {
+    const response: AxiosResponse<{ token: string }> = await axiosInstance.post("/api/v1/auth/signIn", {
       email,
       password,
     });
     if (response.status === 200) {
-      const { token, userId } = response.data;
-      return { token, userId };
+      const { token} = response.data;
+      return {token};
     }
   } catch (error) {
     console.log("login error:", error);

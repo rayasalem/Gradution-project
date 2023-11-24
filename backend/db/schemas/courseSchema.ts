@@ -37,10 +37,7 @@ const courseSchema= new Schema<ICourse>({
     type:  Schema.Types.ObjectId,
     ref: 'User', 
   },
-  difficultyLevel: {
-    type: String,
-    required: true,
-  },
+
   rating: {
     type: Number,
     default: 0,

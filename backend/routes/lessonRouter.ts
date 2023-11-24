@@ -10,7 +10,7 @@ import {authorizeUser} from "../middleware/authentication";
 import { roles } from '../services/roles';
 const lessonRouter = Router();
 
-lessonRouter.post('/createLesson',authorizeUser([roles.admin]),createLesson);
+lessonRouter.post('/createLesson',createLesson);
 lessonRouter.put('/editLesson',authorizeUser([roles.admin]),editLesson);
 lessonRouter.delete('/deleteLesson',authorizeUser([roles.admin]),deleteLesson);
 lessonRouter.get('/LessonDetails',authorizeUser([roles.admin,roles.user]),viewLessonDetails);

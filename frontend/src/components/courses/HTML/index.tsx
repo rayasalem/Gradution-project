@@ -1,11 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { createCourse } from './../../../api/userAction';
 
-type Props = {}
+const HTMLCourse: React.FC = () => {
+  const lessonData = {
+    title: 'HTML',
+    description: 'This is HTML Course',
+  };
 
-const index = (props: Props) => {
+
+  useEffect(() => {
+    const courseData = {
+      ...lessonData,
+    };
+
+    createCourse(courseData)
+      .then(result => {
+        console.log(result); 
+      })
+      .catch(error => {
+        console.error(error); 
+      });
+  }, []);
+
   return (
-    <div>index</div>
-  )
-}
+    <div>
+      <h2>HTML Course</h2>
+    </div>
+  );
+};
 
-export default index
+export default HTMLCourse;

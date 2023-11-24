@@ -16,6 +16,8 @@ import ReactionComponent from './components/courses/lessons/lessonStyle/Question
 import BitsLesson from './components/courses/lessons/lessonStyle/LessonHearts/BitsLesson';
 import DoneLessonPage from './components/courses/lessons/LessonDone';
 import LessonSlide from './components/courses/lessons/lessonStyle/LessonSlide';
+import LessonOne from './components/courses/HTML/lessonHtml/LessonOne';
+import HTMLCourse from './components/courses/HTML';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -46,7 +48,9 @@ function App() {
           <Route path="*" element={<PageNotFound />} /> 
           {/* <Route path='/test' element={<ReactionComponent/>} /> */}
           {/* <Route path='/test' element={<DoneLessonPage/>} /> */}
-          <Route path='/test' element={<LessonSlide/>} />
+          {/* <Route path='/test' element={<LessonOne/>} /> */}
+          <Route path='/test' element={<HTMLCourse/>} />
+
         </Routes>
       </AuthProvider>
     </Router>
