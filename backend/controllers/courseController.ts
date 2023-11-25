@@ -46,6 +46,11 @@ export const createCourse = async (req: Request, res: Response) => {
   try {
     const { title, description } = req.body;
     const author = req.user?._id;
+    const existingCourse = await CourseModel.findOne({ title });
+
+    if (existingCourse) {
+      return res.status(400).json({ error: 'Course with this title already exists' });
+    }
     const newCourse: ICourse = new CourseModel({
       title,
       description,

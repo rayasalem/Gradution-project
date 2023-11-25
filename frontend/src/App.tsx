@@ -21,19 +21,7 @@ import HTMLCourse from './components/courses/HTML';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
-  const questionData = [
-    {
-      question: (
-        <>
-          Headings in HTML come in different levels. <code>&lt;h1&gt;</code> defines the most important heading.
-          <br />
-          Code a level 1 heading: <code>{'<h1>'}</code> _____ <code>{'</h1>'}</code>
-        </>
-      ),
-      answers: ['Heading 1', 'Heading 2', 'Heading 3'],
-    },
-    
-  ];
+  
   return (
     <Router>
       <AuthProvider>
@@ -49,8 +37,7 @@ function App() {
           {/* <Route path='/test' element={<ReactionComponent/>} /> */}
           {/* <Route path='/test' element={<DoneLessonPage/>} /> */}
           {/* <Route path='/test' element={<LessonOne/>} /> */}
-          <Route path='/test' element={<HTMLCourse/>} />
-
+          <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
         </Routes>
       </AuthProvider>
     </Router>

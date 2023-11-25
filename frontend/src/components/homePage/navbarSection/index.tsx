@@ -64,7 +64,7 @@ const Navbar: React.FC = () =>{
   };
   return (
     <div>
-      <Box sx={{ position: 'fixed', top: 0, left: 0, right: 0 ,marginTop:0}}>
+      <Box sx={{ position: 'fixed', top: 0, left: 0, right: 0 ,marginTop:0,zIndex:'1000'}}>
       {isSmallScreen ? (
         <AppBar  position="fixed"  sx={{ marginTop:0,background: '#f9f9fa',height:'10vh', width: '100vw',padding:'5px',top: 0, left: 0, right: 0 }}>
         <Toolbar>

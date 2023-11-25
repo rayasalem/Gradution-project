@@ -10,12 +10,15 @@ interface IUserBitsAndHearts {
 interface ICourse {
   title: string;
   description: string; 
+  savedcourse?: {
+    _id: string;
+  };
 }
 interface IUserLesson {
   title: string;
   order: number;
   course: string; 
-  question?: string[]; 
+  questions?: string[]; 
 }
 interface IQuestion{
  questionId:string;
@@ -30,11 +33,7 @@ export const createCourse = async (course: ICourse): Promise<ICourse | undefined
 
     if (response.status === 201) {
       return response.data;
-    } else if (response.status === 404) {
-      console.error("Course not found:", response.data);
-    } else {
-      console.error("Unexpected status code:", response.status, response.data);
-    }
+    } 
   } catch (error) {
     console.error("Create course error:", error);
     throw error;
@@ -42,20 +41,17 @@ export const createCourse = async (course: ICourse): Promise<ICourse | undefined
 };
 export const createLesson = async (userLesson: IUserLesson): Promise<IUserLesson | undefined> => {
   try {
-    const response: AxiosResponse<IUserLesson> = await axiosInstance.post('http://localhost:3000/api/v1/lesson/createLesson', userLesson);
+    const response: AxiosResponse<IUserLesson> = await axiosInstance.post(`/api/v1/lesson/createLesson/${userLesson.course}`, userLesson);
 
     if (response.status === 201) {
       return response.data;
-    } else if (response.status === 404) {
-      console.error("Lesson not found:", response.data);
-    } else {
-      console.error("Unexpected status code:", response.status, response.data);
     }
   } catch (error) {
-    console.error("create lesson error:", error);
+    console.error('create lesson error:', error);
     throw error;
   }
 };
+
 
 export const createQuestion = async (userQuestion: IQuestion): Promise<IQuestion | undefined> => {
   try {

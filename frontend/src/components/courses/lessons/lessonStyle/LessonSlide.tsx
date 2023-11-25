@@ -198,7 +198,7 @@ interface IUserLesson {
   title: string;
   order: number;
   course: string;
-  question?: string[];
+  questions?: string[];
 }
 
 interface DragDropSlide {
@@ -228,16 +228,25 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData }) => {
   const [attemptedAnswer, setAttemptedAnswer] = useState<boolean>(false);
   const [showContinueButton, setShowContinueButton] = useState<boolean>(false);
   const [heartCount, setHeartCount] = useState<number>(3);
-
+  const [initialized, setInitialized] = useState(false);
+  
   useEffect(() => {
-    createLesson(lessonData)
-      .then((response) => {
-        console.log('Lesson created:', response);
-      })
-      .catch((error) => {
+    const createLessonAsync = async () => {
+      try {
+        if (!initialized ) {
+          if (lessonData.course) {
+            const response = await createLesson(lessonData);
+          } else {
+            console.error('CourseId is not defined in lessonData.');
+          }
+          setInitialized(true);
+        }
+      } catch (error) {
         console.error('Failed to create lesson:', error);
-      });
-  }, [lessonData]);
+      }
+    };
+    createLessonAsync();
+  }, [initialized, lessonData.course]);
 
   const slides: LessonSlide[] = [
     {
@@ -256,6 +265,7 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData }) => {
       questionId: 'q2',
       text: 'Headings in HTML come in different levels. <code>&lt;h1&gt;</code><br/> defines the most important heading.',
       options: ['Heading 1', 'Heading 2', 'Heading 3'],
+
       correctAnswer: 'Heading 1',
     },
   ];

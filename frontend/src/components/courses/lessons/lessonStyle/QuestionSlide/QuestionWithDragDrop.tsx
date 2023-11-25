@@ -17,9 +17,13 @@ interface QuestionWithDragDropProps {
 const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({questionId, text,question, options,correctAnswer, selectedAnswer,
   setSelectedAnswer }) => {
   // const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-      
+  const [initialized, setInitialized] = useState(false);
+  useEffect(() => {
+
     const createQuestionAndHandleErrors = async () => {
       try {
+        if (!initialized) {
+
         await createQuestion({
           questionId,
           text: text?.toString() ?? '',
@@ -27,13 +31,15 @@ const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({questionId, 
           options,
           correctAnswer,
         });
+        setInitialized(true);
+      }
       } catch (error) {
         console.error('Failed to create question. Error:', error);
       }
     };
 
     createQuestionAndHandleErrors();
-  
+  }, [initialized]);
 
   const handleDrop = (droppedAnswer: string) => {
     setSelectedAnswer(droppedAnswer);
