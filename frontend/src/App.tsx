@@ -13,11 +13,13 @@ import ResetPasswordPage from './components/signIn/resetPassword';
 import { AuthProvider } from './components/AuthContext';
 import { QuestionAnswer } from '@mui/icons-material';
 import ReactionComponent from './components/courses/lessons/lessonStyle/QuestionSlide/ReactionComponent';
-import BitsLesson from './components/courses/lessons/lessonStyle/LessonHearts/BitsLesson';
+import BitsLesson from './components/courses/lessons/lessonStyle/LessonHearts/BitsLessonEnd';
 import DoneLessonPage from './components/courses/lessons/LessonDone';
 import LessonSlide from './components/courses/lessons/lessonStyle/LessonSlide';
 import LessonOne from './components/courses/HTML/lessonHtml/LessonOne';
 import HTMLCourse from './components/courses/HTML';
+import BitsLessonEnd from './components/courses/lessons/lessonStyle/LessonHearts/BitsLessonEnd';
+import BitsLessonStart from './components/courses/lessons/lessonStyle/LessonHearts/BitsLessonStart';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -37,6 +39,8 @@ function App() {
           {/* <Route path='/test' element={<ReactionComponent/>} /> */}
           {/* <Route path='/test' element={<DoneLessonPage/>} /> */}
           {/* <Route path='/test' element={<LessonOne/>} /> */}
+          <Route path='/test' element={<BitsLessonStart/>} />
+
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
         </Routes>
       </AuthProvider>

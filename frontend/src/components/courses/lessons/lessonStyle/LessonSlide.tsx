@@ -189,7 +189,8 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import DoneLessonPage from '../LessonDone';
-import { createLesson } from '../../../../api/userAction';
+import { createLesson, deductHeartUser } from '../../../../api/userAction';
+import {  createBitAndHeartUser } from '../../../../api/userAction';
 import { Typography, Icon } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -200,7 +201,9 @@ interface IUserLesson {
   course: string;
   questions?: string[];
 }
-
+interface IUserBitsAndHearts {
+  actionType: 'lesson' | 'codeProject' | 'codeCoach' | 'codeRepo' | 'codeChallenge';
+}
 interface DragDropSlide {
   type: 'dragDrop';
   questionId: string;
@@ -229,32 +232,67 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData }) => {
   const [showContinueButton, setShowContinueButton] = useState<boolean>(false);
   const [heartCount, setHeartCount] = useState<number>(3);
   const [initialized, setInitialized] = useState(false);
-  
+  const createUserBitsAndHeartsAsync = async () => {
+    try {
+      const bitsAndHeartsResponse = await createBitAndHeartUser();
+    } catch (error) {
+      console.error('Failed to create user bits and hearts:', error);
+    }
+  };
   useEffect(() => {
+    let isMounted = true;
+
     const createLessonAsync = async () => {
       try {
         if (!initialized ) {
           if (lessonData.course) {
             const response = await createLesson(lessonData);
+
           } else {
             console.error('CourseId is not defined in lessonData.');
           }
           setInitialized(true);
         }
+       
       } catch (error) {
         console.error('Failed to create lesson:', error);
       }
     };
     createLessonAsync();
+    createUserBitsAndHeartsAsync();
+    return () => {
+      isMounted = false;
+    };
   }, [initialized, lessonData.course]);
 
-  const slides: LessonSlide[] = [
+
+  const handleHeartLoss = async () => {
+      try {
+        const response = await deductHeartUser();
+        if (response && response.updatedHeartsCount !== undefined) {
+          setHeartCount(response.updatedHeartsCount);
+          console.log('Hearts deducted successfully:', response);
+        } else {
+          console.error('Failed to deduct hearts: Unexpected response format');
+        }
+      } catch (error) {
+        console.error('Failed to deduct hearts:', error);
+      }
+  };
+  const slides = [
     {
       type: 'dragDrop',
-      questionId: 'q1',
-      text: 'Text for drag-and-drop slide',
-      options: ['Option 1', 'Option 2', 'Option 3'],
-      correctAnswer: 'Option 1',
+      questionId:'q1',
+      text: <p>Text for drag-and-drop slide</p>,
+      question: (
+        <div>
+          <p>
+            Code a level 1 heading: {selectedAnswer ? selectedAnswer : 'Your Answer Here'}{' '}Heading1<code>{'</h1>'}</code>
+          </p>
+        </div>
+      ),
+      options: ['<h1>', '<h2>', '<h3>'],
+      correctAnswer: '<h1>',
     },
     {
       type: 'text',
@@ -262,11 +300,25 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData }) => {
     },
     {
       type: 'dragDrop',
-      questionId: 'q2',
-      text: 'Headings in HTML come in different levels. <code>&lt;h1&gt;</code><br/> defines the most important heading.',
-      options: ['Heading 1', 'Heading 2', 'Heading 3'],
+      questionId:'q2',
+      text: (
+        <p>
+          Headings in HTML come in different levels. <code>&lt;h1&gt;</code>
+          <br />
+          defines the most important heading.
+        </p>
 
-      correctAnswer: 'Heading 1',
+      ),
+      question: (
+        <div>
+          <p>
+            Code a level 1 heading: <code>{'<h1>'}</code> {selectedAnswer ? selectedAnswer : 'Your Answer Here'}{' '}
+            <code>{'</h1>'}</code>
+          </p>
+        </div>
+      ),
+      options: ['Heading 1', 'Heading 2', 'Heading 3'],
+      correctAnswer:'Heading 1',
     },
   ];
 
@@ -288,9 +340,7 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData }) => {
         console.log('Correct answer!');
       } else {
         console.log('Incorrect answer!');
-        if (heartCount > 0) {
-          setHeartCount((prevCount) => prevCount - 1);
-        }
+        handleHeartLoss();
       }
 
       setAttemptedAnswer(true);
@@ -329,11 +379,11 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData }) => {
         <DndProvider backend={HTML5Backend}>
           {currentSlideData.type === 'dragDrop' && currentSlideData.options && (
             <QuestionWithDragandDrop
-              questionId={(currentSlideData as DragDropSlide).questionId}
-              text={(currentSlideData as DragDropSlide).text || ''}
-              question={(currentSlideData as DragDropSlide).question || ''}
-              options={(currentSlideData as DragDropSlide).options}
-              correctAnswer={(currentSlideData as DragDropSlide).correctAnswer}
+            questionId={currentSlideData.questionId}   
+            text={currentSlideData.text }
+              question={currentSlideData.question }
+              options={currentSlideData.options}
+              correctAnswer={currentSlideData.correctAnswer}
               selectedAnswer={selectedAnswer}
               setSelectedAnswer={setSelectedAnswer}
             />

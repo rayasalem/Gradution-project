@@ -3,7 +3,11 @@ import { Icon, Typography, Box, Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import { earnBitsBitsAndHearts } from './../../../api/userAction';
 
+interface IUserBitsAndHearts {
+  actionType: 'lesson' | 'codeProject' | 'codeCoach' | 'codeRepo' | 'codeChallenge';
+}
 const DoneLessonPage = () => {
   const rewards = [
     { icon: FavoriteIcon, label: 'XP', value: 10 },
@@ -29,7 +33,17 @@ const DoneLessonPage = () => {
     alignItems: 'center',
     width: '50vw',
   };
-
+    const createUserBitsAndHeartsAsync = async () => {
+    try {
+      const userBitsAndHeartsData: IUserBitsAndHearts = {
+        actionType: 'lesson',
+      };
+      const bitsAndHeartsResponse = await earnBitsBitsAndHearts(userBitsAndHeartsData);
+    } catch (error) {
+      console.error('Failed to create user bits and hearts:', error);
+    }
+  };
+  createUserBitsAndHeartsAsync();
   return (
     <>
       <Box

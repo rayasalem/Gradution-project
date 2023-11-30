@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ModalBitsEnd from './ModalBitsEnd';
 import ModalBitsStart from './ModalBitsStart';
 
-const BitsLesson: React.FC = () => {
+const BitsLessonStart: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -22,10 +21,9 @@ const BitsLesson: React.FC = () => {
 
   return (
     <div>
-      <ModalBitsEnd open={isModalOpen} onClose={closeModal} />
-      {/* <ModalBitsStart open={isModalOpen} onClose={closeModal} /> */}
+      <ModalBitsStart open={isModalOpen} onClose={closeModal} />
     </div>
   );
 };
 
-export default BitsLesson;
+export default BitsLessonStart;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState , useEffect} from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -7,12 +7,35 @@ import Grid from '@mui/material/Grid';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import { retrieveUserBitsAndHearts } from '../../../../../api/userAction';
+import { updateUserHearts } from './../../../../../api/userAction';
 interface ModalComponentProps {
   open: boolean;
   onClose: () => void;
 }
 
 const ModalBitsEnd: React.FC<ModalComponentProps> = ({open, onClose}) => {
+  const [bitsCount, setBitsCount] = useState<number>(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { bitsCount, heartsCount } = await retrieveUserBitsAndHearts();
+        setBitsCount(bitsCount);
+      } catch (error) {
+        console.error('Error retrieving bits and hearts:', error);
+      }
+    };
+
+    fetchData();
+  }, []); 
+  const handleRefillClick = async () => {
+    try {
+      await updateUserHearts();
+     
+    } catch (error) {
+      console.error('Error updating hearts:', error);
+    }
+  };
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center',position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', width: 700,height:300, bgcolor: '#f9f9fa', boxShadow: 24, p: 4 }}>
@@ -42,10 +65,12 @@ const ModalBitsEnd: React.FC<ModalComponentProps> = ({open, onClose}) => {
                 <Box sx={{ marginLeft: '16px' }}>
                 <Typography variant="body1" sx={{fontWeight:'bold',textAlign:'center'}}>
                   Your bits: <ViewInArIcon sx={{color:'#6a1b9a' ,padding:'0 2px',width:'25px',height:'20px'}}></ViewInArIcon>
-                  <span style={{color:'#757575',fontSize:'16px',fontWeight:'400'}}>35</span> 
+                  <span style={{color:'#757575',fontSize:'16px',fontWeight:'400'}}>{bitsCount}</span> 
                 </Typography> 
                 <Box sx={{padding:'10px'}}>
-                <Button sx={{color:'#2493df',border:'1px solid #2493df',padding:'5px',borderRadius:'4px',opacity:'50%'}}>
+                <Button sx={{color:'#2493df',border:'1px solid #2493df',padding:'5px',borderRadius:'4px',
+                                   ...(bitsCount > 60 ? {} : { opacity: '50%', pointerEvents: 'none' }),
+                                  }} onClick={handleRefillClick}>
                     One refill only <ViewInArIcon sx={{color:'#6a1b9a' ,padding:'0 4px'}}></ViewInArIcon>60
                 </Button>
                 </Box>

@@ -2,7 +2,32 @@ import { NextFunction, Request, Response } from 'express';
 import UserBitsAndHearts, {IUserBitsAndHearts} from './../db/schemas/userBitsAndHearts';
 import userModel, { IUser } from '../db/schemas/userSchema';
 
-export const earnBits = async (req: Request, res: Response, next: NextFunction) => {
+export const createBitAndHeartUser =async (req: Request,res: Response) =>{
+  try{
+    if (!req.user) {
+      return res.status(401).json({ message: 'Authentication required' });
+    }
+     const userId = req.user._id;
+     const userBitsAndHearts = await UserBitsAndHearts.findOne({ user_id: userId });
+     if (!userBitsAndHearts) {
+     const newBitTransaction: IUserBitsAndHearts = {
+      user_id: userId,
+      bits_earned: 0,
+      hearts_earned: 3, 
+      action_type: 'lesson',
+      timestamp: new Date(),
+    }as IUserBitsAndHearts;
+    const createdTransaction = await UserBitsAndHearts.create(newBitTransaction);
+       res.json({ message: 'Bits create successfully', createdTransaction });
+  }else {
+    res.status(400).json({ message: 'already exists' });
+
+  }
+  }catch (error) {
+    res.status(400).json({ message: 'Failed to create bits ', error });
+  }
+}
+export const earnBits = async (req: Request, res: Response) => {
     try {
     if (!req.user) {
         return res.status(401).json({ message: 'Authentication required' });
@@ -44,7 +69,7 @@ export const earnBits = async (req: Request, res: Response, next: NextFunction) 
       res.status(400).json({ message: 'Failed to earn bits', error });
     }
   };
-export const updateHearts = async (req: Request, res: Response, next: NextFunction) => {
+export const updateHearts = async (req: Request, res: Response) => {
     try {
     if (!req.user) {
       return res.status(401).json({ message: 'Authentication required' });
@@ -63,7 +88,7 @@ export const updateHearts = async (req: Request, res: Response, next: NextFuncti
       res.status(400).json({ message: 'Failed to update hearts', error });
     }
   };
-export const deductHearts = async (req: Request, res: Response, next: NextFunction) => {
+export const deductHearts = async (req: Request, res: Response) => {
     try {
       if (!req.user) {
         return res.status(401).json({ message: 'Authentication required' });
@@ -73,10 +98,8 @@ export const deductHearts = async (req: Request, res: Response, next: NextFuncti
       if (!userBitsAndHearts || userBitsAndHearts.hearts_earned < 1) {
         return res.status(400).json({ message: 'Insufficient hearts' });
       }
-  
       userBitsAndHearts.hearts_earned -= 1;
         await userBitsAndHearts.save();
-  
       res.json({ message: 'Hearts deducted successfully', updatedHeartsCount: userBitsAndHearts.hearts_earned });
     } catch (error) {
       res.status(400).json({ message: 'Failed to deduct hearts', error });

@@ -21,6 +21,7 @@ const userBitsAndHeartsSchema: Schema = new Schema<IUserBitsAndHearts>({
   hearts_earned: {
     type: Number,
     required: true,
+    default:3 ,
   },
   action_type: {
     type: String,

@@ -2,10 +2,7 @@ import axiosInstance from "../utils/axiosUtils";
 import { AxiosResponse } from "axios";
 
 interface IUserBitsAndHearts {
-  user_id: string;
-  bits_earned: number;
-  hearts_earned: number;
-  action_type: 'lesson' | 'codeProject' | 'codeCoach' | 'codeRepo' | 'codeChallenge';
+  actionType: 'lesson' | 'codeProject' | 'codeCoach' | 'codeRepo' | 'codeChallenge';
 }
 interface ICourse {
   title: string;
@@ -65,17 +62,82 @@ export const createQuestion = async (userQuestion: IQuestion): Promise<IQuestion
     throw error;
   }
 };
-export const createUserBitsAndHearts = async (userBitsAndHeartsData: IUserBitsAndHearts): Promise<IUserBitsAndHearts | undefined> => {
+
+export const createBitAndHeartUser = async (): Promise<IUserBitsAndHearts | undefined> => {
   try {
-    const response: AxiosResponse<IUserBitsAndHearts> = await axiosInstance.post('/your/api/endpoint', userBitsAndHeartsData);
+    const response: AxiosResponse<IUserBitsAndHearts> = await axiosInstance.post('/api/v1/user-bits-and-hearts/newBit');
 
     if (response.status === 200) {
+      console.log('Hearts created successfully');
       return response.data;
     } else {
       throw new Error('Failed to create user bits and hearts');
     }
   } catch (error) {
     console.log("create user bits and hearts error:", error);
+    throw error;
+  }
+};
+export const earnBitsBitsAndHearts = async (userBitsAndHeartsData: IUserBitsAndHearts): Promise<IUserBitsAndHearts | undefined> => {
+  try {
+    const response: AxiosResponse<IUserBitsAndHearts> = await axiosInstance.post('/api/v1/user-bits-and-hearts/bit', userBitsAndHeartsData);
+
+    if (response.status === 200) {
+      console.log('Hearts earned successfully');
+      return response.data;
+    } else {
+      throw new Error('Failed to earned bits and hearts');
+    }
+  } catch (error) {
+    console.log("earned bits and hearts error:", error);
+    throw error;
+  }
+};
+export const deductHeartUser = async (): Promise<{ updatedHeartsCount: number } | undefined> => {
+  try {
+    const response = await axiosInstance.patch('/api/v1/user-bits-and-hearts/deduct-heart');
+
+    if (response.status === 200) {
+      console.log('Hearts deducted successfully');
+      return { updatedHeartsCount: response.data.updatedHeartsCount };
+    } else {
+      throw new Error('Failed to deduct hearts');
+    }
+  } catch (error) {
+    console.log("Failed to deduct hearts:", error);
+    throw error;
+  }
+};
+export const updateUserHearts = async () => {
+  try {
+    const response = await axiosInstance.patch('/api/v1/user-bits-and-hearts/update-hearts');
+
+    if (response.status === 200) {
+      console.log('Hearts updated successfully');
+      return response.data;
+    } else {
+      throw new Error('Failed to update hearts');
+    }
+  } catch (error) {
+    console.error('Failed to update hearts:', error);
+    throw error;
+  }
+};
+export const retrieveUserBitsAndHearts = async () => {
+  try {
+    const response = await axiosInstance.get('/api/v1/user-bits-and-hearts/');
+
+    if (response.status === 200) {
+      console.log('retrieve bits and hearts successfully');
+      
+      const { bitsCount, heartsCount } = response.data;
+      
+      return { bitsCount, heartsCount }; 
+    } else {
+      throw new Error('Failed to retrieve bits and hearts');
+    }
+  } catch (error) {
+    console.error('Failed to retrieve bits and hearts:', error);
     throw error;
   }
 };
