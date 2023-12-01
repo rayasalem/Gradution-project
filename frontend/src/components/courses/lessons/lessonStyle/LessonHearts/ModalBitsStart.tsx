@@ -8,7 +8,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import { retrieveUserBitsAndHearts } from '../../../../../api/userAction';
-import { updateUserHearts } from './../../../../../api/userAction';
+import { updateUserHearts, deductBitUser } from './../../../../../api/userAction';
 
 interface ModalComponentProps {
   open: boolean;
@@ -33,7 +33,11 @@ const ModalBitsStart: React.FC<ModalComponentProps> = ({open, onClose}) => {
     const handleRefillClick = async () => {
       try {
         await updateUserHearts();
-       
+        const deductionResult = await deductBitUser();
+        if (deductionResult !== undefined) {
+         const { updatedBitsCount } = deductionResult; 
+         setBitsCount(updatedBitsCount);
+       }
       } catch (error) {
         console.error('Error updating hearts:', error);
       }

@@ -105,6 +105,23 @@ export const deductHearts = async (req: Request, res: Response) => {
       res.status(400).json({ message: 'Failed to deduct hearts', error });
     }
   };
+  export const deductBits = async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ message: 'Authentication required' });
+      }
+      const userId = req.user._id;
+      const userBitsAndHearts = await UserBitsAndHearts.findOne({ user_id: userId });
+      if (!userBitsAndHearts || userBitsAndHearts.bits_earned < 60) {
+        return res.status(400).json({ message: 'Insufficient Bits' });
+      }
+      userBitsAndHearts.bits_earned -= 60;
+        await userBitsAndHearts.save();
+      res.json({ message: 'Bits deducted successfully', updatedBitsCount: userBitsAndHearts.bits_earned });
+    } catch (error) {
+      res.status(400).json({ message: 'Failed to deduct Bits', error });
+    }
+  };
 export const retrieveUserBitsAndHearts = async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.user) {

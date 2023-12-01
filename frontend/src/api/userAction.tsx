@@ -108,6 +108,21 @@ export const deductHeartUser = async (): Promise<{ updatedHeartsCount: number } 
     throw error;
   }
 };
+export const deductBitUser = async (): Promise<{ updatedBitsCount: number } | undefined> => {
+  try {
+    const response = await axiosInstance.patch('/api/v1/user-bits-and-hearts/deduct-bit');
+
+    if (response.status === 200) {
+      console.log('Bits deducted successfully');
+      return { updatedBitsCount: response.data.updatedBitsCount };
+    } else {
+      throw new Error('Failed to deduct Bits');
+    }
+  } catch (error) {
+    console.log("Failed to deduct Bits:", error);
+    throw error;
+  }
+};
 export const updateUserHearts = async () => {
   try {
     const response = await axiosInstance.patch('/api/v1/user-bits-and-hearts/update-hearts');

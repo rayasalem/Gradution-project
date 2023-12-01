@@ -39,7 +39,7 @@ function App() {
           {/* <Route path='/test' element={<ReactionComponent/>} /> */}
           {/* <Route path='/test' element={<DoneLessonPage/>} /> */}
           {/* <Route path='/test' element={<LessonOne/>} /> */}
-          <Route path='/test' element={<BitsLessonStart/>} />
+          <Route path='/test' element={<BitsLessonEnd/>} />
 
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
         </Routes>

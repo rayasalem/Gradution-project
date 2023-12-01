@@ -8,7 +8,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import { retrieveUserBitsAndHearts } from '../../../../../api/userAction';
-import { updateUserHearts } from './../../../../../api/userAction';
+import { updateUserHearts, deductBitUser } from './../../../../../api/userAction';
+import { useNavigate } from 'react-router-dom'; 
+
 interface ModalComponentProps {
   open: boolean;
   onClose: () => void;
@@ -16,10 +18,11 @@ interface ModalComponentProps {
 
 const ModalBitsEnd: React.FC<ModalComponentProps> = ({open, onClose}) => {
   const [bitsCount, setBitsCount] = useState<number>(0);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { bitsCount, heartsCount } = await retrieveUserBitsAndHearts();
+        const { bitsCount } = await retrieveUserBitsAndHearts();
         setBitsCount(bitsCount);
       } catch (error) {
         console.error('Error retrieving bits and hearts:', error);
@@ -31,15 +34,24 @@ const ModalBitsEnd: React.FC<ModalComponentProps> = ({open, onClose}) => {
   const handleRefillClick = async () => {
     try {
       await updateUserHearts();
-     
+     const deductionResult = await deductBitUser();
+     if (deductionResult !== undefined) {
+      const { updatedBitsCount } = deductionResult; 
+      setBitsCount(updatedBitsCount);
+    }
     } catch (error) {
       console.error('Error updating hearts:', error);
     }
   };
+  const handleXClick = () => {
+    onClose(); 
+    
+    navigate('learn'); 
+  };
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center',position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', width: 700,height:300, bgcolor: '#f9f9fa', boxShadow: 24, p: 4 }}>
-        <Button sx={{ position: 'absolute', top: 10, right: 10, background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: '#333' }} onClick={onClose}>
+        <Button sx={{ position: 'absolute', top: 10, right: 10, background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: '#333' }} onClick={handleXClick}>
           X
         </Button>
         <Grid container spacing={2} >
