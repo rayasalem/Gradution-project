@@ -7,7 +7,7 @@ import { Router } from 'express';
 
 const quizRouter = Router();
 
-quizRouter.post('/createquiz', authorizeUser([roles.admin]), validation(validators.createQuiz), quizController.creatQuiz);
+quizRouter.post('/createquiz/:courseId', authorizeUser([roles.admin]), quizController.creatQuiz);
 
 quizRouter.get('/getQuiz',authorizeUser([roles.admin]), quizController.getQuiz);
 

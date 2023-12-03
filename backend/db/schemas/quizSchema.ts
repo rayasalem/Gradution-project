@@ -3,10 +3,11 @@ import { Schema, model,Model, Document, Types } from 'mongoose';
 export interface IQuiz extends Document {
     quizId: string;
     title: string;
-    description: string;
+    description?: string;
     duration?: number; 
     questions: Types.ObjectId[];
     passingScore: number;
+  course: Types.ObjectId | string;
   } 
 
   const quizSchema = new Schema<IQuiz>({
@@ -20,10 +21,13 @@ export interface IQuiz extends Document {
     },
     description: {
       type: String,
-      required: true,
     },
     duration: {
       type: Number,
+    },
+    course: {
+      type: Schema.Types.ObjectId,
+      ref: 'Course', 
     },
     questions: [{
       type:Schema.Types.ObjectId,

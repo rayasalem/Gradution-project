@@ -10,6 +10,7 @@ const router =Router();
 router.post('/bit',authorizeUser([roles.admin]),bitsHeartRouter.earnBits);
 router.post('/newBit',authorizeUser([roles.admin]),bitsHeartRouter.createBitAndHeartUser);
 router.patch('/update-hearts',authorizeUser([roles.admin]),bitsHeartRouter.updateHearts)
+router.patch('/update-heartsat',authorizeUser([roles.admin]),bitsHeartRouter.updateHeartsAT)
 router.patch('/deduct-heart', authorizeUser([roles.admin]), bitsHeartRouter.deductHearts);
 router.patch('/deduct-bit', authorizeUser([roles.admin]), bitsHeartRouter.deductBits);
 router.get('/', authorizeUser([roles.admin]), bitsHeartRouter.retrieveUserBitsAndHearts);

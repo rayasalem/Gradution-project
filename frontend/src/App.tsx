@@ -20,6 +20,7 @@ import LessonOne from './components/courses/HTML/lessonHtml/LessonOne';
 import HTMLCourse from './components/courses/HTML';
 import BitsLessonEnd from './components/courses/lessons/lessonStyle/LessonHearts/BitsLessonEnd';
 import BitsLessonStart from './components/courses/lessons/lessonStyle/LessonHearts/BitsLessonStart';
+import QuizOne from './components/courses/HTML/quizHtml/QuizOne';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -39,7 +40,7 @@ function App() {
           {/* <Route path='/test' element={<ReactionComponent/>} /> */}
           {/* <Route path='/test' element={<DoneLessonPage/>} /> */}
           {/* <Route path='/test' element={<LessonOne/>} /> */}
-          <Route path='/test' element={<BitsLessonEnd/>} />
+          <Route path='/test' element={<QuizOne/>} />
 
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
         </Routes>

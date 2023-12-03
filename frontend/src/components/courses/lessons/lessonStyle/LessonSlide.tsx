@@ -14,6 +14,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BitsLessonEnd from './LessonHearts/BitsLessonEnd';
+import { updateUserHeartsat } from './../../../../api/userAction';
 
 interface IUserLesson {
   title: string;
@@ -101,6 +102,13 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
       if (response && response.updatedHeartsCount !== undefined) {
         setHeartCount(response.updatedHeartsCount);
         console.log('Hearts deducted successfully:', response);
+        if (response.updatedHeartsCount === 0) {
+          try {
+            await updateUserHeartsat();
+          } catch (error) {
+            console.error('Failed to update hearts after reaching 0:', error);
+          }
+        }
       } else {
         console.error('Failed to deduct hearts: Unexpected response format');
       }
@@ -179,7 +187,13 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
     return <DoneLessonPage />;
   }
   if (heartCount === 0) {
+    // try {
+    //    updateUserHeartsat();
+    // } catch (error) {
+    //   console.error('Failed to update hearts after reaching 0:', error);
+    // }
     return <BitsLessonEnd />;
+
   }
   return (
     <Box>

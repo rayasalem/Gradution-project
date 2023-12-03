@@ -1,17 +1,23 @@
-import { Request,request,response,Response } from "express";
+import { Request,Response } from "express";
 import QuizModel,{IQuiz}  from '../db/schemas/quizSchema';
 import CourseModel from "../db/schemas/courseSchema";
 
 export const creatQuiz=async  (req :Request,res:Response) =>{
     try{
-        const courseId = req.query.courseId;
-        const {quizId, title, description, duration, passingScore } = req.body;
-        const newQuiz :IQuiz=  new QuizModel({quizId,title, description, duration, passingScore});
-        const savedQuiz=await newQuiz.save();
+        const courseId = req.params.courseId;
+        const {quizId, title, passingScore ,questions } = req.body;
+        
         const course = await CourseModel.findById(courseId);
         if (!course) {
           return res.status(404).json({ error: 'Course not found' });
         }
+        const existingQuiz = await QuizModel.findOne({ title });
+
+    if (existingQuiz) {
+      return res.status(400).json({ error: 'Quiz with this title already exists' });
+    }
+        const newQuiz :IQuiz=  new QuizModel({quizId,title,passingScore,questions,course: courseId,});
+        const savedQuiz=await newQuiz.save();
         course.quizzes.push(newQuiz._id); 
         await course.save();
         res.status(201).json({message :"sucessfull",savedQuiz});

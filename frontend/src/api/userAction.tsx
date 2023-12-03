@@ -11,6 +11,13 @@ interface ICourse {
     _id: string;
   };
 }
+interface IUserQuiz{
+  title: string;
+  course: string; 
+  questions?: string[]; 
+  quizId:string;
+  passingScore:number
+}
 interface IUserLesson {
   title: string;
   order: number;
@@ -45,6 +52,18 @@ export const createLesson = async (userLesson: IUserLesson): Promise<IUserLesson
     }
   } catch (error) {
     console.error('create lesson error:', error);
+    throw error;
+  }
+};
+export const createQuiz = async (userQuiz: IUserQuiz): Promise<IUserQuiz | undefined> => {
+  try {
+    const response: AxiosResponse<IUserQuiz> | undefined = await axiosInstance.post(`/api/v1/quiz/createquiz/${userQuiz.course}`, userQuiz);
+
+    if (response && response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('create quiz error:', error);
     throw error;
   }
 };
@@ -126,6 +145,21 @@ export const deductBitUser = async (): Promise<{ updatedBitsCount: number } | un
 export const updateUserHearts = async () => {
   try {
     const response = await axiosInstance.patch('/api/v1/user-bits-and-hearts/update-hearts');
+
+    if (response.status === 200) {
+      console.log('Hearts updated successfully');
+      return response.data;
+    } else {
+      throw new Error('Failed to update hearts');
+    }
+  } catch (error) {
+    console.error('Failed to update hearts:', error);
+    throw error;
+  }
+};
+export const updateUserHeartsat = async () => {
+  try {
+    const response = await axiosInstance.patch('/api/v1/user-bits-and-hearts/update-heartsat');
 
     if (response.status === 200) {
       console.log('Hearts updated successfully');

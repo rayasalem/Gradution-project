@@ -88,6 +88,38 @@ export const updateHearts = async (req: Request, res: Response) => {
       res.status(400).json({ message: 'Failed to update hearts', error });
     }
   };
+  export const updateHeartsAT = async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ message: 'Authentication required' });
+      }
+  
+      const userId = req.user._id;
+  
+      const userBitsAndHearts = await UserBitsAndHearts.findOne({ user_id: userId });
+  
+      if (!userBitsAndHearts) {
+        return res.status(404).json({ message: 'User bits and hearts record not found' });
+      }
+  
+      const currentTime = new Date();
+      const lastUpdate = userBitsAndHearts.timestamp || new Date(0);
+      const timeDifference = currentTime.getTime() - lastUpdate.getTime();
+      const hoursPassed = timeDifference / (1000 * 60 * 60);
+  
+      if (hoursPassed >= 1) {
+        userBitsAndHearts.hearts_earned += 3;
+        userBitsAndHearts.timestamp = currentTime;
+        await userBitsAndHearts.save();
+  
+        res.json({ message: 'Hearts updated to ' + userBitsAndHearts.hearts_earned + ' successfully', updatedHearts: userBitsAndHearts.hearts_earned });
+      } else {
+        res.json({ message: 'Not enough time has passed since the last update' });
+      }
+    } catch (error) {
+      res.status(400).json({ message: 'Failed to update hearts', error });
+    }
+  };
 export const deductHearts = async (req: Request, res: Response) => {
     try {
       if (!req.user) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createCourse } from './../../../api/userAction';
 import { useNavigate } from 'react-router-dom';
 import LessonOne from './lessonHtml/LessonOne';
+import QuizOne from './quizHtml/QuizOne';
 
 interface ICourse {
   title: string;
@@ -50,7 +51,9 @@ const HTMLCourse: React.FC = () => {
     }
   }, [courseCreated, navigate]);
 
-  return <div>{courseId !== null && <LessonOne />}  </div>;
+  // return <div>{courseId !== null && <LessonOne />}  </div>;
+  return <div>{courseId !== null && <QuizOne />}  </div>;
+
 };
 
 export default HTMLCourse;

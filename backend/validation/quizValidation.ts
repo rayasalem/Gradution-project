@@ -1,10 +1,7 @@
 import Joi from "joi";
 
 const createQuiz =Joi .object({
-        title: Joi.string().required(),
-        description: Joi.string().required(),
-        duration: Joi.number().optional(),
-       
+        title: Joi.string().required(),       
         passingScore: Joi.number().required(),
       })
 
