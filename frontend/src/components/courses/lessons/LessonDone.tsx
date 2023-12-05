@@ -6,7 +6,7 @@ import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import { earnBitsBitsAndHearts } from './../../../api/userAction';
 
 interface IUserBitsAndHearts {
-  actionType: 'lesson' | 'codeProject' | 'codeCoach' | 'codeRepo' | 'codeChallenge';
+  actionType: 'lesson' | 'elementaryLevel' | 'proficientLevel' | 'advancedLevel';
 }
 const DoneLessonPage = () => {
   const rewards = [

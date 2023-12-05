@@ -2,7 +2,7 @@ import axiosInstance from "../utils/axiosUtils";
 import { AxiosResponse } from "axios";
 
 interface IUserBitsAndHearts {
-  actionType: 'lesson' | 'codeProject' | 'codeCoach' | 'codeRepo' | 'codeChallenge';
+  actionType: 'lesson' | 'elementaryLevel' | 'proficientLevel' | 'advancedLevel';
 }
 interface ICourse {
   title: string;

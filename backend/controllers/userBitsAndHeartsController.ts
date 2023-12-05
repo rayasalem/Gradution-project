@@ -34,13 +34,12 @@ export const earnBits = async (req: Request, res: Response) => {
       }
     const userId = req.user._id; 
       const actionTypes = {
-      lesson: 5,
-      codeProject: 5,
-      codeCoach: 5,
-      codeRepo: 5,
-      codeChallenge: 10,
+      lesson: 10,
+      elementaryLevel: 5,
+      proficientLevel: 10,
+      advancedLevel: 15,
     };
-    const {actionType} = req.body as { actionType: 'lesson' | 'codeProject' | 'codeCoach' | 'codeRepo' | 'codeChallenge' }; 
+    const {actionType} = req.body as { actionType: 'lesson' | 'elementaryLevel' | 'proficientLevel' | 'advancedLevel' }; 
     if (!actionTypes[actionType]) {
       return res.status(400).json({ message: 'Invalid action type' });
     }

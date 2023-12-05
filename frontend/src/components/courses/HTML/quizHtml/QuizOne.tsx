@@ -4,7 +4,6 @@ import Quiz from '../../quizes/Quiz';
 
 const QuizOne: React.FC = () => {
     const { courseId } = useParams<{ courseId: string }>();
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
     const quizData = {
         quizId:'Q1.1',
@@ -13,27 +12,84 @@ const QuizOne: React.FC = () => {
         questions: ['656c8cca5261a0c96552f631'],
         passingScore:6,
       };
-      const questionsData = [
+      const quizQuestions = [
         {
-          type: 'multipleChoice',
           questionId: 'question_1',
-          text: <p>What is 2 + 2?</p>, 
-          question:  (
-            <div>
-              <p>
-                2+2 =: {selectedAnswer ? selectedAnswer : 'Your Answer Here'}{' '}
-              </p>
-            </div>
-          ),
+          text: 'What is 2 + 2?',
+          question: 'What is 2 + 2?',
           options: ['3', '4', '5', '6'],
           correctAnswers: '4',
 
         },
-       
-      ];
+        {
+          questionId: 'question_2',
+          text: 'What is 3 + 2?',
+          question: 'What is 3 + 2?',
+          options: ['3', '4', '5', '6'],
+          correctAnswers: '5',
+
+        },
+        {
+          questionId: 'question_3',
+          text: 'What is 4 + 2?',
+          question: 'What is 4 + 2?',
+          options: ['3', '4', '5', '6'],
+          correctAnswers: '6',
+
+        },{
+          questionId: 'question_4',
+          text: 'What is 4 + 2?',
+          question: 'What is 4 + 2?',
+          options: ['3', '4', '5', '6'],
+          correctAnswers: '6',
+
+        },{
+          questionId: 'question_5',
+          text: 'What is 4 + 2?',
+          question: 'What is 4 + 2?',
+          options: ['3', '4', '5', '6'],
+          correctAnswers: '6',
+
+        },{
+          questionId: 'question_6',
+          text: 'What is 4 + 2?',
+          question: 'What is 4 + 2?',
+          options: ['3', '4', '5', '6'],
+          correctAnswers: '6',
+
+        },{
+          questionId: 'question_7',
+          text: 'What is 4 + 2?',
+          question: 'What is 4 + 2?',
+          options: ['3', '4', '5', '6'],
+          correctAnswers: '6',
+
+        },{
+          questionId: 'question_8',
+          text: 'What is 4 + 2?',
+          question: 'What is 4 + 2?',
+          options: ['3', '4', '5', '6'],
+          correctAnswers: '6',
+
+        },{
+          questionId: 'question_9',
+          text: 'What is 4 + 2?',
+          question: 'What is 4 + 2?',
+          options: ['3', '4', '5', '6'],
+          correctAnswers: '6',
+
+        },{
+          questionId: 'question_10',
+          text: 'What is 4 + 2?',
+          question: 'What is 4 + 2?',
+          options: ['3', '4', '5', '6'],
+          correctAnswers: '6',
+
+        },
+      ];   
   return (
     <div>
-        <Quiz quizData={quizData} />
+        <Quiz quizData={quizData} quizQuestions={quizQuestions} />
     </div>
   )
 }
