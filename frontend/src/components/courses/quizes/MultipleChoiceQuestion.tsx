@@ -10,6 +10,8 @@ interface MultipleChoiceQuestionProps {
   correctAnswers: string;
   selectedAnswer: string | null;
   setSelectedAnswer: React.Dispatch<React.SetStateAction<string | null>>;
+  quizId?:string;
+
 }
 const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
   questionId,
@@ -19,6 +21,7 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
   correctAnswers,
   selectedAnswer,
   setSelectedAnswer,
+  quizId
 }) => {
   useEffect(() => {
     createQuestionAndQuiz();
@@ -32,6 +35,7 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
         type: 'multipleChoice',
         options,
         correctAnswer: correctAnswers,
+        quizId
       });
 
     } catch (error) {

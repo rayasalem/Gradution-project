@@ -12,11 +12,10 @@ interface QuestionWithDragDropProps {
   correctAnswer:string;
   selectedAnswer: string | null; 
   setSelectedAnswer: React.Dispatch<React.SetStateAction<string | null>>;
-  
+  lessonId?: string;
 }
 const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({questionId, text,question, options,correctAnswer, selectedAnswer,
-  setSelectedAnswer }) => {
-  // const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  setSelectedAnswer ,lessonId }) => {
   const [initialized, setInitialized] = useState(false);
   useEffect(() => {
 
@@ -30,6 +29,7 @@ const QuestionWithDragDrop: React.FC<QuestionWithDragDropProps> = ({questionId, 
           type: 'dragDrop',
           options,
           correctAnswer,
+          lessonId
         });
         setInitialized(true);
       }

@@ -5,7 +5,7 @@ import * as validators from '../validation/questionValidation';
 import { Router } from 'express';
 import { roles } from '../services/roles';
 const questionRouter = Router();
-questionRouter.post('/createquestion', validation(validators.createQuestion), questionController.creatQuestion);
+questionRouter.post('/createquestion', authorizeUser([roles.admin]), questionController.creatQuestion);
 
 questionRouter.get('/getQuestion',authorizeUser([roles.admin]),questionController.getQuestion);
 

@@ -10,7 +10,6 @@ const LessonOne: React.FC = () => {
     title: 'Lesson One Title',
     order: 1,
     course: courseId || '',
-    questions: ['655de7488bb5a3a55c3bcf2c', '655de74d8bb5a3a55c3bcf32'],
   };
 
   const slides: LessonSlide[] = [

@@ -30,6 +30,7 @@ interface DragDropSlide {
   question?: React.ReactNode; 
   options: string[];
   correctAnswer: string;
+  lessonId?:string;
 }
 
 interface TextSlide {
@@ -57,6 +58,8 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
     return storedHeartCount ? parseInt(storedHeartCount, 10) : 3;
   });
   const [initialized, setInitialized] = useState(false);
+  const [LessonID, setLessonID] = useState<string | undefined>(undefined); 
+
 
   useEffect(() => {
     localStorage.setItem('heartCount', heartCount.toString());
@@ -78,6 +81,8 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
         if (!initialized) {
           if (lessonData.course) {
             const response = await createLesson(lessonData);
+            setLessonID(response?.lesson?._id)
+            console.log(response?.lesson?._id)
           } else {
             console.error('CourseId is not defined in lessonData.');
           }
@@ -186,15 +191,15 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
   if (!currentSlideData) {
     return <DoneLessonPage />;
   }
-  if (heartCount === 0) {
-    // try {
-    //    updateUserHeartsat();
-    // } catch (error) {
-    //   console.error('Failed to update hearts after reaching 0:', error);
-    // }
-    return <BitsLessonEnd />;
+  // if (heartCount === 0) {
+  //   try {
+  //      updateUserHeartsat();
+  //   } catch (error) {
+  //     console.error('Failed to update hearts after reaching 0:', error);
+  //   }
+  //   return <BitsLessonEnd />;
 
-  }
+  // }
   return (
     <Box>
       <Box sx={{ position: 'absolute', top: '90px', right: '50px', display: 'flex', alignItems: 'center' }}>
@@ -205,6 +210,7 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
         <DndProvider backend={HTML5Backend}>
           {currentSlideData.type === 'dragDrop' && currentSlideData.options && (
             <QuestionWithDragandDrop
+            lessonId={LessonID}
               questionId={currentSlideData.questionId}
               text={currentSlideData.text}
               question={currentSlideData.question}

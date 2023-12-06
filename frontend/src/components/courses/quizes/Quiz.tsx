@@ -12,6 +12,7 @@ interface MultipleChoiceQuestionProps {
   question: string;
   options: string[];
   correctAnswers: string;
+  quizId?: string; 
 
 }
 interface QuizProps {
@@ -19,8 +20,8 @@ interface QuizProps {
     quizId: string;
     title: string;
     course: string;
-    questions: string[];
     passingScore: number;
+  
   };
   quizQuestions: MultipleChoiceQuestionProps[]; 
 }
@@ -35,7 +36,8 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
   const [showScore, setShowScore] = useState<boolean>(false);
   const [initialized, setInitialized] = useState(false);
   const [bitsEarned, setBitsEarned] = useState<boolean>(false);
-  
+  const [QizeID, setQizeID] = useState<string | undefined>(undefined); 
+
   useEffect(() => {
     let isMounted = true;
 
@@ -44,6 +46,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
         if (!initialized) {
           if (quizData.course) {
             const response = await createQuiz(quizData);
+            setQizeID(response?.savedQuiz?._id);
           } else {
             console.error('CourseId is not defined in lessonData.');
           }
@@ -193,6 +196,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
             ))}
             </Box>
            <MultipleChoiceQuestion
+             quizId={QizeID}
             {...quizQuestions[currentQuestion]}
             selectedAnswer={selectedAnswer}
             setSelectedAnswer={setSelectedAnswer}

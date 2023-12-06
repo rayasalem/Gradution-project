@@ -5,7 +5,7 @@ import CourseModel from "../db/schemas/courseSchema";
 export const creatQuiz=async  (req :Request,res:Response) =>{
     try{
         const courseId = req.params.courseId;
-        const {quizId, title, passingScore ,questions } = req.body;
+        const {quizId, title, passingScore  } = req.body;
         
         const course = await CourseModel.findById(courseId);
         if (!course) {
@@ -16,7 +16,7 @@ export const creatQuiz=async  (req :Request,res:Response) =>{
     if (existingQuiz) {
       return res.status(400).json({ error: 'Quiz with this title already exists' });
     }
-        const newQuiz :IQuiz=  new QuizModel({quizId,title,passingScore,questions,course: courseId,});
+        const newQuiz :IQuiz=  new QuizModel({quizId,title,passingScore,course: courseId,});
         const savedQuiz=await newQuiz.save();
         course.quizzes.push(newQuiz._id); 
         await course.save();

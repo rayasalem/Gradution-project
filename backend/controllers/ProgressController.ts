@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import Course, { ICourse } from '../db/schemas/courseSchema';
 import UserProgress,{IUserProgress}  from './../db/schemas/userProgressSchema';
 interface ProgressData {

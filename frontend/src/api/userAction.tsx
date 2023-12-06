@@ -16,13 +16,19 @@ interface IUserQuiz{
   course: string; 
   questions?: string[]; 
   quizId:string;
-  passingScore:number
+  passingScore:number;
+  savedQuiz?:{
+    _id: string;
+  }
 }
 interface IUserLesson {
   title: string;
   order: number;
   course: string; 
   questions?: string[]; 
+  lesson?:{
+    _id: string;
+  }
 }
 interface IQuestion{
  questionId:string;
@@ -30,6 +36,8 @@ interface IQuestion{
   type: string;
   options?: string[];
   correctAnswer: string;
+  quizId?:string;
+  lessonId?:string;
 }
 export const createCourse = async (course: ICourse): Promise<ICourse | undefined> => {
   try {
@@ -55,6 +63,7 @@ export const createLesson = async (userLesson: IUserLesson): Promise<IUserLesson
     throw error;
   }
 };
+
 export const createQuiz = async (userQuiz: IUserQuiz): Promise<IUserQuiz | undefined> => {
   try {
     const response: AxiosResponse<IUserQuiz> | undefined = await axiosInstance.post(`/api/v1/quiz/createquiz/${userQuiz.course}`, userQuiz);

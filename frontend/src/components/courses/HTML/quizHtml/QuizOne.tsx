@@ -9,7 +9,6 @@ const QuizOne: React.FC = () => {
         quizId:'Q1.1',
         title: 'quiz One in Html',
         course: courseId || '',
-        questions: ['656c8cca5261a0c96552f631'],
         passingScore:6,
       };
       const quizQuestions = [

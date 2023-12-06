@@ -34,7 +34,6 @@ const HTMLCourse: React.FC = () => {
       try {
         createCourse(courseData as ICourse)
           .then(result => {
-            console.log(result);
             if (result && result.savedcourse && result.savedcourse._id) {
               localStorage.setItem('createdCourseId', result.savedcourse._id);
               setCourseId(result.savedcourse._id);
@@ -51,8 +50,8 @@ const HTMLCourse: React.FC = () => {
     }
   }, [courseCreated, navigate]);
 
-  // return <div>{courseId !== null && <LessonOne />}  </div>;
-  return <div>{courseId !== null && <QuizOne />}  </div>;
+  return <div>{courseId !== null && <LessonOne />}  </div>;
+  // return <div>{courseId !== null && <QuizOne />}  </div>;
 
 };
 
