@@ -3,6 +3,8 @@ import { createCourse } from './../../../api/userAction';
 import { useNavigate } from 'react-router-dom';
 import LessonOne from './lessonHtml/LessonOne';
 import QuizOne from './quizHtml/QuizOne';
+import LessonTwo from './lessonHtml/LessonTwo';
+import LessonThree from './lessonHtml/LessonThree';
 
 interface ICourse {
   title: string;
@@ -50,8 +52,9 @@ const HTMLCourse: React.FC = () => {
     }
   }, [courseCreated, navigate]);
 
-  return <div>{courseId !== null && <LessonOne />}  </div>;
-  // return <div>{courseId !== null && <QuizOne />}  </div>;
+  // return <div>{courseId !== null && <LessonOne />}  </div>;
+  // return <div>{courseId !== null && <LessonThree/>}  </div>;
+  return <div>{courseId !== null && <QuizOne />}  </div>;
 
 };
 

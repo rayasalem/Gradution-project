@@ -7,54 +7,90 @@ const LessonOne: React.FC = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
   const lessonData = {
-    title: 'Lesson One Title',
+    title: 'Lesson One in html Course',
     order: 1,
     course: courseId || '',
   };
 
   const slides: LessonSlide[] = [
     {
+      type: 'text',
+      text: <p>HTML (HyperText Markup Language) is the standard language for creating web pages. 
+        <p>Let's explore the basic structure of an HTML document.</p></p>,
+    },{
+      type: 'text',
+      text: <p>An HTML document begins with a <code>{'<!DOCTYPE>'}</code> declaration,
+      <p>which defines the document type and version of HTML being used.</p></p>,
+    },
+    {
       type: 'dragDrop',
       questionId: 'q1',
-      text: <p>Text for drag-and-drop slide</p>,
+      text: <p>The <code>{'<!DOCTYPE>'}</code> declaration represents the document type, and helps browsers to display web pages correctly.</p>,
       question: (
         <div>
           <p>
-            Code a level 1 heading: {selectedAnswer ? selectedAnswer : 'Your Answer Here'}{' '}Heading1<code>{'</h1>'}</code>
+          It must only appear once, at the top of the page {selectedAnswer ? selectedAnswer : 'Your Answer Here'}{' '} any HTML tags.
           </p>
         </div>
       ),
-      options: ['<h1>', '<h2>', '<h3>'],
-      correctAnswer: '<h1>',
+      options: ['before', 'after'],
+      correctAnswer: 'before',
     },
     {
       type: 'text',
-      text: <p>Your text-based slide content</p>,
+      text: <p>The <code>{'<html>'}</code> element is the root element of an HTML document. All other elements are nested within it.</p>,
+    },
+    {
+      type: 'text',
+      text: <p>The <code>{'<head>'}</code> contains meta-information about the HTML document, such as the title, character set, linked stylesheets, and metadata.</p>,
     },
     {
       type: 'dragDrop',
       questionId: 'q2',
       text: (
         <p>
-          Headings in HTML come in different levels. <code>&lt;h1&gt;</code>
+          Inside the <code>{'<head>'}</code>, the <code>{'<title>'}</code> element sets the title of the HTML document
           <br />
-          defines the most important heading.
+          , which is displayed in the browser's title bar or tab.
         </p>
       ),
       question: (
         <div>
           <p>
-            Code a level 1 heading: <code>{'<h1>'}</code> {selectedAnswer ? selectedAnswer : 'Your Answer Here'}{' '}
-            <code>{'</h1>'}</code>
+          <code>{'<head>'}</code>{selectedAnswer ? selectedAnswer : 'Your Answer Here'}{' '}Page Title<code>{'</title>'}</code>
+          <code>{'</head>'}</code>
           </p>
         </div>
       ),
-      options: ['Heading 1', 'Heading 2', 'Heading 3'],
-      correctAnswer: 'Heading 1',
+      options: ['<title>', '<p>', '<h3>'],
+      correctAnswer: '<title>',
     },
+    {
+      type: 'text',
+      text: <p>The <code>{'<body>'}</code>  contains the content of the HTML document that is displayed on the web page.
+      <br /> This includes text, images, links, and other elements.</p>,
+    },{
+      type: 'dragDrop',
+      questionId: 'q2',
+      text: (
+        <p>
+          Inside the <code>{'<head>'}</code>, the <code>{'<title>'}</code> element sets the title of the HTML document
+        </p>
+      ),
+      question: (
+        <div>
+          <p>
+          {selectedAnswer ? selectedAnswer : 'Your Answer Here'}{' '}<br></br><code>{'<h1>My First Heading</h1>'}</code><br></br>
+          <code>{'<p>My first paragraph.</p>'}</code> <br></br>
+          <code>{'</body>'}</code>
+          </p>
+        </div>
+      ),
+      options: ['<title>', '<body>', '<html>'],
+      correctAnswer: '<body>',
+    }
   ];
   
-
   return (
     <div>
       <LessonSlide key="lessonOne" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
