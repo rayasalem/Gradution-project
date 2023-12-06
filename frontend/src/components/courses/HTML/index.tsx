@@ -5,6 +5,8 @@ import LessonOne from './lessonHtml/LessonOne';
 import QuizOne from './quizHtml/QuizOne';
 import LessonTwo from './lessonHtml/LessonTwo';
 import LessonThree from './lessonHtml/LessonThree';
+import LessonSeven from './lessonHtml/LessonSeven';
+import LessonEight from './lessonHtml/LessonEight';
 
 interface ICourse {
   title: string;
@@ -53,8 +55,8 @@ const HTMLCourse: React.FC = () => {
   }, [courseCreated, navigate]);
 
   // return <div>{courseId !== null && <LessonOne />}  </div>;
-  // return <div>{courseId !== null && <LessonThree/>}  </div>;
-  return <div>{courseId !== null && <QuizOne />}  </div>;
+  return <div>{courseId !== null && <LessonEight/>}  </div>;
+  // return <div>{courseId !== null && <QuizOne />}  </div>;
 
 };
 
