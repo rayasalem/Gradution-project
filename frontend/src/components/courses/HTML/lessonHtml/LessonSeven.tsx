@@ -7,7 +7,7 @@ const LessonSeven:React.FC = () => {
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const lessonData = {
         title: 'Lesson Seven in html Course',
-        order: 1,
+        order: 7,
         course: courseId || '',
       };
     
