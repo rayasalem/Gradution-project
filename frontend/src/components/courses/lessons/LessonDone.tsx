@@ -6,16 +6,17 @@ import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import { earnBitsBitsAndHearts } from './../../../api/userAction';
 import { useAuth } from '../../AuthContext';
 import  markItemAsCompleted  from './../HTML/index';
-import  lessonCompleted  from './../HTML/index';
-import { useLocation } from 'react-router-dom';
+import completeItem  from './../HTML/index';
+import { Link, useLocation } from 'react-router-dom';
 
 
 interface IUserBitsAndHearts {
   actionType: 'lesson' | 'elementaryLevel' | 'proficientLevel' | 'advancedLevel';
 }
 const DoneLessonPage = () => {
-  const { authenticated } = useAuth();
+  const { authenticated, markLessonAsCompleted } = useAuth();
   const location = useLocation();
+
   const lessonId = 1
   console.log(lessonId);
   useEffect(() => {
@@ -23,7 +24,8 @@ const DoneLessonPage = () => {
       try {
         if (authenticated && lessonId) {
           const itemId = 1
-         await markItemAsCompleted(itemId);
+         await markLessonAsCompleted(itemId);
+         console.log('Item marked as completed:', itemId);
 
         }
       } catch (error) {
@@ -114,7 +116,7 @@ const DoneLessonPage = () => {
       </Box>
       <hr style={{ width: '100%', margin: '0', padding: '0' }} />
       <Box mt={3} mb={3} sx={{ textAlign: 'center' }}>
-        <Button variant="contained" color="primary">Continue</Button>
+        <Button variant="contained" color="primary" component={Link} to="/learn/html/${storedCourseId}">Continue</Button>
       </Box>
     </>
   );

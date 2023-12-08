@@ -107,7 +107,7 @@ const HTMLCourse: React.FC = () => {
     markCommandAsCompleted(itemId); 
     setCompletedCommands((prevCompletedCommands) => new Set([...prevCompletedCommands, itemId])); 
   };
-  const handleItemCompletion = (itemId: number) => {
+  const completeItem = (itemId: number) => {
     markItemAsCompleted(itemId);
   };
    return (
@@ -179,7 +179,9 @@ const HTMLCourse: React.FC = () => {
    style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
    onMouseEnter={() => setHoveredItem(item.id)}
    onMouseLeave={() => setHoveredItem(null)}
-  disabled={index !== 0 && (!courseCreated || (index !== 1 && !courseCreated) || !lessonsAndQuizzes[index - 1]?.completed)
+  disabled={index !== 0 &&
+    //  (!courseCreated || (index !== 1 && !courseCreated) || !lessonsAndQuizzes[index - 1]?.completed)
+    (!courseCreated || !lessonsAndQuizzes[index - 1]?.completed)
   }
  >
             <Paper
