@@ -5,6 +5,8 @@ interface AuthContextProps {
   login: () => void;
   logout: () => void;
   setError: (error: string) => void;
+  completedCommands: Set<number>;
+  markCommandAsCompleted: (commandId: number) => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -15,18 +17,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return storedAuth ? JSON.parse(storedAuth) : false;
   });
   const [error, setError] = useState<string | null>(null);
+  const [completedCommands, setCompletedCommands] = useState<Set<number>>(new Set());
   const login = () => {
     setAuthenticated(true);
   };
   const logout = () => {
     setAuthenticated(false);
   };
+  const markCommandAsCompleted = (commandId: number) => {
+    setCompletedCommands((prevCompletedCommands) => new Set<number>([...Array.from(prevCompletedCommands), commandId]));
+  };
   useEffect(() => {
     localStorage.setItem('authenticated', JSON.stringify(authenticated));
   }, [authenticated]);
 
   return (
-    <AuthContext.Provider value={{ authenticated, login ,logout ,setError}}>
+    <AuthContext.Provider value={{ authenticated, login ,logout ,setError, completedCommands, markCommandAsCompleted}}>
       {children}
     </AuthContext.Provider>
   );

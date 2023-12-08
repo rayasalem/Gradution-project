@@ -1,14 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Icon, Typography, Box, Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import { earnBitsBitsAndHearts } from './../../../api/userAction';
+import { useAuth } from '../../AuthContext';
+import  markItemAsCompleted  from './../HTML/index';
+import  lessonCompleted  from './../HTML/index';
+import { useLocation } from 'react-router-dom';
+
 
 interface IUserBitsAndHearts {
   actionType: 'lesson' | 'elementaryLevel' | 'proficientLevel' | 'advancedLevel';
 }
 const DoneLessonPage = () => {
+  const { authenticated } = useAuth();
+  const location = useLocation();
+  const lessonId = 1
+  console.log(lessonId);
+  useEffect(() => {
+    const handleMarkItemAsCompleted = async () => {
+      try {
+        if (authenticated && lessonId) {
+          const itemId = 1
+         await markItemAsCompleted(itemId);
+
+        }
+      } catch (error) {
+        console.error('Error marking item as completed:', error);
+      }
+    };
+
+    handleMarkItemAsCompleted();
+  }, [authenticated, lessonId]);
   const rewards = [
     { icon: FavoriteIcon, label: 'XP', value: 10 },
     { icon: ViewInArIcon, label: 'Cube', value: 5 }, 
@@ -33,7 +57,7 @@ const DoneLessonPage = () => {
     alignItems: 'center',
     width: '50vw',
   };
-    const createUserBitsAndHeartsAsync = async () => {
+  const createUserBitsAndHeartsAsync = async () => {
     try {
       const userBitsAndHeartsData: IUserBitsAndHearts = {
         actionType: 'lesson',
@@ -43,7 +67,8 @@ const DoneLessonPage = () => {
       console.error('Failed to create user bits and hearts:', error);
     }
   };
-  createUserBitsAndHeartsAsync();
+  createUserBitsAndHeartsAsync(); 
+
   return (
     <>
       <Box

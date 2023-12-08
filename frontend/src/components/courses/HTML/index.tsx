@@ -40,15 +40,9 @@ const HTMLCourse: React.FC = () => {
     { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'HTML5 Features', completed: false },
     { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final HTML Quiz ' , completed: false},
   ]);
+  const { markCommandAsCompleted, setCompletedCommands } = props;
 
   const navigate = useNavigate();
-  const LockIcon = () => {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M12 2C7.03 2 3 6.03 3 11v2c0 .828.672 1.5 1.5 1.5S6 13.828 6 13V11c0-3.859 3.141-7 7-7s7 3.141 7 7v2c0 .828.672 1.5 1.5 1.5S22 13.828 22 13v-2c0-4.97-4.03-9-9-9zm0 15c-1.654 0-3-1.346-3-3v-2h6v2c0 1.654-1.346 3-3 3z"/>
-      </svg>
-    );
-  };
   // const lessonsAndQuizzes = [
   //   { id: 1, OriginalID: '1', type: 'lesson', contentTitle: 'Introduction to HTML' },
   //   { id: 2, OriginalID: '2', type: 'lesson', contentTitle: 'HTML Tags and Structure' },
@@ -103,12 +97,16 @@ const HTMLCourse: React.FC = () => {
       }
     }
   }, [courseCreated, navigate]);
-  const markItemAsCompleted = (itemId: number) => {
+
+   const markItemAsCompleted = (itemId: number) => {
     const updatedItems = lessonsAndQuizzes.map((item) =>
       item.id === itemId ? { ...item, completed: true } : item
     );
-    setLessonsAndQuizzes(updatedItems);
+    setHoveredItem(null); 
+    markCommandAsCompleted(itemId); 
+    setCompletedCommands((prevCompletedCommands) => new Set([...prevCompletedCommands, itemId])); 
   };
+
    return (
   <Box>
       <Box
@@ -178,7 +176,6 @@ const HTMLCourse: React.FC = () => {
    style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
    onMouseEnter={() => setHoveredItem(item.id)}
    onMouseLeave={() => setHoveredItem(null)}
-  //  disabled={index !== 0 && (!courseCreated || (index !== 1 && !courseCreated))}
   disabled={index !== 0 && (!courseCreated || (index !== 1 && !courseCreated) || !lessonsAndQuizzes[index - 1]?.completed)
   }
  >
@@ -198,7 +195,7 @@ const HTMLCourse: React.FC = () => {
             >
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {item.type === 'lesson' && <BookIcon sx={{ fontSize: 40, color: 'blue' }} />} 
-                {item.type === 'quiz' && <QuizIcon sx={{ fontSize: 24, color: '#835088' }} />} 
+                {item.type === 'quiz' && <QuizIcon sx={{ fontSize: 40, color: '#835088' }} />} 
                 <Typography
           variant='body2'
           sx={{
