@@ -1,20 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { createCourse } from './../../../api/userAction';
 import { useNavigate } from 'react-router-dom';
-import LessonOne from './lessonHtml/LessonOne';
-import QuizOne from './quizHtml/QuizOne';
-import LessonTwo from './lessonHtml/LessonTwo';
-import LessonThree from './lessonHtml/LessonThree';
-import LessonSeven from './lessonHtml/LessonSeven';
-import LessonEight from './lessonHtml/LessonEight';
-import LessonNine from './lessonHtml/LessonNine';
-import QuizTwo from './quizHtml/QuizTwo';
-import QuizThree from './quizHtml/QuizThree';
-import { Box } from '@mui/material';
-import { Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-
-
+import BookIcon from '@mui/icons-material/Book';
+import QuizIcon from '@mui/icons-material/Quiz';
+import HttpsIcon from '@mui/icons-material/Https';
 
 interface ICourse {
   title: string;
@@ -23,20 +14,63 @@ interface ICourse {
     _id: string;
   };
 }
-
+interface ILessonQuiz {
+  id: number;
+  OriginalID: string;
+  type: string;
+  contentTitle: string;
+  completed: boolean;
+}
 const HTMLCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
   const [courseCreated, setCourseCreated] = useState<boolean>(false);
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
+    { id: 1, OriginalID: '1', type: 'lesson', contentTitle: 'Introduction to HTML', completed: false },
+    { id: 2, OriginalID: '2', type: 'lesson', contentTitle: 'HTML Tags and Structure', completed: false },
+    { id: 3, OriginalID: '3', type: 'lesson', contentTitle: 'HTML Attributs', completed: false },
+    { id: 4, OriginalID: '1', type: 'quiz', contentTitle: 'HTML  Quiz ONE', completed: false },
+    { id: 5, OriginalID: '4', type: 'lesson', contentTitle: 'HTML Forms and Elements', completed: false },
+    { id: 6, OriginalID: '5', type: 'lesson', contentTitle: 'HTML Tabel', completed: false },
+    { id: 7, OriginalID: '6', type: 'lesson', contentTitle: 'HTML Semantics', completed: false },
+    { id: 8, OriginalID: '2', type: 'quiz', contentTitle: 'HTML Quiz TWO', completed: false },
+    { id: 9, OriginalID: '7', type: 'lesson', contentTitle: 'HTML Media', completed: false },
+    { id: 10, OriginalID: '8', type: 'lesson', contentTitle: 'HTML Links and Navigation', completed: false },
+    { id: 11, OriginalID: '9', type: 'lesson', contentTitle: 'HTML Meta Data', completed: false },
+    { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'HTML5 Features', completed: false },
+    { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final HTML Quiz ' , completed: false},
+  ]);
+
   const navigate = useNavigate();
-  const lessons = [
-    { id: 1, name: 'Lesson 1', image: '/images/lesson1.png' },
-    { id: 2, name: 'Lesson 2', image: '/images/lesson2.png' },
-  ];
-  
-  const quizzes = [
-    { id: 1, name: 'Quiz 1', image: '/images/quiz1.png' },
-    { id: 2, name: 'Quiz 2', image: '/images/quiz2.png' },
-  ];
+  const LockIcon = () => {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 2C7.03 2 3 6.03 3 11v2c0 .828.672 1.5 1.5 1.5S6 13.828 6 13V11c0-3.859 3.141-7 7-7s7 3.141 7 7v2c0 .828.672 1.5 1.5 1.5S22 13.828 22 13v-2c0-4.97-4.03-9-9-9zm0 15c-1.654 0-3-1.346-3-3v-2h6v2c0 1.654-1.346 3-3 3z"/>
+      </svg>
+    );
+  };
+  // const lessonsAndQuizzes = [
+  //   { id: 1, OriginalID: '1', type: 'lesson', contentTitle: 'Introduction to HTML' },
+  //   { id: 2, OriginalID: '2', type: 'lesson', contentTitle: 'HTML Tags and Structure' },
+  //   { id: 3, OriginalID: '3', type: 'lesson', contentTitle: 'HTML Attributs' },
+  //   { id: 4, OriginalID: '1', type: 'quiz', contentTitle: 'HTML  Quiz ONE' },
+  //   { id: 5, OriginalID: '4', type: 'lesson', contentTitle: 'HTML Forms and Elements' },
+  //   { id: 6, OriginalID: '5', type: 'lesson', contentTitle: 'HTML Tabel' },
+  //   { id: 7, OriginalID: '6', type: 'lesson', contentTitle: 'HTML Semantics' },
+  //   { id: 8, OriginalID: '2', type: 'quiz', contentTitle: 'HTML Quiz TWO' },
+  //   { id: 9, OriginalID: '7', type: 'lesson', contentTitle: 'HTML Media' },
+  //   { id: 10, OriginalID: '8', type: 'lesson', contentTitle: 'HTML Links and Navigation' },
+  //   { id: 11, OriginalID: '9', type: 'lesson', contentTitle: 'HTML Meta Data' },
+  //   { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'HTML5 Features' },
+  //   { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final HTML Quiz ' },
+  // ];
+  const lessonCompleted = (lessonId: number) => {
+    return lessonsAndQuizzes.find((item) => item.id === lessonId)?.completed || false;
+  };
+
+  const quizCompleted = (quizId: number) => {
+    return lessonsAndQuizzes.find((item) => item.id === quizId)?.completed || false;
+  };
   useEffect(() => {
     const courseData = {
       title: 'HTML',
@@ -69,111 +103,138 @@ const HTMLCourse: React.FC = () => {
       }
     }
   }, [courseCreated, navigate]);
-
-  // return <div>{courseId !== null && <LessonOne />}  </div>;
-  // return <div>{courseId !== null && <LessonNine/>}  </div>;
-  // return <div>{courseId !== null && <QuizThree/>}  </div>;
+  const markItemAsCompleted = (itemId: number) => {
+    const updatedItems = lessonsAndQuizzes.map((item) =>
+      item.id === itemId ? { ...item, completed: true } : item
+    );
+    setLessonsAndQuizzes(updatedItems);
+  };
    return (
-    <Box>
-  <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        height: '100vh',
-        backgroundColor:'#f2f5f7',
-        maxWidth: '100vw',
-        overflow: 'hidden',
-      }}
-    >
-      <Paper
-        elevation={3}
+  <Box>
+      <Box
         sx={{
-          padding: 3,
           display: 'flex',
+          alignItems: 'center',
           justifyContent: 'center',
-          width: '100%',
-          maxWidth: '500px',
-          backgroundColor: '#fff', 
-          marginTop: '100px',
-          borderRadius:'4px',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          backgroundColor: '#f2f5f7',
+          maxWidth: '100vw',
+          overflow: 'hidden',
         }}
       >
-          <Box><img
-          src='/images/html.png' 
-          alt="HTML"
-          style={{
-            width: '100px',
-            maxWidth: '100px',
-            height: '80px',
-            borderRadius: '50%', 
-            marginBottom: '10px',
+       <Paper
+          elevation={3}
+          sx={{
+            padding: 3,
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+            maxWidth: '500px',
+            backgroundColor: '#fff',
+            borderRadius: '4px',
+            marginBottom: '20px',
+            marginTop: '100px',
           }}
-        />
-        <Typography variant="h5" align="center" sx={{color:'#2d3846',marginBottom:'16px'}}>
-         HTML
-        </Typography>
-        </Box>
-        <Typography variant="body2" align="justify" sx={{color:'#6b7f99',fontWeight:'400',paddingLeft:'24px'}}>
-        HTML is at the core of every web page. It’s beginner-friendly and knowing the basics is useful for everyone who works in digital design, marketing, content and more. If you’re interested in front-end web development, this course is a great place to start! You don’t need any previous coding experience, and we have plenty of other courses for you to deepen your knowledge once you’re finished, including CSS and JavaScript.
-        </Typography>
-      </Paper>
-    </Box>
-    <Paper
-        elevation={3}
-        sx={{
-          padding: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: '100%',
-          maxWidth: '500px',
-          backgroundColor: '#ffffff', 
-          marginTop: '20px',
-          borderRadius: '4px',
-        }}
-      >
-        {lessons.map((lesson) => (
-          <Link key={lesson.id} to={`/learn/html/${courseId}/lesson/${lesson.id}`}>
-            <Box>
-              <img
-                src={lesson.image}
-                alt={lesson.name}
-                style={{ width: '50px', height: '50px', borderRadius: '50%', marginRight: '10px' }}
-              />
-              <Typography variant="body1" sx={{ display: 'inline' }}>{lesson.name}</Typography>
-            </Box>
-          </Link>
-        ))}
-      </Paper>
+        >
+          <Box>
+            <img
+              src='/images/html.png'
+              alt='HTML'
+              style={{
+                width: '100px',
+                maxWidth: '100px',
+                height: '80px',
+                borderRadius: '50%',
+                marginBottom: '10px',
+              }}
+            />
+            <Typography variant='h5' align='center' sx={{ color: '#2d3846', marginBottom: '16px' }}>
+              HTML
+            </Typography>
+          </Box>
+          <Typography
+            variant='body2'
+            align='justify'
+            sx={{ color: '#6b7f99', fontWeight: '400', paddingLeft: '24px' }}
+          >
+            HTML is at the core of every web page. It’s beginner-friendly and knowing the basics is useful for everyone
+            who works in digital design, marketing, content, and more. If you’re interested in front-end web
+            development, this course is a great place to start! You don’t need any previous coding experience, and we
+            have plenty of other courses for you to deepen your knowledge once you’re finished, including CSS and
+            JavaScript.
+          </Typography>
+        </Paper>
 
-      <Paper
-        elevation={3}
-        sx={{
-          padding: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: '100%',
-          maxWidth: '500px',
-          backgroundColor: '#ffffff', 
-          marginTop: '20px',
-          borderRadius: '4px',
-        }}
-      >
-        {quizzes.map((quiz) => (
-          <Link key={quiz.id} to={`/learn/html/${courseId}/quiz/${quiz.id}`}>
-            <Box>
-              <img
-                src={quiz.image}
-                alt={quiz.name}
-                style={{ width: '50px', height: '50px', borderRadius: '50%', marginRight: '10px' }}
-              />
-              <Typography variant="body1" sx={{ display: 'inline' }}>{quiz.name}</Typography>
-            </Box>
-          </Link>
+        {lessonsAndQuizzes.map((item, index) => (
+   <Button
+   key={item.id}
+   component={Link}
+   to={
+  index === 0 || (courseCreated && index < lessonsAndQuizzes.length)
+    ? `/learn/html/${courseId}/${item.type}${item.OriginalID}`
+    : '#'
+}
+   style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
+   onMouseEnter={() => setHoveredItem(item.id)}
+   onMouseLeave={() => setHoveredItem(null)}
+  //  disabled={index !== 0 && (!courseCreated || (index !== 1 && !courseCreated))}
+  disabled={index !== 0 && (!courseCreated || (index !== 1 && !courseCreated) || !lessonsAndQuizzes[index - 1]?.completed)
+  }
+ >
+            <Paper
+              elevation={3}
+              sx={{
+                position: 'relative',
+                padding: 3,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                maxWidth: '500px',
+                transition: 'transform 0.3s ease-in-out',
+                transform: hoveredItem === item.id ? 'scale(1.1)' : 'scale(1)',
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {item.type === 'lesson' && <BookIcon sx={{ fontSize: 40, color: 'blue' }} />} 
+                {item.type === 'quiz' && <QuizIcon sx={{ fontSize: 24, color: '#835088' }} />} 
+                <Typography
+          variant='body2'
+          sx={{
+            display: 'inline',
+            color: '#999',
+            fontSize: '12px',
+            marginTop: '1px',
+          }}
+        >
+          {item.type}
+        </Typography>
+        <Typography
+          variant='body1'
+          sx={{
+            fontSize: '18px',
+            color: 'black',
+            marginBottom: '1px',
+            marginTop:'30px',
+            marginLeft: '1px',
+            textAlign: 'center',
+            fontFamily: 'Tahoma, sans-serif',          }}
+        >
+                  {item.contentTitle}
+                </Typography>
+              </Box>
+              {index !== 0 &&(!lessonCompleted(item.id) && item.type === 'lesson') ||
+             (!quizCompleted(item.id) && item.type === 'quiz') ? (
+           <Box sx={{position: 'absolute',top: 0,right: 0,margin: '10px'}}>
+                  <HttpsIcon />
+                  </Box>
+             ) : null}
+            </Paper>
+          </Button>
+          
         ))}
-      </Paper>
+      </Box>
     </Box>
    );
 
