@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import BookIcon from '@mui/icons-material/Book';
 import QuizIcon from '@mui/icons-material/Quiz';
 import HttpsIcon from '@mui/icons-material/Https';
+import { useAuth } from '../../AuthContext';
 
 interface ICourse {
   title: string;
@@ -40,7 +41,7 @@ const HTMLCourse: React.FC = () => {
     { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'HTML5 Features', completed: false },
     { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final HTML Quiz ' , completed: false},
   ]);
-  const { markCommandAsCompleted, setCompletedCommands } = props;
+  const { markCommandAsCompleted, setCompletedCommands } = useAuth();;
 
   const navigate = useNavigate();
   // const lessonsAndQuizzes = [
@@ -106,7 +107,9 @@ const HTMLCourse: React.FC = () => {
     markCommandAsCompleted(itemId); 
     setCompletedCommands((prevCompletedCommands) => new Set([...prevCompletedCommands, itemId])); 
   };
-
+  const handleItemCompletion = (itemId: number) => {
+    markItemAsCompleted(itemId);
+  };
    return (
   <Box>
       <Box

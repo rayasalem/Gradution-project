@@ -7,6 +7,7 @@ interface AuthContextProps {
   setError: (error: string) => void;
   completedCommands: Set<number>;
   markCommandAsCompleted: (commandId: number) => void;
+  setCompletedCommands: React.Dispatch<React.SetStateAction<Set<number>>>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -32,7 +33,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [authenticated]);
 
   return (
-    <AuthContext.Provider value={{ authenticated, login ,logout ,setError, completedCommands, markCommandAsCompleted}}>
+    <AuthContext.Provider value={{ authenticated, login ,logout ,setError, completedCommands, markCommandAsCompleted, setCompletedCommands}}>
       {children}
     </AuthContext.Provider>
   );
