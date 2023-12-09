@@ -48,9 +48,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/VerifyEmailPage" element={<VerifyEmailPage />} /> 
           <Route path="*" element={<PageNotFound />} /> 
-          {/* <Route path='/test' element={<ReactionComponent/>} /> */}
-          {/* <Route path='/test' element={<DoneLessonPage/>} /> */}
-          {/* <Route path='/test' element={<LessonOne/>} /> */}
+          <Route path='/DoneLesson' element={<DoneLessonPage/>} />
           <Route path='/test' element={<QuizOne/>} />
 
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />

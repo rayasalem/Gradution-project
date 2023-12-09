@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { createCourse } from './../../../api/userAction';
-import { useNavigate } from 'react-router-dom';
+import { createCourse, retrieveUserBitsAndHearts } from './../../../api/userAction';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import BookIcon from '@mui/icons-material/Book';
@@ -24,6 +24,8 @@ interface ILessonQuiz {
 }
 const HTMLCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
+  const [heartsCount, setheartsCount] = useState<number>(0);
+  const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [courseCreated, setCourseCreated] = useState<boolean>(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
@@ -41,24 +43,8 @@ const HTMLCourse: React.FC = () => {
     { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'HTML5 Features', completed: false },
     { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final HTML Quiz ' , completed: false},
   ]);
-  const { markCommandAsCompleted, setCompletedCommands } = useAuth();;
 
   const navigate = useNavigate();
-  // const lessonsAndQuizzes = [
-  //   { id: 1, OriginalID: '1', type: 'lesson', contentTitle: 'Introduction to HTML' },
-  //   { id: 2, OriginalID: '2', type: 'lesson', contentTitle: 'HTML Tags and Structure' },
-  //   { id: 3, OriginalID: '3', type: 'lesson', contentTitle: 'HTML Attributs' },
-  //   { id: 4, OriginalID: '1', type: 'quiz', contentTitle: 'HTML  Quiz ONE' },
-  //   { id: 5, OriginalID: '4', type: 'lesson', contentTitle: 'HTML Forms and Elements' },
-  //   { id: 6, OriginalID: '5', type: 'lesson', contentTitle: 'HTML Tabel' },
-  //   { id: 7, OriginalID: '6', type: 'lesson', contentTitle: 'HTML Semantics' },
-  //   { id: 8, OriginalID: '2', type: 'quiz', contentTitle: 'HTML Quiz TWO' },
-  //   { id: 9, OriginalID: '7', type: 'lesson', contentTitle: 'HTML Media' },
-  //   { id: 10, OriginalID: '8', type: 'lesson', contentTitle: 'HTML Links and Navigation' },
-  //   { id: 11, OriginalID: '9', type: 'lesson', contentTitle: 'HTML Meta Data' },
-  //   { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'HTML5 Features' },
-  //   { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final HTML Quiz ' },
-  // ];
   const lessonCompleted = (lessonId: number) => {
     return lessonsAndQuizzes.find((item) => item.id === lessonId)?.completed || false;
   };
@@ -73,7 +59,8 @@ const HTMLCourse: React.FC = () => {
     };
 
     const storedCourseId = localStorage.getItem('createdCourseId');
-
+    console.log('courseCreated:', courseCreated);
+    console.log('lessonsAndQuizzes[1].completed:', lessonsAndQuizzes[1]?.completed);
     if (storedCourseId) {
       setCourseId(storedCourseId);
       setCourseCreated(true);
@@ -98,18 +85,36 @@ const HTMLCourse: React.FC = () => {
       }
     }
   }, [courseCreated, navigate]);
+  // useEffect(() => {
+  //   const fetch_Data = async () => {
+  //     try {
+  //       const { heartsCount } = await retrieveUserBitsAndHearts();
+  //       setheartsCount(heartsCount)
+  //       if (heartsCount === 0 && lessonsAndQuizzes[0].type === 'lesson') {
+  //         setBitsLessonStart(true);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error retrieving bits and hearts:', error);
+  //     }
+  //   };
 
-   const markItemAsCompleted = (itemId: number) => {
-    const updatedItems = lessonsAndQuizzes.map((item) =>
-      item.id === itemId ? { ...item, completed: true } : item
-    );
-    setHoveredItem(null); 
-    markCommandAsCompleted(itemId); 
-    setCompletedCommands((prevCompletedCommands) => new Set([...prevCompletedCommands, itemId])); 
+  //   fetch_Data();
+  // }, []); 
+  const markItemAsCompleted = (itemId: number) => {
+    const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId); 
+       if (index !== -1) {
+       const updatedLessons = [...lessonsAndQuizzes];
+       updatedLessons[index].completed = true;
+       setLessonsAndQuizzes(updatedLessons);
+          }
+    setHoveredItem(null);
   };
-  const completeItem = (itemId: number) => {
-    markItemAsCompleted(itemId);
-  };
+  
+  useEffect(() => {
+    console.log('Updated state:', lessonsAndQuizzes);
+  }, [lessonsAndQuizzes]);
+  
+  
    return (
   <Box>
       <Box
@@ -169,20 +174,21 @@ const HTMLCourse: React.FC = () => {
 
         {lessonsAndQuizzes.map((item, index) => (
    <Button
-   key={item.id}
-   component={Link}
-   to={
-  index === 0 || (courseCreated && index < lessonsAndQuizzes.length)
-    ? `/learn/html/${courseId}/${item.type}${item.OriginalID}`
-    : '#'
-}
-   style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
-   onMouseEnter={() => setHoveredItem(item.id)}
-   onMouseLeave={() => setHoveredItem(null)}
-  disabled={index !== 0 &&
-    //  (!courseCreated || (index !== 1 && !courseCreated) || !lessonsAndQuizzes[index - 1]?.completed)
-    (!courseCreated || !lessonsAndQuizzes[index - 1]?.completed)
-  }
+     key={item.id}
+       component={Link}
+        to={
+         index === 0 || (courseCreated && index < lessonsAndQuizzes.length)
+         ? `/learn/html/${courseId}/${item.type}${item.OriginalID}`
+        : '#'
+       }
+      style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
+      onMouseEnter={() => setHoveredItem(item.id)}
+      onMouseLeave={() => setHoveredItem(null)}
+      // disabled={index !== 0 &&
+      //     (!courseCreated || !lessonsAndQuizzes[index - 1]?.completed)
+      //       }
+      disabled={index !== 0 && !lessonsAndQuizzes[index - 1]?.completed}
+            onClick={() => markItemAsCompleted(item.id)}
  >
             <Paper
               elevation={3}
@@ -226,12 +232,14 @@ const HTMLCourse: React.FC = () => {
                   {item.contentTitle}
                 </Typography>
               </Box>
-              {index !== 0 &&(!lessonCompleted(item.id) && item.type === 'lesson') ||
-             (!quizCompleted(item.id) && item.type === 'quiz') ? (
-           <Box sx={{position: 'absolute',top: 0,right: 0,margin: '10px'}}>
-                  <HttpsIcon />
-                  </Box>
-             ) : null}
+
+                 {index !== 0 &&
+                ((item.type === 'lesson' && !lessonCompleted(lessonsAndQuizzes[index - 1]?.id)) ||
+                 (item.type === 'quiz' && !quizCompleted(lessonsAndQuizzes[index - 1]?.id))) ? (
+                 <Box sx={{position: 'absolute', top: 0, right: 0, margin: '10px'}}>
+                    <HttpsIcon />
+                    </Box>
+                   ) : null}
             </Paper>
           </Button>
           

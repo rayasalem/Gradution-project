@@ -14,7 +14,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BitsLessonEnd from './LessonHearts/BitsLessonEnd';
-import { updateUserHeartsat } from './../../../../api/userAction';
+import { updateUserHeartsat, retrieveUserBitsAndHearts } from './../../../../api/userAction';
 
 interface IUserLesson {
   title: string;
@@ -49,6 +49,7 @@ interface LessonSlideProps {
 
 const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [attemptedAnswer, setAttemptedAnswer] = useState<boolean>(false);
@@ -71,8 +72,7 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
     } catch (error) {
       console.error('Failed to create user bits and hearts:', error);
     }
-  };
-
+  }; 
   useEffect(() => {
     let isMounted = true;
 
@@ -82,7 +82,6 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
           if (lessonData.course) {
             const response = await createLesson(lessonData);
             setLessonID(response?.lesson?._id)
-            console.log(response?.lesson?._id)
           } else {
             console.error('CourseId is not defined in lessonData.');
           }
@@ -100,7 +99,19 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
       isMounted = false;
     };
   }, [initialized, lessonData.course]);
+  useEffect(() => {
+    const fetch_Data = async () => {
+      try {
+        const { heartsCount } = await retrieveUserBitsAndHearts();
+        setHeartCount(heartsCount)
+        
+      } catch (error) {
+        console.error('Error retrieving bits and hearts:', error);
+      }
+    };
 
+    fetch_Data();
+  }, []); 
   const handleHeartLoss = async () => {
     try {
       const response = await deductHeartUser();
@@ -191,15 +202,14 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
   if (!currentSlideData) {
     return <DoneLessonPage />;
   }
-  // if (heartCount === 0) {
-  //   try {
-  //      updateUserHeartsat();
-  //   } catch (error) {
-  //     console.error('Failed to update hearts after reaching 0:', error);
-  //   }
-  //   return <BitsLessonEnd />;
-
-  // }
+  if (heartCount === 0) {
+    try {
+       updateUserHeartsat();
+    } catch (error) {
+      console.error('Failed to update hearts after reaching 0:', error);
+    }
+    return <BitsLessonEnd />;
+  }
   return (
     <Box>
       <Box sx={{ position: 'absolute', top: '90px', right: '50px', display: 'flex', alignItems: 'center' }}>

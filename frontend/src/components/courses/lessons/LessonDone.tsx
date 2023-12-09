@@ -14,27 +14,7 @@ interface IUserBitsAndHearts {
   actionType: 'lesson' | 'elementaryLevel' | 'proficientLevel' | 'advancedLevel';
 }
 const DoneLessonPage = () => {
-  const { authenticated, markLessonAsCompleted } = useAuth();
-  const location = useLocation();
-
-  const lessonId = 1
-  console.log(lessonId);
-  useEffect(() => {
-    const handleMarkItemAsCompleted = async () => {
-      try {
-        if (authenticated && lessonId) {
-          const itemId = 1
-         await markLessonAsCompleted(itemId);
-         console.log('Item marked as completed:', itemId);
-
-        }
-      } catch (error) {
-        console.error('Error marking item as completed:', error);
-      }
-    };
-
-    handleMarkItemAsCompleted();
-  }, [authenticated, lessonId]);
+  
   const rewards = [
     { icon: FavoriteIcon, label: 'XP', value: 10 },
     { icon: ViewInArIcon, label: 'Cube', value: 5 }, 
@@ -59,18 +39,21 @@ const DoneLessonPage = () => {
     alignItems: 'center',
     width: '50vw',
   };
-  const createUserBitsAndHeartsAsync = async () => {
-    try {
-      const userBitsAndHeartsData: IUserBitsAndHearts = {
-        actionType: 'lesson',
-      };
-      const bitsAndHeartsResponse = await earnBitsBitsAndHearts(userBitsAndHeartsData);
-    } catch (error) {
-      console.error('Failed to create user bits and hearts:', error);
-    }
-  };
-  createUserBitsAndHeartsAsync(); 
 
+  useEffect(() => {
+    const createUserBitsAndHeartsAsync = async () => {
+      try {
+        const userBitsAndHeartsData: IUserBitsAndHearts = {
+          actionType: 'lesson',
+        };
+        const bitsAndHeartsResponse = await earnBitsBitsAndHearts(userBitsAndHeartsData);
+      } catch (error) {
+        console.error('Failed to create user bits and hearts:', error);
+      }
+    };
+
+    createUserBitsAndHeartsAsync();
+  }, []);
   return (
     <>
       <Box
