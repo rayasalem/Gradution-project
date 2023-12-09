@@ -7,6 +7,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import { Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
+import Footer from './../homePage/footer/Footer';
 
 const CourseContent: React.FC<{ link: string; imageUrl: string; title: string; description: string }> = 
 ({ link, imageUrl, title, description }) => (
@@ -183,14 +184,15 @@ const IndexCourse: React.FC = () => {
             />
         </TabPanel>
 
-</TabContext>
+    </TabContext>
 
 
-
+ 
         </Box>
+        <Footer/>
         </Box>
 
   )
 }
 
-export default IndexCourse
+export default IndexCourse     
