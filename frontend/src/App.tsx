@@ -32,6 +32,7 @@ import LessonTwo from './components/courses/HTML/lessonHtml/LessonTwo';
 import LessonThree from './components/courses/HTML/lessonHtml/LessonThree';
 import LessonEight from './components/courses/HTML/lessonHtml/LessonEight';
 import LessonSeven from './components/courses/HTML/lessonHtml/LessonSeven';
+import IndexCourse from './components/courses/CourseIndex';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -50,7 +51,7 @@ function App() {
           <Route path="*" element={<PageNotFound />} /> 
           <Route path='/DoneLesson' element={<DoneLessonPage/>} />
           <Route path='/test' element={<QuizOne/>} />
-
+          <Route path="/learn" element={<IndexCourse/>} />
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
           <Route path="/learn/html/:courseId/lesson1"element={<LessonOne/>}/>
           <Route path="/learn/html/:courseId/lesson2"element={<LessonTwo/>}/>

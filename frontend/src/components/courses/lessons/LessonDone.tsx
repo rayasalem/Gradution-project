@@ -4,9 +4,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import { earnBitsBitsAndHearts } from './../../../api/userAction';
-import { useAuth } from '../../AuthContext';
-import  markItemAsCompleted  from './../HTML/index';
-import completeItem  from './../HTML/index';
 import { Link, useLocation } from 'react-router-dom';
 
 
@@ -14,7 +11,10 @@ interface IUserBitsAndHearts {
   actionType: 'lesson' | 'elementaryLevel' | 'proficientLevel' | 'advancedLevel';
 }
 const DoneLessonPage = () => {
-  
+  const location = useLocation();
+  const currentPathname = location.pathname;
+
+  const removeLastPart = currentPathname.replace(/\/[^/]+$/, '');
   const rewards = [
     { icon: FavoriteIcon, label: 'XP', value: 10 },
     { icon: ViewInArIcon, label: 'Cube', value: 5 }, 
@@ -99,7 +99,7 @@ const DoneLessonPage = () => {
       </Box>
       <hr style={{ width: '100%', margin: '0', padding: '0' }} />
       <Box mt={3} mb={3} sx={{ textAlign: 'center' }}>
-        <Button variant="contained" color="primary" component={Link} to="/learn/html/${storedCourseId}">Continue</Button>
+        <Button variant="contained" color="primary" component={Link} to={removeLastPart}>Continue</Button>
       </Box>
     </>
   );

@@ -59,7 +59,6 @@ const HTMLCourse: React.FC = () => {
     };
 
     const storedCourseId = localStorage.getItem('createdCourseId');
-    console.log('courseCreated:', courseCreated);
     console.log('lessonsAndQuizzes[1].completed:', lessonsAndQuizzes[1]?.completed);
     if (storedCourseId) {
       setCourseId(storedCourseId);
@@ -101,17 +100,19 @@ const HTMLCourse: React.FC = () => {
   //   fetch_Data();
   // }, []); 
   const markItemAsCompleted = (itemId: number) => {
-    const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId); 
-       if (index !== -1) {
-       const updatedLessons = [...lessonsAndQuizzes];
-       updatedLessons[index].completed = true;
-       setLessonsAndQuizzes(updatedLessons);
-          }
+    const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId);
+    if (index !== -1) {
+      const updatedLessons = [...lessonsAndQuizzes];
+      updatedLessons[index].completed = true;
+      setLessonsAndQuizzes(updatedLessons);
+    }
     setHoveredItem(null);
   };
   
   useEffect(() => {
     console.log('Updated state:', lessonsAndQuizzes);
+console.log('Previous lesson:', lessonsAndQuizzes[0]);
+console.log('Previous lesson completed:', lessonCompleted(lessonsAndQuizzes[0]?.id));
   }, [lessonsAndQuizzes]);
   
   
@@ -187,8 +188,8 @@ const HTMLCourse: React.FC = () => {
       // disabled={index !== 0 &&
       //     (!courseCreated || !lessonsAndQuizzes[index - 1]?.completed)
       //       }
-      disabled={index !== 0 && !lessonsAndQuizzes[index - 1]?.completed}
-            onClick={() => markItemAsCompleted(item.id)}
+         disabled={index !== 0 && !lessonCompleted(lessonsAndQuizzes[index - 1].id)}   
+         onClick={() => markItemAsCompleted(item.id)}
  >
             <Paper
               elevation={3}
