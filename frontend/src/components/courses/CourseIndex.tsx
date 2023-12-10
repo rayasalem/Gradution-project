@@ -7,6 +7,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import { Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Footer from './../homePage/footer/Footer';
 
 const CourseContent: React.FC<{ link: string; imageUrl: string; title: string; description: string }> = 
@@ -61,7 +62,8 @@ const CourseContent: React.FC<{ link: string; imageUrl: string; title: string; d
 
 const IndexCourse: React.FC = () => {
   const [value, setValue] = React.useState("1");
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+  const isSmallScreen = useMediaQuery('(max-width:900px)');
+  const isSmall = useMediaQuery('(max-width:600px)');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -81,19 +83,15 @@ const IndexCourse: React.FC = () => {
           paddingTop:'100px'
         }}
       >
-        <Typography variant="h5" sx={{fontWeight:'600',letterSpacing:'-0.03em',marginBottom:'40px'}}>My Courses</Typography>
-        <Box sx={{ marginTop: '20px', textAlign: 'center' }}>
-        <ul>
-          {selectedCourses.map((course) => (
-            <li key={course}>{course}</li>
-          ))}
-        </ul>
-      </Box>
+       
         <Typography variant="h5" sx={{fontWeight:'600',letterSpacing:'-0.03em',marginBottom:'40px'}}>Explore our courses</Typography>
 
           <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <Box sx={{ borderBottom: 1, borderColor: 'divider',
+            width: isSmall ? '400px' : isSmallScreen ? '600px' : '950px',margin: '0 auto', }}>
+          <TabList onChange={handleChange}   variant="scrollable"  scrollButtons="auto"  allowScrollButtonsMobile
+
+               aria-label="scrollable auto tabs example">
           <Tab label="All Course" value="1" />
           <Tab label="Websites" value="2"/>
           <Tab label="Mobile apps" value="3"/>
@@ -183,11 +181,7 @@ const IndexCourse: React.FC = () => {
               description="Python is the world’s fastest growing programming language is easy to read, learn and code. You’ll learn to build interactive programs and automate your tasks. No previous coding experience needed."
             />
         </TabPanel>
-
     </TabContext>
-
-
- 
         </Box>
         <Footer/>
         </Box>

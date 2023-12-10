@@ -5,6 +5,7 @@ import { createQuiz, earnBitsBitsAndHearts } from './../../../api/userAction';
 import { Icon, Box } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import { Link, useLocation } from 'react-router-dom';
 
 interface MultipleChoiceQuestionProps {
   questionId: string;
@@ -37,7 +38,10 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
   const [initialized, setInitialized] = useState(false);
   const [bitsEarned, setBitsEarned] = useState<boolean>(false);
   const [QizeID, setQizeID] = useState<string | undefined>(undefined); 
+  const location = useLocation();
+  const currentPathname = location.pathname;
 
+  const removeLastPart = currentPathname.replace(/\/[^/]+$/, '');
   useEffect(() => {
     let isMounted = true;
 
@@ -175,7 +179,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
     </Box>
     <hr style={{ width: '100%', margin: '0', padding: '0' }} />
     <Box mt={3} mb={3} sx={{ textAlign: 'center' }}>
-      <Button variant="contained" color="primary">Continue</Button>
+      <Button variant="contained" color="primary" component={Link} to={removeLastPart}>Continue</Button>
     </Box>
         </div>
       ) : (

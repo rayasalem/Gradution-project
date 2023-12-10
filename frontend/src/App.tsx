@@ -18,8 +18,6 @@ import DoneLessonPage from './components/courses/lessons/LessonDone';
 import LessonSlide from './components/courses/lessons/lessonStyle/LessonSlide';
 import LessonOne from './components/courses/HTML/lessonHtml/LessonOne';
 import HTMLCourse from './components/courses/HTML';
-import BitsLessonEnd from './components/courses/lessons/lessonStyle/LessonHearts/BitsLessonEnd';
-import BitsLessonStart from './components/courses/lessons/lessonStyle/LessonHearts/BitsLessonStart';
 import QuizOne from './components/courses/HTML/quizHtml/QuizOne';
 import LessonFour from './components/courses/HTML/lessonHtml/LessonFour';
 import LessonFive from './components/courses/HTML/lessonHtml/LessonFive';
@@ -33,6 +31,20 @@ import LessonThree from './components/courses/HTML/lessonHtml/LessonThree';
 import LessonEight from './components/courses/HTML/lessonHtml/LessonEight';
 import LessonSeven from './components/courses/HTML/lessonHtml/LessonSeven';
 import IndexCourse from './components/courses/CourseIndex';
+import CSSCourse from './components/courses/CSS';
+import LessonOneInCSS from './components/courses/CSS/lessonCss/LessonOne';
+import LessonTwoInCSS from './components/courses/CSS/lessonCss/LessonTwo';
+import LessonThreeInCSS from './components/courses/CSS/lessonCss/LessonThree';
+import QuizOneInCss from './components/courses/CSS/quizCss/QuizOne';
+import LessonFourInCSS from './components/courses/CSS/lessonCss/LessoFour';
+import LessonFiveInCSS from './components/courses/CSS/lessonCss/LessonFive';
+import LessonSixInCSS from './components/courses/CSS/lessonCss/LessonSix';
+import LessonSevenInCSS from './components/courses/CSS/lessonCss/LessonSeven';
+import LessonNineInCSS from './components/courses/CSS/lessonCss/LessonNine';
+import LessonEightInCSS from './components/courses/CSS/lessonCss/LessonEight';
+import LessonTenInCSS from './components/courses/CSS/lessonCss/LessonTen';
+import QuizTwoInCss from './components/courses/CSS/quizCss/QuizTwo';
+import QuizThreeInCss from './components/courses/CSS/quizCss/QuizThree';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -66,6 +78,31 @@ function App() {
           <Route path="/learn/html/:courseId/lesson9" element={<LessonNine />} />
           <Route path="/learn/html/:courseId/lesson10" element={<LessonTen />} />
           <Route path="/learn/html/:courseId/Quiz3" element={<QuizThree />} />
+          <Route path='/learn/css/:courseId' element={<CSSCourse/>} />
+          <Route path='/learn/css/:courseId/lesson1' element={<LessonOneInCSS/>} />
+          <Route path='/learn/css/:courseId/lesson2' element={<LessonTwoInCSS/>} />
+          <Route path='/learn/css/:courseId/lesson3' element={<LessonThreeInCSS/>} />
+          <Route path='/learn/css/:courseId/quiz1' element={<QuizOneInCss/>} />
+          <Route path='/learn/css/:courseId/lesson4' element={<LessonFourInCSS/>} />
+          <Route path='/learn/css/:courseId/lesson5' element={<LessonFiveInCSS/>} />
+          <Route path='/learn/css/:courseId/lesson6' element={<LessonSixInCSS/>} />
+          <Route path='/learn/css/:courseId/quiz2' element={<QuizTwoInCss/>} />
+          <Route path='/learn/css/:courseId/lesson7' element={<LessonSevenInCSS/>} />
+          <Route path='/learn/css/:courseId/lesson9' element={<LessonNineInCSS/>} />
+          <Route path='/learn/css/:courseId/lesson8' element={<LessonEightInCSS/>} />
+          <Route path='/learn/css/:courseId/lesson10' element={<LessonTenInCSS/>} />
+          <Route path='/learn/css/:courseId/quiz3' element={<QuizThreeInCss/>} />
+
+
+
+
+
+
+
+
+
+
+
         </Routes>
       </AuthProvider>
     </Router>

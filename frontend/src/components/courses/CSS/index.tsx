@@ -22,26 +22,26 @@ interface ILessonQuiz {
   contentTitle: string;
   completed: boolean;
 }
-const HTMLCourse: React.FC = () => {
+const CSSCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
   const [heartsCount, setheartsCount] = useState<number>(0);
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [courseCreated, setCourseCreated] = useState<boolean>(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
-    { id: 1, OriginalID: '1', type: 'lesson', contentTitle: 'Introduction to HTML', completed: false },
-    { id: 2, OriginalID: '2', type: 'lesson', contentTitle: 'HTML Tags and Structure', completed: false },
-    { id: 3, OriginalID: '3', type: 'lesson', contentTitle: 'HTML Attributs', completed: false },
-    { id: 4, OriginalID: '1', type: 'quiz', contentTitle: 'HTML  Quiz ONE', completed: false },
-    { id: 5, OriginalID: '4', type: 'lesson', contentTitle: 'HTML Forms and Elements', completed: false },
-    { id: 6, OriginalID: '5', type: 'lesson', contentTitle: 'HTML Tabel', completed: false },
-    { id: 7, OriginalID: '6', type: 'lesson', contentTitle: 'HTML Semantics', completed: false },
-    { id: 8, OriginalID: '2', type: 'quiz', contentTitle: 'HTML Quiz TWO', completed: false },
-    { id: 9, OriginalID: '7', type: 'lesson', contentTitle: 'HTML Media', completed: false },
-    { id: 10, OriginalID: '8', type: 'lesson', contentTitle: 'HTML Links and Navigation', completed: false },
-    { id: 11, OriginalID: '9', type: 'lesson', contentTitle: 'HTML Meta Data', completed: false },
-    { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'HTML5 Features', completed: false },
-    { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final HTML Quiz ' , completed: false},
+    { id: 1, OriginalID: '1', type: 'lesson', contentTitle: 'Introduction to CSS', completed: false },
+    { id: 2, OriginalID: '2', type: 'lesson', contentTitle: 'Selectors and Specificity in CSS', completed: false },
+    { id: 3, OriginalID: '3', type: 'lesson', contentTitle: 'Box Model in CSS', completed: false },
+    { id: 4, OriginalID: '1', type: 'quiz', contentTitle: 'HTML Quiz ONE', completed: false },
+    { id: 5, OriginalID: '4', type: 'lesson', contentTitle: 'Display Property in CSS', completed: false },
+    { id: 6, OriginalID: '5', type: 'lesson', contentTitle: 'Position Property in CSS', completed: false },
+    { id: 7, OriginalID: '6', type: 'lesson', contentTitle: 'CSS Colors: RGB, HEX, HSL', completed: false },
+    { id: 8, OriginalID: '2', type: 'quiz', contentTitle: 'CSS Quiz TWO', completed: false },
+    { id: 9, OriginalID: '7', type: 'lesson', contentTitle: 'CSS Outline Style', completed: false },
+    { id: 10, OriginalID: '8', type: 'lesson', contentTitle: 'Responsive Design', completed: false },
+    { id: 11, OriginalID: '9', type: 'lesson', contentTitle: 'CSS Text Properties', completed: false },
+    { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'CSS Fonts and Typography', completed: false },
+    { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final CSS Quiz ' , completed: false},
   ]);
 
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const HTMLCourse: React.FC = () => {
   const quizCompleted = (quizId: number) => {
     return lessonsAndQuizzes.find((item) => item.id === quizId)?.completed || false;
   };
-  const LOCAL_STORAGE_KEY = 'lessonsAndQuizzesStatus';
+  const LOCAL_STORAGE_KEY = 'lessonsAndQuizzesStatusCss';
 
   const initializeLessonsAndQuizzes = () => {
     const storedStatus = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -63,25 +63,25 @@ const HTMLCourse: React.FC = () => {
   useEffect(() => {
     initializeLessonsAndQuizzes();
     const courseData = {
-      title: 'HTML',
-      description: 'This is HTML Course',
+      title: 'CSS',
+      description: 'This is CSS Course',
     };
 
-    const storedCourseId = localStorage.getItem('createdCourseId');
+    const storedCourseId = localStorage.getItem('createdCourseIdToCSS');
     if (storedCourseId) {
       setCourseId(storedCourseId);
       setCourseCreated(true);
-      navigate(`/learn/html/${storedCourseId}`);
+      navigate(`/learn/css/${storedCourseId}`);
 
     } else if (!courseCreated) {
       try {
         createCourse(courseData as ICourse)
           .then(result => {
             if (result && result.savedcourse && result.savedcourse._id) {
-              localStorage.setItem('createdCourseId', result.savedcourse._id);
+              localStorage.setItem('createdCourseIdToCSS', result.savedcourse._id);
               setCourseId(result.savedcourse._id);
               setCourseCreated(true);
-              navigate(`/learn/html/${result.savedcourse._id}`);
+              navigate(`/learn/css/${result.savedcourse._id}`);
             }
           })
           .catch(error => {
@@ -106,7 +106,12 @@ const HTMLCourse: React.FC = () => {
     }
     setHoveredItem(null);
   };
-   
+  
+  useEffect(() => {
+    console.log('Updated state:', lessonsAndQuizzes);
+  }, [lessonsAndQuizzes]);
+  
+  
    return (
   <Box>
       <Box
@@ -137,7 +142,7 @@ const HTMLCourse: React.FC = () => {
         >
           <Box>
             <img
-              src='/images/html.png'
+              src='/images/css.png'
               alt='HTML'
               style={{
                 width: '100px',
@@ -148,7 +153,7 @@ const HTMLCourse: React.FC = () => {
               }}
             />
             <Typography variant='h5' align='center' sx={{ color: '#2d3846', marginBottom: '16px' }}>
-              HTML
+              CSS
             </Typography>
           </Box>
           <Typography
@@ -156,12 +161,7 @@ const HTMLCourse: React.FC = () => {
             align='justify'
             sx={{ color: '#6b7f99', fontWeight: '400', paddingLeft: '24px' }}
           >
-            HTML is at the core of every web page. It’s beginner-friendly and knowing the basics is useful for everyone
-            who works in digital design, marketing, content, and more. If you’re interested in front-end web
-            development, this course is a great place to start! You don’t need any previous coding experience, and we
-            have plenty of other courses for you to deepen your knowledge once you’re finished, including CSS and
-            JavaScript.
-          </Typography>
+          Ever seen a website and thought “Wow, that’s beautiful”? Chances are that a CSS whiz had a hand in creating it! If you’re interested in visual design, CSS is the perfect language for you. CSS is also great for those interested in front-end web development. It’s an essential tool for styling web content, and is used to define the visual appearance of design and layout variations for different screen and device sizes. CSS is a perfect partner for those learning HTML and JavaScript.           </Typography>
         </Paper>
 
         {lessonsAndQuizzes.map((item, index) => (
@@ -170,7 +170,7 @@ const HTMLCourse: React.FC = () => {
        component={Link}
         to={
          index === 0 || (courseCreated && index < lessonsAndQuizzes.length)
-         ? `/learn/html/${courseId}/${item.type}${item.OriginalID}`
+         ? `/learn/css/${courseId}/${item.type}${item.OriginalID}`
         : '#'
        }
       style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
@@ -240,4 +240,4 @@ const HTMLCourse: React.FC = () => {
 
 };
 
-export default HTMLCourse;
+export default CSSCourse;
