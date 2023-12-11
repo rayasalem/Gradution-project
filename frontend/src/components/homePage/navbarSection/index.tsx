@@ -26,27 +26,21 @@ import './navbar.css'
 const Navbar: React.FC = () =>{
   const isSmallScreen = useMediaQuery('(max-width:900px)');
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [coursesAnchorEl, setCoursesAnchorEl] = useState<null | HTMLElement>(null);
-  const [programmingLangageAnchorEl, setProgrammingLangageAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const history =useNavigate();
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { authenticated } = useAuth();
   const toggleDrawer = (open: boolean) => { setDrawerOpen(open);  };
-  const handleCoursesOpen = (event: React.MouseEvent<HTMLElement>) => { setCoursesAnchorEl(event.currentTarget); };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => { setAnchorEl(event.currentTarget); };
-  const handleProgrammingLangageOpen = (event: React.MouseEvent<HTMLElement>) => { setProgrammingLangageAnchorEl(event.currentTarget); };
   const handleSignIn= (event: React.MouseEvent<HTMLElement>) =>{ history('/signin'); }
   const handleMainpage= (event: React.MouseEvent<HTMLElement>) =>{ history('/'); }
+  const handleCoursepage= (event: React.MouseEvent<HTMLElement>) =>{ history('/learn'); }
   const handlecompilerOpen  = (event: React.MouseEvent<HTMLElement>) => { setCompilerCategoryAnchorEl(event.currentTarget); };
-
   const handleSignUp = (event: React.MouseEvent<HTMLElement>) => {
     history('/signup');
   };  
   const handleMenuClose = () => {
-    setCoursesAnchorEl(null);
-    setProgrammingLangageAnchorEl(null);
     setCompilerCategoryAnchorEl(null)
     setAnchorEl(null);
   };
@@ -89,43 +83,9 @@ const Navbar: React.FC = () =>{
             <Button onClick={handleMainpage} className="item">
               HomePage
               </Button>
-              <Button onClick={handleCoursesOpen} className="item">
-                Full Path
-              <ArrowDropDownIcon></ArrowDropDownIcon>
-              {Boolean(coursesAnchorEl) && <div className="test"></div>}
+              <Button onClick={handleCoursepage} className="item">
+              Courses
               </Button>
-              <Button onClick={handleProgrammingLangageOpen} className="item">
-                Categories
-              <ArrowDropDownIcon></ArrowDropDownIcon>
-              {Boolean(programmingLangageAnchorEl) && <div className="test"></div>}
-              </Button>
-              <Menu
-                id="fade-menu"
-                MenuListProps={{'aria-labelledby': 'fade-button',}}
-                anchorEl={coursesAnchorEl}
-                open={Boolean(coursesAnchorEl)}
-                onClose={handleMenuClose}
-                TransitionComponent={Fade} >
-                    {FULL_PATH.map((path) => (
-            <MenuItem key={path} className='groupItem' onClick={() => handleMenuClose}>
-              {path}
-            </MenuItem>))}
-                 <Link href="/learn" className='link'>View full catalog</Link>
-              </Menu>
-              <Menu 
-                id="fade-menu"
-                MenuListProps={{'aria-labelledby': 'fade-button',}}
-                anchorEl={programmingLangageAnchorEl}
-                open={Boolean(programmingLangageAnchorEl)}
-                onClose={handleMenuClose}
-                TransitionComponent={Fade}>
-              {CATEGORIES.map((category) => (
-            <MenuItem key={category} className='groupItem' onClick={() => handleMenuClose}>
-              {category} 
-            </MenuItem>))}
-                <Link href="/learn" className='link'>View full catalog</Link>
-              </Menu>
-            
               <ListItem button onClick={handlecompilerOpen} className="item"sx={{width:'auto'}}>
                 Compilers <ArrowDropDownIcon />
             </ListItem>
@@ -187,39 +147,6 @@ const Navbar: React.FC = () =>{
       )}     
 <Drawer open={drawerOpen} onClose={() => toggleDrawer(false)}>
   <List>
-    <ListItem button onClick={handleCoursesOpen} className="item">Full Path
-      <ArrowDropDownIcon />
-    </ListItem>
-    <Menu
-                id="fade-menu"
-                MenuListProps={{'aria-labelledby': 'fade-button',}}
-                anchorEl={coursesAnchorEl}
-                open={Boolean(coursesAnchorEl)}
-                onClose={handleMenuClose}
-                TransitionComponent={Fade} >
-                    {FULL_PATH.map((path) => (
-            <MenuItem key={path} className='groupItem' onClick={() => handleMenuClose}>
-              {path}
-            </MenuItem>))}
-                 <Link href="/learn" className='link'>View full catalog</Link>
-              </Menu>
-
-    <ListItem button onClick={handleProgrammingLangageOpen} className="item">Categories
-      <ArrowDropDownIcon />
-    </ListItem>
-    <Menu 
-                id="fade-menu"
-                MenuListProps={{'aria-labelledby': 'fade-button',}}
-                anchorEl={programmingLangageAnchorEl}
-                open={Boolean(programmingLangageAnchorEl)}
-                onClose={handleMenuClose}
-                TransitionComponent={Fade}>
-              {CATEGORIES.map((category) => (
-            <MenuItem key={category} className='groupItem' onClick={() => handleMenuClose}>
-              {category} 
-            </MenuItem>))}
-                <Link href="/learn" className='link'>View full catalog</Link>
-              </Menu>
     <ListItem button onClick={handlecompilerOpen} className="item"sx={{width:'auto'}}>
                 Compilers <ArrowDropDownIcon />
             </ListItem>
@@ -235,6 +162,12 @@ const Navbar: React.FC = () =>{
              <Link href={lang.link}>{lang.language} Compiler</Link>
            </MenuItem>))}
              </Menu>
+            
+              <ListItem button onClick={() => toggleDrawer(false)}>
+              <Button onClick={handleCoursepage} className="item">
+              Courses
+              </Button>
+    </ListItem>
     <ListItem button onClick={() => toggleDrawer(false)}>
       <Button className="item">Discuss</Button>
     </ListItem>

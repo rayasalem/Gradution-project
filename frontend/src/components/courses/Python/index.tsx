@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import BookIcon from '@mui/icons-material/Book';
 import QuizIcon from '@mui/icons-material/Quiz';
 import HttpsIcon from '@mui/icons-material/Https';
-import { useAuth } from '../../AuthContext';
 
 interface ICourse {
   title: string;
@@ -22,26 +21,26 @@ interface ILessonQuiz {
   contentTitle: string;
   completed: boolean;
 }
-const CSSCourse: React.FC = () => {
+const PythonCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
   const [heartsCount, setheartsCount] = useState<number>(0);
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [courseCreated, setCourseCreated] = useState<boolean>(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
-    { id: 1, OriginalID: '1', type: 'lesson', contentTitle: 'Introduction to CSS', completed: false },
-    { id: 2, OriginalID: '2', type: 'lesson', contentTitle: 'Selectors and Specificity in CSS', completed: false },
-    { id: 3, OriginalID: '3', type: 'lesson', contentTitle: 'Box Model in CSS', completed: false },
-    { id: 4, OriginalID: '1', type: 'quiz', contentTitle: 'HTML Quiz ONE', completed: false },
-    { id: 5, OriginalID: '4', type: 'lesson', contentTitle: 'Display Property in CSS', completed: false },
-    { id: 6, OriginalID: '5', type: 'lesson', contentTitle: 'Position Property in CSS', completed: false },
-    { id: 7, OriginalID: '6', type: 'lesson', contentTitle: 'CSS Colors: RGB, HEX, HSL', completed: false },
-    { id: 8, OriginalID: '2', type: 'quiz', contentTitle: 'CSS Quiz TWO', completed: false },
-    { id: 9, OriginalID: '7', type: 'lesson', contentTitle: 'CSS Outline Style', completed: false },
-    { id: 10, OriginalID: '8', type: 'lesson', contentTitle: 'Responsive Design', completed: false },
-    { id: 11, OriginalID: '9', type: 'lesson', contentTitle: 'CSS Text Properties', completed: false },
-    { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'CSS Fonts and Typography', completed: false },
-    { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final CSS Quiz ' , completed: false},
+    { id: 1, OriginalID: '1', type: 'lesson', contentTitle: 'Introduction to Python', completed: false },
+    { id: 2, OriginalID: '2', type: 'lesson', contentTitle: 'Python Variables', completed: false },
+    { id: 3, OriginalID: '3', type: 'lesson', contentTitle: 'Python Strings', completed: false },
+    { id: 4, OriginalID: '1', type: 'quiz', contentTitle: 'Python Quiz ONE', completed: false },
+    { id: 5, OriginalID: '4', type: 'lesson', contentTitle: 'Python Lists', completed: false },
+    { id: 6, OriginalID: '5', type: 'lesson', contentTitle: 'Python Tuples', completed: false },
+    { id: 7, OriginalID: '6', type: 'lesson', contentTitle: 'Python Sets', completed: false },
+    { id: 8, OriginalID: '2', type: 'quiz', contentTitle: 'Python Quiz TWO', completed: false },
+    { id: 9, OriginalID: '7', type: 'lesson', contentTitle: 'Python Dictionaries', completed: false },
+    { id: 10, OriginalID: '8', type: 'lesson', contentTitle: 'Python Functions', completed: false },
+    { id: 11, OriginalID: '9', type: 'lesson', contentTitle: 'Python If ... Else', completed: false },
+    { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'Python For Loops', completed: false },
+    { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final Python Quiz ' , completed: false},
   ]);
 
   const navigate = useNavigate();
@@ -52,7 +51,7 @@ const CSSCourse: React.FC = () => {
   const quizCompleted = (quizId: number) => {
     return lessonsAndQuizzes.find((item) => item.id === quizId)?.completed || false;
   };
-  const LOCAL_STORAGE_KEY = 'lessonsAndQuizzesStatusCss';
+  const LOCAL_STORAGE_KEY = 'lessonsAndQuizzesStatusPython';
 
   const initializeLessonsAndQuizzes = () => {
     const storedStatus = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -61,27 +60,30 @@ const CSSCourse: React.FC = () => {
     }
   };
   useEffect(() => {
+
     initializeLessonsAndQuizzes();
     const courseData = {
-      title: 'CSS',
-      description: 'This is CSS Course',
+      title: 'Python',
+      description: 'This is Python Course',
     };
+    localStorage.removeItem('createdCourseIdToPython');
 
-    const storedCourseId = localStorage.getItem('createdCourseIdToCSS');
+    const storedCourseId = localStorage.getItem('createdCourseIdToPytho');
     if (storedCourseId) {
       setCourseId(storedCourseId);
       setCourseCreated(true);
-      navigate(`/learn/css/${storedCourseId}`);
+      navigate(`/learn/python/${storedCourseId}`);
 
     } else if (!courseCreated) {
       try {
         createCourse(courseData as ICourse)
           .then(result => {
             if (result && result.savedcourse && result.savedcourse._id) {
-              localStorage.setItem('createdCourseIdToCSS', result.savedcourse._id);
+
+              localStorage.setItem('createdCourseIdToPytho', result.savedcourse._id);
               setCourseId(result.savedcourse._id);
               setCourseCreated(true);
-              navigate(`/learn/css/${result.savedcourse._id}`);
+              navigate(`/learn/python/${result.savedcourse._id}`);
             }
           })
           .catch(error => {
@@ -125,7 +127,6 @@ const CSSCourse: React.FC = () => {
           maxWidth: '100vw',
           overflow: 'hidden',
           paddingTop:'80px'
-
         }}
       >
        <Paper
@@ -143,8 +144,8 @@ const CSSCourse: React.FC = () => {
         >
           <Box>
             <img
-              src='/images/css.png'
-              alt='HTML'
+              src='/images/python.png'
+              alt='Python'
               style={{
                 width: '100px',
                 maxWidth: '100px',
@@ -154,7 +155,7 @@ const CSSCourse: React.FC = () => {
               }}
             />
             <Typography variant='h5' align='center' sx={{ color: '#2d3846', marginBottom: '16px' }}>
-              CSS
+            Python
             </Typography>
           </Box>
           <Typography
@@ -162,7 +163,7 @@ const CSSCourse: React.FC = () => {
             align='justify'
             sx={{ color: '#6b7f99', fontWeight: '400', paddingLeft: '24px' }}
           >
-          Ever seen a website and thought “Wow, that’s beautiful”? Chances are that a CSS whiz had a hand in creating it! If you’re interested in visual design, CSS is the perfect language for you. CSS is also great for those interested in front-end web development. It’s an essential tool for styling web content, and is used to define the visual appearance of design and layout variations for different screen and device sizes. CSS is a perfect partner for those learning HTML and JavaScript.           </Typography>
+          Python is the world’s fastest growing programming language is easy to read, learn and code. You’ll learn to build interactive programs and automate your tasks, analyze and visualize even the most complex data and create AI and machine learning models. No previous coding experience needed.</Typography>
         </Paper>
 
         {lessonsAndQuizzes.map((item, index) => (
@@ -171,7 +172,7 @@ const CSSCourse: React.FC = () => {
        component={Link}
         to={
          index === 0 || (courseCreated && index < lessonsAndQuizzes.length)
-         ? `/learn/css/${courseId}/${item.type}${item.OriginalID}`
+         ? `/learn/python/${courseId}/${item.type}${item.OriginalID}`
         : '#'
        }
       style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
@@ -241,4 +242,4 @@ const CSSCourse: React.FC = () => {
 
 };
 
-export default CSSCourse;
+export default PythonCourse;

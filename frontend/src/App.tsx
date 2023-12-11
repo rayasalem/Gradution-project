@@ -3,7 +3,6 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/homePage/HomePage';
 import PageNotFound from './components/pageNotFound/PageNotFound';
-import Loading from './components/loading/Loading';
 import Navbar from './components/homePage/navbarSection';
 import SignupSection from './components/homePage/signUp';
 import VerifyEmailPage from './components/homePage/signUp/VerifyEmailPage';
@@ -11,11 +10,7 @@ import SigninSection from './components/signIn';
 import ForgotPasswordPage from './components/signIn/forgetPassword';
 import ResetPasswordPage from './components/signIn/resetPassword';
 import { AuthProvider } from './components/AuthContext';
-import { QuestionAnswer } from '@mui/icons-material';
-import ReactionComponent from './components/courses/lessons/lessonStyle/QuestionSlide/ReactionComponent';
-import BitsLesson from './components/courses/lessons/lessonStyle/LessonHearts/BitsLessonEnd';
 import DoneLessonPage from './components/courses/lessons/LessonDone';
-import LessonSlide from './components/courses/lessons/lessonStyle/LessonSlide';
 import LessonOne from './components/courses/HTML/lessonHtml/LessonOne';
 import HTMLCourse from './components/courses/HTML';
 import QuizOne from './components/courses/HTML/quizHtml/QuizOne';
@@ -45,6 +40,20 @@ import LessonEightInCSS from './components/courses/CSS/lessonCss/LessonEight';
 import LessonTenInCSS from './components/courses/CSS/lessonCss/LessonTen';
 import QuizTwoInCss from './components/courses/CSS/quizCss/QuizTwo';
 import QuizThreeInCss from './components/courses/CSS/quizCss/QuizThree';
+import PythonCourse from './components/courses/Python/index';
+import LessonOneInPython from './components/courses/Python/lessonPython/LessonOne';
+import LessonTwoInPython from './components/courses/Python/lessonPython/LessonTwo';
+import LessonThreeInPython from './components/courses/Python/lessonPython/LessonThree';
+import LessonFourInPython from './components/courses/Python/lessonPython/LessonFour';
+import LessonFiveInPython from './components/courses/Python/lessonPython/LessonFive';
+import LessonTenInPython from './components/courses/Python/lessonPython/LessonTen';
+import LessonNineInPython from './components/courses/Python/lessonPython/LessonNine';
+import LessonEightInPython from './components/courses/Python/lessonPython/LessonEight';
+import LessonSevenInPython from './components/courses/Python/lessonPython/LessonSeven';
+import LessonSixInPython from './components/courses/Python/lessonPython/LessonSix';
+import QuizOneInPython from './components/courses/Python/quizPython/QuizOne';
+import QuizThreeInPython from './components/courses/Python/quizPython/QuizThree';
+import QuizTwoInPython from './components/courses/Python/quizPython/QuizTwo';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -92,6 +101,27 @@ function App() {
           <Route path='/learn/css/:courseId/lesson8' element={<LessonEightInCSS/>} />
           <Route path='/learn/css/:courseId/lesson10' element={<LessonTenInCSS/>} />
           <Route path='/learn/css/:courseId/quiz3' element={<QuizThreeInCss/>} />
+          <Route path='/learn/python/:courseId' element={<PythonCourse/>} />
+          <Route path='/learn/python/:courseId/lesson1' element={<LessonOneInPython/>} />
+          <Route path='/learn/python/:courseId/lesson2' element={<LessonTwoInPython/>} />
+          <Route path='/learn/python/:courseId/lesson3' element={<LessonThreeInPython/>} />
+          <Route path='/learn/python/:courseId/quiz1' element={<QuizOneInPython/>} />
+          <Route path='/learn/python/:courseId/lesson4' element={<LessonFourInPython/>} />
+          <Route path='/learn/python/:courseId/lesson5' element={<LessonFiveInPython/>} />
+          <Route path='/learn/python/:courseId/lesson6' element={<LessonSixInPython/>} />
+          <Route path='/learn/python/:courseId/quiz2' element={<QuizTwoInPython/>} />
+          <Route path='/learn/python/:courseId/lesson7' element={<LessonSevenInPython/>} />
+          <Route path='/learn/python/:courseId/lesson8' element={<LessonEightInPython/>} />
+          <Route path='/learn/python/:courseId/lesson9' element={<LessonNineInPython/>} />
+          <Route path='/learn/python/:courseId/lesson10' element={<LessonTenInPython/>} />
+          <Route path='/learn/python/:courseId/quiz3' element={<QuizThreeInPython/>} />
+
+
+
+
+
+
+
 
 
 

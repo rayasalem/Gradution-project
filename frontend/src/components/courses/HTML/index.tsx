@@ -119,6 +119,7 @@ const HTMLCourse: React.FC = () => {
           backgroundColor: '#f2f5f7',
           maxWidth: '100vw',
           overflow: 'hidden',
+          paddingTop:'80px'
         }}
       >
        <Paper
@@ -132,7 +133,7 @@ const HTMLCourse: React.FC = () => {
             backgroundColor: '#fff',
             borderRadius: '4px',
             marginBottom: '20px',
-            marginTop: '100px',
+
           }}
         >
           <Box>
