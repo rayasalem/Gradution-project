@@ -54,6 +54,35 @@ import LessonSixInPython from './components/courses/Python/lessonPython/LessonSi
 import QuizOneInPython from './components/courses/Python/quizPython/QuizOne';
 import QuizThreeInPython from './components/courses/Python/quizPython/QuizThree';
 import QuizTwoInPython from './components/courses/Python/quizPython/QuizTwo';
+import ReactCourse from './components/courses/React';
+import QuizThreeReact from './components/courses/React/QuizReact/QuizThree';
+import QuizTwoReact from './components/courses/React/QuizReact/QuizTwo';
+import QuizOneReact from './components/courses/React/QuizReact/QuizOne';
+import LessonOneReact from './components/courses/React/LessonReact/LessonOne';
+import LessonTwoReact from './components/courses/React/LessonReact/LessonTwo';
+import LessonThreeReact from './components/courses/React/LessonReact/LessonThree';
+import LessonFourReact from './components/courses/React/LessonReact/LessonFour';
+import LessonFiveReact from './components/courses/React/LessonReact/LessonFive';
+import LessonSixReact from './components/courses/React/LessonReact/LessonSix';
+import LessonSevenReact from './components/courses/React/LessonReact/LessonSeven';
+import LessonEightReact from './components/courses/React/LessonReact/LessonEight';
+import LessonNineReact from './components/courses/React/LessonReact/LessonNine';
+import LessonTenReact from './components/courses/React/LessonReact/LessonTen';
+import JSCourse from './components/courses/JavaScript';
+import LessonOnejs from './components/courses/JavaScript/JSLesson/LessonOne';
+import LessonTwojs from './components/courses/JavaScript/JSLesson/LessonTwo';
+import LessonThreejs from './components/courses/JavaScript/JSLesson/LessonThree';
+import LessonFourjs from './components/courses/JavaScript/JSLesson/LessonFour';
+import LessonFivejs from './components/courses/JavaScript/JSLesson/LessonFive';
+import LessonSixjs from './components/courses/JavaScript/JSLesson/LessonSix';
+import LessonSevenjs from './components/courses/JavaScript/JSLesson/LessonSeven';
+import LessonEightjs from './components/courses/JavaScript/JSLesson/LessonEight';
+import LessonNinejs from './components/courses/JavaScript/JSLesson/LessonNine';
+import LessonTenjs from './components/courses/JavaScript/JSLesson/LessonTen';
+import QuizThreejs from './components/courses/JavaScript/QuizJS/QuizThree';
+import QuizTwojs from './components/courses/JavaScript/QuizJS/QuizTwo';
+import QuizOnejs from './components/courses/JavaScript/QuizJS/QuizOne';
+import ProfilePage from './components/profilePage/ProfilePage';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -71,7 +100,7 @@ function App() {
           <Route path="/VerifyEmailPage" element={<VerifyEmailPage />} /> 
           <Route path="*" element={<PageNotFound />} /> 
           <Route path='/DoneLesson' element={<DoneLessonPage/>} />
-          <Route path='/test' element={<QuizOne/>} />
+          <Route path='/profile' element={<ProfilePage/>} />
           <Route path="/learn" element={<IndexCourse/>} />
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
           <Route path="/learn/html/:courseId/lesson1"element={<LessonOne/>}/>
@@ -115,24 +144,34 @@ function App() {
           <Route path='/learn/python/:courseId/lesson9' element={<LessonNineInPython/>} />
           <Route path='/learn/python/:courseId/lesson10' element={<LessonTenInPython/>} />
           <Route path='/learn/python/:courseId/quiz3' element={<QuizThreeInPython/>} />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          <Route path='/learn/React/:courseId' element={<ReactCourse/>} />
+          <Route path='/learn/React/:courseId/lesson1' element={<LessonOneReact/>} />
+          <Route path='/learn/React/:courseId/lesson2' element={<LessonTwoReact/>} />
+          <Route path='/learn/React/:courseId/lesson3' element={<LessonThreeReact/>} />
+          <Route path='/learn/React/:courseId/quiz1' element={<QuizOneReact/>} />
+          <Route path='/learn/React/:courseId/lesson4' element={<LessonFourReact/>} />
+          <Route path='/learn/React/:courseId/lesson5' element={<LessonFiveReact/>} />
+          <Route path='/learn/React/:courseId/lesson6' element={<LessonSixReact/>} />
+          <Route path='/learn/React/:courseId/quiz2' element={<QuizTwoReact/>} />
+          <Route path='/learn/React/:courseId/lesson7' element={<LessonSevenReact/>} />
+          <Route path='/learn/React/:courseId/lesson8' element={<LessonEightReact/>} />
+          <Route path='/learn/React/:courseId/lesson9' element={<LessonNineReact/>} />
+          <Route path='/learn/React/:courseId/lesson10' element={<LessonTenReact/>} />
+          <Route path='/learn/React/:courseId/quiz3' element={<QuizThreeReact/>} />
+          <Route path='/learn/javaScript/:courseId' element={<JSCourse/>} />
+          <Route path='/learn/javaScript/:courseId/lesson1' element={<LessonOnejs/>} />
+          <Route path='/learn/javaScript/:courseId/lesson2' element={<LessonTwojs/>} />
+          <Route path='/learn/javaScript/:courseId/lesson3' element={<LessonThreejs/>} />
+          <Route path='/learn/javaScript/:courseId/quiz2' element={<QuizOnejs/>} />
+          <Route path='/learn/javaScript/:courseId/lesson4' element={<LessonFourjs/>} />
+          <Route path='/learn/javaScript/:courseId/lesson5' element={<LessonFivejs/>} />
+          <Route path='/learn/javaScript/:courseId/lesson6' element={<LessonSixjs/>} />
+          <Route path='/learn/javaScript/:courseId/quiz2' element={<QuizTwojs/>} />
+          <Route path='/learn/javaScript/:courseId/lesson7' element={<LessonSevenjs/>} />
+          <Route path='/learn/javaScript/:courseId/lesson8' element={<LessonEightjs/>} />
+          <Route path='/learn/javaScript/:courseId/lesson9' element={<LessonNinejs/>} />
+          <Route path='/learn/javaScript/:courseId/lesson10' element={<LessonTenjs/>} />
+          <Route path='/learn/javaScript/:courseId/quiz3' element={<QuizThreejs/>} />
         </Routes>
       </AuthProvider>
     </Router>

@@ -122,7 +122,7 @@ const Navbar: React.FC = () =>{
               >
              <div className='impo'>
              <span className='userName'>Bessan Tomeh </span>
-             <Link href='/' className='Link'>Go to profile</Link>
+             <Link href='/profile' className='Link'>Go to profile</Link>
              <Divider />
              <MenuItem onClick={handleMenuClose}>
              <ListItemIcon>
@@ -193,7 +193,7 @@ const Navbar: React.FC = () =>{
               >
          <div className='impo'>
           <span className='userName'>Bessan Tomeh </span>
-          <Link href='/' className='Link'>Go to profile</Link>
+          <Link href='/profile' className='Link'>Go to profile</Link>
          <Divider />
          <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
