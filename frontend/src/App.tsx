@@ -83,6 +83,7 @@ import QuizThreejs from './components/courses/JavaScript/QuizJS/QuizThree';
 import QuizTwojs from './components/courses/JavaScript/QuizJS/QuizTwo';
 import QuizOnejs from './components/courses/JavaScript/QuizJS/QuizOne';
 import ProfilePage from './components/profilePage/ProfilePage';
+import ModelSetting from './components/profilePage/setting/ModelSetting';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -172,6 +173,9 @@ function App() {
           <Route path='/learn/javaScript/:courseId/lesson9' element={<LessonNinejs/>} />
           <Route path='/learn/javaScript/:courseId/lesson10' element={<LessonTenjs/>} />
           <Route path='/learn/javaScript/:courseId/quiz3' element={<QuizThreejs/>} />
+          <Route path='/test' element={<ModelSetting/>} />
+
+          ProfileSettings
         </Routes>
       </AuthProvider>
     </Router>
