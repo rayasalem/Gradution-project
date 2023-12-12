@@ -31,7 +31,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ open, onClose }) => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: 500,
-          height: '65vh', 
+          height: '70vh', 
           bgcolor: '#fff',
           boxShadow: 24,
           p: 4,
@@ -61,22 +61,22 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ open, onClose }) => {
                       <Box sx={{ marginLeft: { xs: 0, md: 4 }, marginTop: { xs: 2, md: 0 } }}>
                     <Typography variant="h6" sx={{ mb: 1 }}>information</Typography>
                         
-                        <input type="file" id="upload-photo" />
-
-                        <Button variant="outlined" sx={{ marginLeft: 2 }}>
-                          Upload new photo
-                        </Button>
+                        <TextField   type="file"/>
                         <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
                           Allowed JPG, PNG. Max size of 800K
                         </Typography>
+                        <Button variant="contained" sx={{ width:'55px',height:'30px' }}>
+                          Upload 
+                        </Button>
+                        
                       </Box>
                     </Box>
                     <Box sx={{ p: 2 }}>
-                      <TextField label="Name" sx={{ mb: 1 }}  />
-                      <TextField label="E-mail" sx={{ mb: 1 }}  />
-                      <TextField label="Bio" sx={{ mb: 1 }}  />
-                      <FormControl fullWidth sx={{ mb: 1 }}>
-                <InputLabel htmlFor="country-select" sx={{width:'50px'}}>Country</InputLabel>
+                      <TextField label="Name" sx={{mb: 5, width:'300px',height:'25px'}}  />
+                      <TextField label="E-mail" sx={{ mb: 5,width:'300px',height:'25px'}}  />
+                      <TextField label="Bio" sx={{ mb: 5,width:'300px',height:'25px'}}  />
+                      <FormControl fullWidth sx={{ mb: 5 ,width:'300px',height:'25px'}}>
+                <InputLabel htmlFor="country-select" >Country</InputLabel>
                 <Select
                   labelId="country-select"
                   id="country-select"
