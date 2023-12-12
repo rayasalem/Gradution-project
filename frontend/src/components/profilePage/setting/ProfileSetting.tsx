@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
-import { Box, Card, List, ListItem, ListItemText, Typography, TextField, Button } from '@mui/material';
-import Modal from '@mui/material/Modal';
-import { Divider } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Typography, TextField, Button,
+   MenuItem, Select, FormControl, InputLabel } from '@mui/material';import Modal from '@mui/material/Modal';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 interface ProfileSettingsProps {
   open: boolean;
   onClose: () => void;
 }
-
+const countries = [
+  'United States',
+  'United Kingdom',
+  'Canada',
+];
 const ProfileSettings: React.FC<ProfileSettingsProps> = ({ open, onClose }) => {
   const [activeTab, setActiveTab] = useState('general');
+  const [selectedCountry, setSelectedCountry] = useState('');
 
   const handleTabChange = (tab: any) => {
     setActiveTab(tab);
   };
-
+  const handleCountryChange = (event: SelectChangeEvent<string>) => {
+    setSelectedCountry(event.target.value);
+  };
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -24,7 +31,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ open, onClose }) => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: 500,
-          height: '60vh', 
+          height: '65vh', 
           bgcolor: '#fff',
           boxShadow: 24,
           p: 4,
@@ -52,6 +59,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ open, onClose }) => {
                   
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <Box sx={{ marginLeft: { xs: 0, md: 4 }, marginTop: { xs: 2, md: 0 } }}>
+                    <Typography variant="h6" sx={{ mb: 1 }}>information</Typography>
+                        
                         <input type="file" id="upload-photo" />
 
                         <Button variant="outlined" sx={{ marginLeft: 2 }}>
@@ -63,11 +72,25 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ open, onClose }) => {
                       </Box>
                     </Box>
                     <Box sx={{ p: 2 }}>
-                      <TextField label="Name" sx={{ mb: 1 }} defaultValue="Nelle Maxwell" />
-                      <TextField label="E-mail" sx={{ mb: 1 }} defaultValue="nmaxwell@mail.com" />
-                      <TextField label="Bio" sx={{ mb: 1 }} defaultValue="Describe yourself" />
-                      <TextField label="country" sx={{ mb: 1 }} defaultValue=" " />
-                        <Button variant="contained" color="primary">
+                      <TextField label="Name" sx={{ mb: 1 }}  />
+                      <TextField label="E-mail" sx={{ mb: 1 }}  />
+                      <TextField label="Bio" sx={{ mb: 1 }}  />
+                      <FormControl fullWidth sx={{ mb: 1 }}>
+                <InputLabel htmlFor="country-select" sx={{width:'50px'}}>Country</InputLabel>
+                <Select
+                  labelId="country-select"
+                  id="country-select"
+                  value={selectedCountry}
+                  onChange={handleCountryChange}
+                >
+                  {countries.map((country) => (
+                    <MenuItem key={country} value={country}>
+                      {country}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>                        
+              <Button variant="contained" color="primary">
                           Save changes
                         </Button>
                     </Box>
@@ -75,14 +98,14 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ open, onClose }) => {
               )}
 
               {activeTab === 'password' && (
-                
                     <Box sx={{ p: 2 }}>
-                      <Typography variant="h6" sx={{ mb: 1 }}>Password</Typography>
-                      <TextField label="Current Password" type="password" sx={{ mb: 1 }} />
-                      <TextField label="New Password" type="password" sx={{ mb: 1 }} />
-                       <Button variant="contained">Change</Button>
+                     <Typography variant="h6" sx={{ mb: 1 }}>Password</Typography>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                     <TextField label="Current Password" type="password" sx={{ mb: 1 }} />
+                    <TextField label="New Password" type="password" sx={{ mb: 1 }} />
+                     <Button variant="contained" sx={{width:'150px'}}>Change</Button>
+                      </Box>
                     </Box>
-                 
               )}
 
               {activeTab === 'delete' && (
