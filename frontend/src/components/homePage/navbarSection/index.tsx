@@ -23,6 +23,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useAuth } from '../../AuthContext';
 import { FULL_PATH,CATEGORIES,COMPILER_LANGUAGES } from './constant';
 import './navbar.css'
+import ModelSetting from './../../profilePage/setting/ModelSetting';
 const Navbar: React.FC = () =>{
   const isSmallScreen = useMediaQuery('(max-width:900px)');
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -40,6 +41,10 @@ const Navbar: React.FC = () =>{
   const handleSignUp = (event: React.MouseEvent<HTMLElement>) => {
     history('/signup');
   };  
+  const handleSettings = (event: React.MouseEvent<HTMLElement>) => {
+    return <ModelSetting/>
+    history('/profile');
+  }; 
   const handleMenuClose = () => {
     setCompilerCategoryAnchorEl(null)
     setAnchorEl(null);
@@ -124,7 +129,7 @@ const Navbar: React.FC = () =>{
              <span className='userName'>Bessan Tomeh </span>
              <Link href='/profile' className='Link'>Go to profile</Link>
              <Divider />
-             <MenuItem onClick={handleMenuClose}>
+             <MenuItem onClick={handleSettings}>
              <ListItemIcon>
              <Settings fontSize="small" />
              </ListItemIcon>Settings
