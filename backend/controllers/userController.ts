@@ -26,7 +26,7 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
   }
 };
 
-export const updatePassword = async (req: Request, res: Response, next: NextFunction) => {
+export const updatePassword = async (req: Request, res: Response) => {
   try {
     if (!process.env.SALTROUNT) {
       throw new Error('SALTROUNDS environment variable is not defined.');
@@ -37,24 +37,24 @@ export const updatePassword = async (req: Request, res: Response, next: NextFunc
     const { oldPassword, newPassword } = req.body;
     const user = await userModel.findById(req.user._id);
     if (!user) {
-      return res.json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     } else {
       const match = await bcrypt.compare(oldPassword, user.password);
       if (!match) {
-        res.json({ message: "Old password is invalid" });
+        res.status(409).json({ message: "Old password is invalid" });
       } else {
         const hash = await bcrypt.hash(newPassword, parseInt(process.env.SALTROUNT));
         const updateUser = await userModel.findByIdAndUpdate(req.user._id, { password: hash });
         if (!updateUser) {
-          res.json({ message: "Failed to update password" });
+          res.status(500).json({ message: "Failed to update password" });
         } else {
-          res.json({ message: "Password updated successfully" });
+          res.status(200).json({ message: "Password updated successfully" });
         }
       }
     }
   } catch (error) {
     console.error('Error:', error);
-    next(Object.assign(new Error("server error"), { cause: 500 }));
+    res.status(500).json({ message: 'server error' });
   }
 };
 
@@ -67,16 +67,17 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const  id  = req.user?._id; 
     const user = await userModel.findByIdAndDelete(id);
     if (!user) {
-      next(Object.assign(new Error('User not found'), { cause: 404 }));
+    res.status(404).json({ message: 'User not found' });
     }
-    res.json({ message: 'Success, User deleted', user });
+    res.status(200).json({ message: 'Success, User deleted', user });
   } catch (error) {
-    next(Object.assign(new Error('server error'), { cause: 500 }));
+    res.status(500).json({ message: 'server error' });
+
   }
 };
 

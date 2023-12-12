@@ -121,3 +121,36 @@ export const getAllUsers = async (): Promise<UserResponse[] | undefined> => {
     console.log("get users error:", error);
   }
 };
+export const deleteUser = async () => {
+  try {
+    const response = await axiosInstance.delete('/api/v1/user/delete');
+
+    if (response.status === 200) {
+      console.log('Success, User deleted ');
+      return response.data;
+    } else {
+      throw new Error('Failed to User deleted');
+    }
+  } catch (error) {
+    console.error('Failed to User deleted', error);
+    throw error;
+  }
+};
+export const updatePassword= async (oldPassword: string,newPassword: string) => {
+  try {
+    const response = await axiosInstance.patch("/api/v1/user/updatePassword", {
+      oldPassword,
+      newPassword,
+    });
+    if (response.status === 200) {
+      console.log('Success, User update password ');
+      return response.data;
+    }
+  } catch (error:any) {
+    if (error.response?.status === 409) {
+      throw new Error("Old password is invalid");
+      } else {
+        console.log("update password error:", error);
+      }
+  }
+};
