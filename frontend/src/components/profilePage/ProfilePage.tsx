@@ -1,10 +1,46 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { Avatar, Box, Paper, Typography } from '@mui/material';
 import Footer from '../homePage/footer/Footer';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import { getprofileInfo, retrieveUserBitsAndHearts } from '../../api/userAction';
 
 
 const ProfilePage:React.FC = () => {
+  const [bitsCount, setBitsCount] = useState<number>();
+  const [uploadedImage, setUploadedImage] = useState('/images/user.png');
+  const [userName, setUserName] = useState('');
+  const [Bio, setBio] = useState('');
+  const [Country, setCountry] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { bitsCount } = await retrieveUserBitsAndHearts();
+        setBitsCount(bitsCount);
+      } catch (error) {
+        console.error('Error retrieving bits and hearts:', error);
+      }
+    };
+
+    fetchData();
+  }, []); 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+          const profileInfo = await getprofileInfo(); 
+          if (profileInfo) {
+            setUserName(profileInfo?.user?.username);
+            setBio(profileInfo?.user?.bio)
+            setCountry(profileInfo?.user?.country)
+            setUploadedImage(profileInfo?.user?.avatar)
+           console.log(profileInfo)
+          }
+      } catch (error) {
+        console.error('Error fetching profile info:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <Box>
       <Box
@@ -32,18 +68,21 @@ const ProfilePage:React.FC = () => {
         <Box sx={{display: 'flex', alignItems: 'center',paddingTop:'100px'}}>
         <Avatar  
         alt="Your Name"
-        src="/path/to/your/profile/picture.jpg" 
+        src={uploadedImage}
         sx={{ width: '120px',maxWidth: '120px',height: '120px',borderRadius: '50%',marginBottom: '5px'}} />
          <Box  sx={{ backgroundColor: 'transparent', marginLeft: '16px', padding: '16px' }}>
         <Typography variant="h5" gutterBottom sx={{color:'#fff',fontSize:'26px',fontWeight:'600'}}>
-          Your Name
+          {userName}
         </Typography>
-        <Typography variant="subtitle1" sx={{color:'#fff',fontSize:'18px',fontWeight:'300'}}>
+        <Typography variant="subtitle1" sx={{color:'#c8d2db',fontSize:'12px',fontWeight:'300'}}>
+          {Bio}
+        </Typography>
+        <Typography variant="subtitle1" sx={{color:'#fff',fontSize:'15px',fontWeight:'500'}}>
         <ViewInArIcon style={{ fontSize: 18, color: '#ecaa00' ,paddingRight:'6px'}} />
-          Bit 
+          {bitsCount} Bit 
         </Typography>
         <Typography variant="subtitle1" sx={{color:'#fff',fontSize:'18px',fontWeight:'300'}}>
-          City Name
+          {Country}
         </Typography>
         </Box>
         </Box>

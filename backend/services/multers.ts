@@ -12,7 +12,8 @@ export const fileValidation = {
     next: NextFunction
   ) => {
     if (err ) {
-        next(Object.assign(new Error("Multer error"), { cause: 400}));
+      return res.status(400).json({ error: "Multer error", message: err.message });
+
       } else {
       next();
     }

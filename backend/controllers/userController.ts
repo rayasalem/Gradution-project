@@ -10,7 +10,7 @@ declare module 'express-serve-static-core' {
   }
 }
 
-export const getProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const getProfile = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -22,7 +22,7 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
     res.status(200).json({ message: "Success", user });
   } catch (error) {
     console.log(error);
-    next(Object.assign(new Error("Server error"), { cause: 500 }));
+    res.status(500).json({ message: 'server error' });
   }
 };
 
@@ -94,9 +94,9 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
+export const updateUser = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const  id  = req.user?._id; 
     const updates = req.body;
     const updatedUser = await userModel.findByIdAndUpdate(id, updates, { new: true });
     if (!updatedUser) {
@@ -104,10 +104,10 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
     }
     res.status(200).json({ message: 'User updated successfully', user: updatedUser });
   } catch (error) {
-    next(Object.assign(new Error('Server error'), { cause: 500 }));
+    res.status(500).json({ message: 'server error' });
   }
 };
-export const uploadImage = async (req: Request, res: Response, next: NextFunction) => {
+export const uploadImage = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -118,10 +118,10 @@ export const uploadImage = async (req: Request, res: Response, next: NextFunctio
       }
       const { secure_url } = await cloudinary.uploader.upload(req.file.path, { folder: `user/${req.user._id}/profilepic` });
       const user = await userModel.findByIdAndUpdate(req.user._id, { avatar: secure_url });
-      res.status(200).json({ message: "Success" });
+      res.status(200).json({ message: "Success",user });
     }
   } catch (error) {
-    next(Object.assign(new Error("Server error"), { cause: 500 }));
+    res.status(500).json({ message: 'server error' });
   }
 };
 

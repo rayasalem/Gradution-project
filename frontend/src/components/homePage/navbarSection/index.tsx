@@ -43,7 +43,7 @@ const Navbar: React.FC = () =>{
   };  
   const handleSettings = (event: React.MouseEvent<HTMLElement>) => {
     return <ModelSetting/>
-    history('/profile');
+    // history('/profile');
   }; 
   const handleMenuClose = () => {
     setCompilerCategoryAnchorEl(null)

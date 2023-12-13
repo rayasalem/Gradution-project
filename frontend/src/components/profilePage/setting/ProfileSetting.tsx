@@ -6,19 +6,14 @@ import { deleteUser, updatePassword } from './../../../api/user';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; 
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ReactCountryFlag from 'react-country-flag';
-
+import { updateUserInfo, uploadImage } from '../../../api/userAction';
 import Joi from 'joi';
+import { getprofileInfo } from '../../../api/userAction';
 
 interface ProfileSettingsProps {
   open: boolean;
   onClose: () => void;
 }
-const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const file = event.target.files?.[0];
-  if (file) {
-    console.log('Uploaded file:', file);
-  }
-};
 const ProfileSettings: React.FC<ProfileSettingsProps> = ({ open, onClose }) => {
   const [activeTab, setActiveTab] = useState('general');
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -29,8 +24,40 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ open, onClose }) => {
   const [error, setError] = useState<string | null>(null);
   const [fetchedCountries, setFetchedCountries] = useState<any[]>([]);
   const [uploadedImage, setUploadedImage] = useState('/images/user.png');
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [Bio, setBio] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+          const profileInfo = await getprofileInfo(); 
+          if (profileInfo) {
+            setUserName(profileInfo?.user?.username);
+            setUserEmail(profileInfo?.user?.email);
+            setBio(profileInfo?.user?.bio)
+            setUploadedImage(profileInfo?.user?.avatar)
+            setSelectedCountry(profileInfo?.user?.country)
+           console.log(profileInfo)
+          }
+      } catch (error) {
+        console.error('Error fetching profile info:', error);
+      }
+    };
 
-
+    fetchData();
+  }, []);
+  const handleImageUploadD = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const file = event.target.files?.[0];
+  
+    if (file) { 
+      try {
+        const response = await uploadImage(file);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+  };
   const ResetPasswordSchema = Joi.object().required().keys({
     newPassword: Joi.string()
       .min(8)
@@ -68,6 +95,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ open, onClose }) => {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      handleImageUploadD(event);
       const imageUrl = URL.createObjectURL(file);
       setUploadedImage(imageUrl);
       console.log('Uploaded file:', file);
@@ -101,6 +129,14 @@ const handleChangePasswordClick= async () => {
       setError(error.message);
     }
   };
+  const handleUpdateClick = async () => {
+    try {
+      await updateUserInfo({ userName, email: userEmail, bio: Bio, country: selectedCountry });
+      setSuccessMessage('Information saved successfully')
+    } catch (error) {
+      console.error('Error Update User:', error);
+    }
+  };
 const handleDeleteClick = async () => {
     try {
       await deleteUser();
@@ -122,7 +158,7 @@ const handleDeleteClick = async () => {
           bgcolor: '#fff',
           boxShadow: 24,
           p: 4,
-          // overflow: 'scroll',
+          overflow: 'hidden',
         }}
       >
         <Button sx={{ position: 'absolute', top: 10, right: 10, background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: '#333' }} onClick={onClose}>
@@ -173,16 +209,28 @@ const handleDeleteClick = async () => {
                 startIcon={<CloudUploadIcon />}
                 component="span"
                 sx={{ width: '120px', height: '30px', cursor: 'pointer' }}
-              >
+                onClick={(event: React.MouseEvent<HTMLSpanElement>) => {
+                  const input = document.getElementById('upload-image');
+                  input?.click();
+                }}    
+                      >
                 Upload
               </Button>
             </label>
           </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                        <TextField label="Name" sx={{mb: 5, width:'300px',height:'25px'}}  />
-                        <TextField label="E-mail" sx={{ mb: 5,width:'300px',height:'25px'}}  />
-                        <TextField label="Bio" sx={{ mb: 5,width:'300px',height:'25px'}}  />
-                        <FormControl fullWidth sx={{ mb: 2, width: '300px' }}>
+          {successMessage && (
+                       <Typography variant="body2"sx={{ width: '210px',backgroundColor:'#40bf9c',padding:'5px',color:'#fff' }}>
+                        {successMessage}
+                      </Typography>
+                          )}
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px',paddingTop:'4px' }}>
+                <TextField label="Name" value={userName} sx={{ mb: 4, width: '300px', height: '25px' }} />
+                <TextField label="E-mail" value={userEmail} sx={{ mb: 4, width: '300px', height: '25px' }} />
+                <TextField label="Bio" value={Bio} sx={{ mb: 4,width:'300px',height:'25px'}}
+                  onChange={(e) => {
+                    setBio(e.target.value); 
+                  }}/>
+                <FormControl fullWidth sx={{ width: '300px' }}>
     <InputLabel htmlFor="country-select">Country</InputLabel>
     <Select
       labelId="country-select"
@@ -217,7 +265,7 @@ const handleDeleteClick = async () => {
   </FormControl>
                          
                 <Button variant="contained" color="primary" sx={{width:"50%",display:"flex",justifyContent: 'center',
-              alignItems: 'center',}}>
+              alignItems: 'center',}} onClick={handleUpdateClick}>
                             Save changes
                           </Button>
                       </Box>
@@ -257,7 +305,7 @@ const handleDeleteClick = async () => {
                      <Button variant="contained" onClick={handleChangePasswordClick}
                      sx={{width:'150px',mb:4}}>Change</Button>
                      {successMessage && (
-                       <Typography variant="body2"sx={{ width: '210px',backgroundColor:'#4caf50',padding:'5px',color:'#fff' }}>
+                       <Typography variant="body2"sx={{ width: '210px',backgroundColor:'#40bf9c',padding:'5px',color:'#fff' }}>
                         {successMessage}
                       </Typography>
                           )}

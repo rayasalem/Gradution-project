@@ -11,6 +11,12 @@ interface ICourse {
     _id: string;
   };
 }
+interface IUser {
+  userName?: string;
+  country?: string; 
+  bio?:string;
+  email?: string;
+}
 interface IUserQuiz{
   title: string;
   course: string; 
@@ -196,6 +202,51 @@ export const retrieveUserBitsAndHearts = async () => {
     }
   } catch (error) {
     console.error('Failed to retrieve bits and hearts:', error);
+    throw error;
+  }
+};
+export const uploadImage = async (file: any) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await axiosInstance.patch('/api/v1/user/profilePic', formData
+    ,
+     {
+      headers: {
+        'Content-Type': 'multipart/form-data', 
+      }
+    }
+    );
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Image upload error:', error);
+    throw new Error('Image upload failed');
+  }
+};
+export const getprofileInfo = async () => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/user/profile`);
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to retrieve user details:', error);
+    throw error;
+  }
+};
+export const updateUserInfo = async (userInfo: IUser): Promise<IUser | undefined> => {
+  try {
+    const response: AxiosResponse<IUser> = await axiosInstance.put('/api/v1/user/updateUser', userInfo);
+
+    if (response.status === 200) {
+      return response.data;
+    } 
+  } catch (error) {
+    console.log("User updated error:", error);
     throw error;
   }
 };

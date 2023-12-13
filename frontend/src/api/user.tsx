@@ -154,3 +154,34 @@ export const updatePassword= async (oldPassword: string,newPassword: string) => 
       }
   }
 };
+export const getprofileInfo = async (userId: string): Promise<{ name: string; email: string; } | undefined> => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/user//profileInfo/${userId}`);
+
+    if (response.status === 200) {
+      const { name, email } = response.data;
+      return { name, email };
+    }
+  } catch (error) {
+    console.error('Failed to retrieve user details:', error);
+    throw error;
+  }
+};
+export const uploadImage = async (file: any, userId: string) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await axiosInstance.post('/api/v1/user/uploadImage', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${userId}` 
+      }
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Image upload error:', error);
+    throw new Error('Image upload failed');
+  }
+};
