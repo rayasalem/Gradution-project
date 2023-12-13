@@ -173,7 +173,7 @@ function App() {
           <Route path='/learn/javaScript/:courseId/lesson9' element={<LessonNinejs/>} />
           <Route path='/learn/javaScript/:courseId/lesson10' element={<LessonTenjs/>} />
           <Route path='/learn/javaScript/:courseId/quiz3' element={<QuizThreejs/>} />
-          <Route path='/test' element={<ModelSetting/>} />
+          <Route path='/profile/settings' element={<ModelSetting/>} />
 
           ProfileSettings
         </Routes>

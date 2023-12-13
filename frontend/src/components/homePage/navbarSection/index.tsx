@@ -42,8 +42,7 @@ const Navbar: React.FC = () =>{
     history('/signup');
   };  
   const handleSettings = (event: React.MouseEvent<HTMLElement>) => {
-    return <ModelSetting/>
-    // history('/profile');
+     history('/profile/settings');
   }; 
   const handleMenuClose = () => {
     setCompilerCategoryAnchorEl(null)

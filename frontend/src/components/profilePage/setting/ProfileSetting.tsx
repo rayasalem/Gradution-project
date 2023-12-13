@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ReactCountryFlag from 'react-country-flag';
 import { updateUserInfo, uploadImage } from '../../../api/userAction';
+import { Link } from 'react-router-dom';
 import Joi from 'joi';
 import { getprofileInfo } from '../../../api/userAction';
 
@@ -161,7 +162,9 @@ const handleDeleteClick = async () => {
           overflow: 'hidden',
         }}
       >
-        <Button sx={{ position: 'absolute', top: 10, right: 10, background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: '#333' }} onClick={onClose}>
+
+        <Button sx={{ position: 'absolute', top: 10, right: 10, background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: '#333' }} onClick={onClose}
+        component={Link} to={'/profile'}>
           X
         </Button>
           <Box sx={{ display: 'flex',paddingTop:'5px', flexDirection: { xs: 'column', md: 'row' } }}>
