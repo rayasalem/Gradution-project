@@ -111,16 +111,7 @@ export const getCurrentUser = async (id: string): Promise<UserResponse | undefin
   }
 };
 
-export const getAllUsers = async (): Promise<UserResponse[] | undefined> => {
-  try {
-    const response: AxiosResponse<UserResponse[]> = await axiosInstance.get("/users");
-    if (response.status === 200) {
-      return response.data;
-    }
-  } catch (error) {
-    console.log("get users error:", error);
-  }
-};
+
 export const deleteUser = async () => {
   try {
     const response = await axiosInstance.delete('/api/v1/user/delete');
@@ -183,5 +174,34 @@ export const uploadImage = async (file: any, userId: string) => {
   } catch (error) {
     console.error('Image upload error:', error);
     throw new Error('Image upload failed');
+  }
+};
+export const getAllUsers = async () => {
+  try {
+    const response = await axiosInstance.get('/api/v1/user/allUsers');
+
+    if (response.status === 200) {
+      console.log('Success, User deleted ');
+      return response.data;
+    } else {
+      throw new Error('Failed to User deleted');
+    }
+  } catch (error) {
+    console.error('Failed to User deleted', error);
+    throw error;
+  }
+};
+export const deleteUserById = async (id: any) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/user/deleteUser/${id}`);
+    if (response.status === 200) {
+      console.log('Success, User deleted ');
+      return response.data;
+    } else {
+      throw new Error('Failed to User deleted');
+    }
+  } catch (error) {
+    console.error('Failed to User deleted', error);
+    throw error;
   }
 };

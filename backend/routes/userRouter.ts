@@ -17,6 +17,7 @@ router.delete('/delete',authorizeUser([roles.admin,roles.user]),userController.d
 router.get('/:id',authorizeUser([roles.admin]),validation(validators.getUserById), userController.getUserById);
 router.put("/updateUser",authorizeUser([roles.user,roles.admin]), userController.updateUser);
 router.post('/cerateUser',validation(validators.createUser), userController.createUser)
+router.delete('/deleteUser/:id',authorizeUser([roles.admin]),userController.deleteUserById)
 
 
 export default router;

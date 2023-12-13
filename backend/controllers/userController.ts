@@ -60,7 +60,8 @@ export const updatePassword = async (req: Request, res: Response) => {
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await userModel.find({});
+    const users = await userModel.find({
+      role:'user'});
     res.json({ message: 'Success', users });
   } catch (error) {
     next(Object.assign(new Error("server error"), { cause: 500 }));
@@ -77,6 +78,19 @@ export const deleteUser = async (req: Request, res: Response) => {
     res.status(200).json({ message: 'Success, User deleted', user });
   } catch (error) {
     res.status(500).json({ message: 'server error' });
+
+  }
+};
+export const deleteUserById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+        const user = await userModel.findByIdAndDelete(id);
+    if (!user) {
+    res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'Success, User deleted', user });
+  } catch (error:any) {
+    res.status(500).json({ message: 'server error',error: error.message });
 
   }
 };

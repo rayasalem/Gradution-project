@@ -30,7 +30,7 @@ export const signUp = async (req: Request, res: Response,next: NextFunction) => 
     const info = await SendEmail(email, 'Verify email', message);
     if (info.accepted.length) {
       const savedUser = await newUser.save();
-      res.status(201).json({ message: 'Success', savedUser: savedUser._id });
+      res.status(201).json({ message: 'Success', token });
     } else {
       return next(Object.assign(new Error("Email rejected"), { cause: 404 }));
     }
