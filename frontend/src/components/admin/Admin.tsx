@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef, GridRowsProp, GridCellParams } from '@mui/x-data-grid';
 import { Button, Box } from '@mui/material';
 import { deleteUserById, getAllUsers } from '../../api/user';
-
+import { useNavigate, useParams } from 'react-router';
+import './admin.css';
 interface User {
     _id: string;
     username: string;
@@ -11,6 +12,8 @@ interface User {
 
 const Admin = () => {
     const [users, setUsers] = useState<User[]>([]);
+    const navigate = useNavigate();
+
     const handleEdit = (params: GridCellParams) => {
         console.log(`Edit clicked for user with ID: ${params.id}`);
     };
@@ -23,10 +26,11 @@ const Admin = () => {
         } catch (error) {
             console.error('Error to delete:', error);
         }
-        // console.log(`Remove clicked for user with ID: ${params.id}`);
     };
 
     const handleUpdatePassword = (params: GridCellParams) => {
+        navigate(`/DevLoom/admin/changePassword/${params.id}`);
+
         console.log(`Update Password clicked for user with ID: ${params.id}`);
     };
 
@@ -86,8 +90,8 @@ const Admin = () => {
     }));
 
     return (
-        <Box sx={{display: 'flex',justifyContent:'center',height: 400, width: '90vw', paddingTop: '120px',paddingLeft:'25px'}}>
-           <Box>
+        <div className="admin-container">
+        <div className="datagrid-container">
             <DataGrid
                 rows={rows}
                 columns={columns}
@@ -100,8 +104,8 @@ const Admin = () => {
                 }}
                 checkboxSelection
             />
-            </Box>
-        </Box>
+               </div>
+        </div>
     )
 }
 

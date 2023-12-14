@@ -85,6 +85,7 @@ import QuizOnejs from './components/courses/JavaScript/QuizJS/QuizOne';
 import ProfilePage from './components/profilePage/ProfilePage';
 import ModelSetting from './components/profilePage/setting/ModelSetting';
 import Admin from './components/admin/Admin';
+import Update from './components/admin/changePassword/ChangePassword';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -177,6 +178,8 @@ function App() {
           <Route path='/profile/settings' element={<ModelSetting/>} />
 
           <Route path="/DevLoom/admin" element={<Admin/>} /> 
+          <Route path="/DevLoom/admin/changePassword/:userId" element={<Update/>} /> 
+
           
         </Routes>
       </AuthProvider>

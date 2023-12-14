@@ -205,3 +205,17 @@ export const deleteUserById = async (id: any) => {
     throw error;
   }
 };
+export const updateuser = async (id: string, password: string) => {
+  try {
+    const response = await axiosInstance.put(`/api/v1/user/updateUserPassword/${id}`, {
+      password, 
+    });
+    if (response.status === 200) {
+      console.log('Success, User updated password');
+      return response.data;
+    }
+  } catch (error: any) {
+    console.log("Update password error:", error);
+    throw error;
+  }
+};

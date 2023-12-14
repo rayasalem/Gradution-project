@@ -25,7 +25,31 @@ export const getProfile = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'server error' });
   }
 };
-
+export const updateUserPassword = async (req: Request, res: Response) => {
+  try {
+  const { id } = req.params;
+  const { password } = req.body;
+  const user = await userModel.findById(id);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }else{
+    if (!process.env.SALTROUNT || !process.env.EMAILTOKEN) {
+      throw new Error('SALTROUNT | EMAILTOKEN environment variable is not defined.');
+    }
+    const SALTROUNT = parseInt(process.env.SALTROUNT);
+    const hash = bcrypt.hashSync(password, SALTROUNT);
+    const updateUser = await userModel.findByIdAndUpdate(id, { password: hash });
+    if (!updateUser) {
+      res.status(500).json({ message: "Failed to update password" });
+    } else {
+      res.status(200).json({ message: "Password updated successfully" });
+    }
+  }
+}catch (error) {
+  console.error('Error:', error);
+  res.status(500).json({ message: 'server error' });
+}
+}
 export const updatePassword = async (req: Request, res: Response) => {
   try {
     if (!process.env.SALTROUNT) {
