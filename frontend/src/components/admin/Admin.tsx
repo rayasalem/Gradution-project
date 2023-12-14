@@ -15,7 +15,7 @@ const Admin = () => {
     const navigate = useNavigate();
 
     const handleEdit = (params: GridCellParams) => {
-        console.log(`Edit clicked for user with ID: ${params.id}`);
+        navigate(`/DevLoom/admin/updateUser/${params.id}`);
     };
 
     const handleRemove = async(params: GridCellParams) => {
@@ -30,8 +30,6 @@ const Admin = () => {
 
     const handleUpdatePassword = (params: GridCellParams) => {
         navigate(`/DevLoom/admin/changePassword/${params.id}`);
-
-        console.log(`Update Password clicked for user with ID: ${params.id}`);
     };
 
     useEffect(() => {

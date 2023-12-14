@@ -19,6 +19,7 @@ router.put("/updateUser",authorizeUser([roles.user,roles.admin]), userController
 router.post('/cerateUser',validation(validators.createUser), userController.createUser)
 router.delete('/deleteUser/:id',authorizeUser([roles.admin]),userController.deleteUserById)
 router.put("/updateUserPassword/:id",authorizeUser([roles.admin]), userController.updateUserPassword);
+router.put("/updateUserbyAdmin/:id",authorizeUser([roles.admin]), userController.updateUserByAdmin);
 
 
 export default router;

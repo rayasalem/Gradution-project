@@ -11,7 +11,7 @@ const SigninSection: React.FC = () => {
         justifyContent: 'center',
         alignItems: 'center',
         color:'white',
-        backgroundColor:'black',
+        // backgroundColor:'black',
         width:'100%',
       }}
     >
@@ -21,10 +21,10 @@ const SigninSection: React.FC = () => {
             <SignIn />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Typography variant="h4" component="div" sx={{marginTop:"80px",fontFamily:'cursive'}}>
+            <Typography variant="h4" component="div" sx={{marginTop:"80px",fontFamily:'cursive',color:'black'}}>
               LogIn Now to DevLoom!
             </Typography>
-            <Typography variant="h6" component="div"  sx={{fontFamily:'cursive',display :"flex", justifyContent:"left",alignItems:"center",marginTop:"50px"}}>
+            <Typography variant="h6" component="div"  sx={{fontFamily:'cursive',display :"flex",color:'black', justifyContent:"left",alignItems:"center",marginTop:"50px"}}>
             Hi, sign in and provide the following information to Enter your account.
 
             </Typography>

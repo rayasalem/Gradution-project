@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {  updateuser } from '../../../api/user';
 import { useNavigate, useParams } from 'react-router';
 import { TextField, Button, Typography, Container, Grid } from '@mui/material';
-import './changePassword.css'
 interface User {
     id: string;
 }
@@ -10,26 +9,27 @@ interface User {
 const Update: React.FC = () => {
     const { userId } = useParams();
     const [user, setUser] = useState<User | null>(null);
+    const [error, setError] = useState<string | null>(null);
     const [newPass, setNewPass] = useState<string>('');
     const [cNewPass, setCNewPass] = useState<string>('');
+    const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
         try {
-            console.log(userId)
             if (cNewPass === newPass && userId) {
                  await updateuser(userId, newPass); 
-                console.log('Password changed successfully!');
+                setSuccessMessage('Password changed successfully!');
+
             } else {
+                setError('Passwords do not match!');
                 console.log('Passwords do not match!');
             }
         } catch (err) {
             console.log('Error changing password:', err);
         }
     };
-    if (!user) {
-        return <div>Loading...</div>;
-    }
+   
 
     return (
         <Container style={{
@@ -38,9 +38,10 @@ const Update: React.FC = () => {
             alignItems: 'center',
             width: '40%',
             margin: '1% auto -2%',
-            backgroundColor: 'aliceblue',
+            backgroundColor: '#9e9e9e',
             boxShadow: '0px 0px 10px black',
-            padding: '3%'
+            padding: '3%',
+            marginTop:'120px'
         }}>
             <Typography variant="h4" align="center" gutterBottom>
                 Change User password
@@ -52,7 +53,8 @@ const Update: React.FC = () => {
                             type="password"
                             label="New password"
                             value={newPass}
-                            onChange={(e) => setNewPass(e.target.value)}
+                            onChange={(e) => {setNewPass(e.target.value)
+                                setError('') }}
                             fullWidth
                             className="input-field"
                         />
@@ -62,11 +64,23 @@ const Update: React.FC = () => {
                             type="password"
                             label="Confirm new password"
                             value={cNewPass}
-                            onChange={(e) => setCNewPass(e.target.value)}
+                            onChange={(e) => {setCNewPass(e.target.value);
+                               }}
                             fullWidth
                             className="input-field"
                         />
+                        {error && (
+                      <Typography variant="body2" color="error" sx={{ width: '350px' }}>
+                            {error}
+                        </Typography>
+                        )}
+                         {successMessage && (
+                       <Typography variant="body2"sx={{ width: '210px',padding:'5px',color:'green' }}>
+                        {successMessage}
+                      </Typography>
+                          )}
                     </Grid>
+                    
                     <Grid item xs={12}>
                         <Button type="submit" variant="contained" color="primary" style={{
                             marginTop: '10px'

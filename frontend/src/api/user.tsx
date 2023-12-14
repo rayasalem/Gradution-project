@@ -19,6 +19,10 @@ interface UserResponse {
     username: string;
     email: string;
   }
+  interface IUser {
+    userName?: string;
+    email?: string;
+  }
 export const createUser = async (userData: UserData): Promise<string | undefined> => {
   try {
     const response: AxiosResponse<{ token: string }> = await axiosInstance.post('/api/v1/auth/signUp', userData);
@@ -216,6 +220,31 @@ export const updateuser = async (id: string, password: string) => {
     }
   } catch (error: any) {
     console.log("Update password error:", error);
+    throw error;
+  }
+};
+export const getUserById = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/user/${id}`);
+    if (response.status === 200) {
+      console.log('Success, User updated password');
+      return response.data;
+    }
+  } catch (error: any) {
+    console.log("Update password error:", error);
+    throw error;
+  }
+};
+export const updateUserbyAdmin = async (userId: string,username:string,email:string,) => {
+  try {
+    const response = await axiosInstance.put(`/api/v1/user/updateUserbyAdmin/${userId}`, {
+      username, email
+    });
+    if (response.status === 200) {
+      return response.data;
+    } 
+  } catch (error) {
+    console.log("User updated error:", error);
     throw error;
   }
 };
