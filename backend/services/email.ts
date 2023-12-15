@@ -6,16 +6,16 @@ async function sendEmail(dest: string, subject: string, message: string): Promis
     let transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.SENDER_EMAIL, // Your Gmail email address
-        pass: process.env.SENDER_EMAIL_PASSWORD, // Your Gmail password or app-specific password
+        user: process.env.SENDER_EMAIL, 
+        pass: process.env.SENDER_EMAIL_PASSWORD, 
       },
     });
 
     const mailOptions: SendMailOptions = {
-      from: `"DEVLOOM" <${process.env.SENDER_EMAIL}>`, // Sender's name and email address
-      to: [dest], // Recipient's email address as an array
-      subject, // Email subject
-      html: message, // HTML content of the email
+      from: `"DEVLOOM" <${process.env.SENDER_EMAIL}>`, 
+      to: [dest], 
+      subject, 
+      html: message, 
     };
 
     const info = await transporter.sendMail(mailOptions);

@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
 // import Social from '../homepage/signUP/SocialLoginButton';
 import { signIn } from '../../api/user';
@@ -9,11 +10,13 @@ import { useAuth } from '../AuthContext';
 const Signin: React.FC = () => {
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
+const [error, setError] = useState<string | null>(null);
 const [errors, setErrors] = useState({
     email: "",
     password: "",
   });
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const signInSchema = Joi.object().required().keys({
     email: Joi.string()
@@ -59,11 +62,14 @@ const [errors, setErrors] = useState({
             email: "",
             password: "",
           });
+          navigate('/profile');
+
         } else {
           console.error('Token is undefined.');
         }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error);
+      setError(error.message);
     }
   };
 
@@ -106,6 +112,7 @@ const [errors, setErrors] = useState({
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
+            setError("")
             setErrors((prevErrors) => ({
               ...prevErrors,
               email: "",
@@ -125,6 +132,7 @@ const [errors, setErrors] = useState({
           sx={{ backgroundColor: 'white', borderRadius: '3px' }}
           onChange={(e) => {
             setPassword(e.target.value);
+            setError("")
             setErrors((prevErrors) => ({
               ...prevErrors,
               password: "", 
@@ -134,6 +142,11 @@ const [errors, setErrors] = useState({
         {errors.password && (
           <Typography variant="body2" color="error" sx={{ width: '350px' }}>
             {errors.password}
+          </Typography>
+        )}
+        {error && (
+          <Typography variant="body2" color="error" sx={{ width: '350px' }}>
+            {error}
           </Typography>
         )}
         <Button

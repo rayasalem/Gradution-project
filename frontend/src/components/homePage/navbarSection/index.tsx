@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -21,13 +21,15 @@ import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import { useAuth } from '../../AuthContext';
-import { FULL_PATH,CATEGORIES,COMPILER_LANGUAGES } from './constant';
+import { COMPILER_LANGUAGES } from './constant';
+import { getprofileInfo } from '../../../api/userAction';
 import './navbar.css'
 import ModelSetting from './../../profilePage/setting/ModelSetting';
 const Navbar: React.FC = () =>{
   const isSmallScreen = useMediaQuery('(max-width:900px)');
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [userName, setUserName] = useState('');
   const history =useNavigate();
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -60,6 +62,21 @@ const Navbar: React.FC = () =>{
       console.error('Logout error:', error);
     }
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+          const profileInfo = await getprofileInfo(); 
+          if (profileInfo) {
+            setUserName(profileInfo?.user?.username);
+           console.log(profileInfo)
+          }
+      } catch (error) {
+        console.error('Error fetching profile info:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <div>
       <Box sx={{ position: 'fixed', top: 0, left: 0, right: 0 ,marginTop:0,zIndex:'1000'}}>
@@ -125,7 +142,7 @@ const Navbar: React.FC = () =>{
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               >
              <div className='impo'>
-             <span className='userName'>Bessan Tomeh </span>
+             <span className='userName'>{userName}</span>
              <Link href='/profile' className='Link'>Go to profile</Link>
              <Divider />
              <MenuItem onClick={handleSettings}>
@@ -196,7 +213,7 @@ const Navbar: React.FC = () =>{
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               >
          <div className='impo'>
-          <span className='userName'>Bessan Tomeh </span>
+          <span className='userName'>{userName}</span>
           <Link href='/profile' className='Link'>Go to profile</Link>
          <Divider />
          <MenuItem onClick={handleMenuClose}>

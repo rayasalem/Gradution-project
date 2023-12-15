@@ -50,8 +50,15 @@ export const signIn = async (email: string, password: string): Promise<LoginResp
       const { token} = response.data;
       return {token};
     }
-  } catch (error) {
-    console.log("login error:", error);
+  } catch (error:any) {
+    if (error.response?.status === 403) {
+      throw new Error("Email not confirmed");
+      } else if (error.response?.status === 401){
+        throw new Error("Invalid password");
+      }else{
+        console.log("login error:", error);
+      }
+    
   }
 };
 export const sendCode = async (email: string): Promise<LoginResponse | undefined> => {
@@ -173,7 +180,6 @@ export const uploadImage = async (file: any, userId: string) => {
         Authorization: `Bearer ${userId}` 
       }
     });
-
     return response;
   } catch (error) {
     console.error('Image upload error:', error);

@@ -19,12 +19,14 @@ export const signUp = async (req: Request, res: Response,next: NextFunction) => 
     if (!process.env.SALTROUNT || !process.env.EMAILTOKEN) {
       throw new Error('SALTROUNT | EMAILTOKEN environment variable is not defined.');
     }
+    if (!process.env.AUTHTOKEN) {
+      throw new Error('AUTHTOKEN environment variable is not defined.');
+    }
     const SALTROUNT = parseInt(process.env.SALTROUNT);
     const hash = bcrypt.hashSync(password, SALTROUNT);
     const newUser = new userModel({ username, email, password: hash, dateOfBirth });
-    const token = jwt.sign({ id: newUser._id }, process.env.EMAILTOKEN, {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign({ id: newUser._id }, process.env.AUTHTOKEN, { expiresIn: "1d" });
+    res.status(200).json({ message: "Success", token });
     const link = `${req.protocol}://${req.headers.host}${process.env.BASEURL}auth/confirmEmail/${token}`;
     const message = `<a href="${link}">Confirm Email</a>`;
     const info = await SendEmail(email, 'Verify email', message);
@@ -41,14 +43,14 @@ export const signUp = async (req: Request, res: Response,next: NextFunction) => 
 }
 export const confirmEmail = async (req: Request, res: Response,next: NextFunction) => {
   try {
-    if (!process.env.EMAILTOKEN) {
-      throw new Error('EMAILTOKEN environment variable is not defined.');
+    if (!process.env.AUTHTOKEN) {
+      throw new Error('AUTHTOKEN environment variable is not defined.');
     }
      if (!process.env.FEURL) {
       throw new Error('FEURL variable is not defined.');
     } 
     const { token } = req.params;
-    const decoded: any = jwt.verify(token, process.env.EMAILTOKEN);
+    const decoded: any = jwt.verify(token, process.env.AUTHTOKEN);
 
     if (!decoded) {
        next(Object.assign(new Error("Invalid token payload"), { cause: 400 }));
@@ -64,7 +66,7 @@ export const confirmEmail = async (req: Request, res: Response,next: NextFunctio
 
       } else {
         const FEURL = process.env.FEURL;
-        const redirectURL = url.resolve(FEURL, 'signUp');
+        const redirectURL = url.resolve(FEURL, 'profile');
         res.status(200).redirect(redirectURL);
       }
     }
