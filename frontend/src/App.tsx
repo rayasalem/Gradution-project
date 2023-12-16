@@ -87,6 +87,7 @@ import ModelSetting from './components/profilePage/setting/ModelSetting';
 import Admin from './components/admin/Admin';
 import Update from './components/admin/changePassword/ChangePassword';
 import UpdateUser from './components/admin/updateUser/UpadteUser';
+import CreateCourse from './components/admin/course/CreateCourse';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -181,6 +182,8 @@ function App() {
           <Route path="/DevLoom/admin" element={<Admin/>} /> 
           <Route path="/DevLoom/admin/changePassword/:userId" element={<Update/>} /> 
           <Route path="/DevLoom/admin/updateUser/:userId" element={<UpdateUser/>} /> 
+          <Route path="/DevLoom/admin/createCourse" element={<CreateCourse/>} /> 
+          
 
 
           

@@ -59,35 +59,7 @@ const ReactCourse: React.FC = () => {
     };
   useEffect(() => {
     initializeLessonsAndQuizzes();
-    const courseData = {
-      title: 'React',
-      description: 'This is React Course',
-    };
-    
-    const storedCourseId = localStorage.getItem('createdCourseIdToReact');
-    if (storedCourseId) {
-      setCourseId(storedCourseId);
-      setCourseCreated(true);
-      navigate(`/learn/react/${storedCourseId}`);
-    } else if (!courseCreated) {
-      try {
-        createCourse(courseData as ICourse)
-          .then(result => {
-            if (result && result.savedcourse && result.savedcourse._id) {
-              localStorage.setItem('createdCourseIdToReact', result.savedcourse._id);
-              setCourseId(result.savedcourse._id);
-              setCourseCreated(true);
-              navigate(`/learn/React/${result.savedcourse._id}`);
-            }
-          })
-          .catch(error => {
-            console.error('Error creating course:', error);
-          });
-      } catch (error) {
-        console.error('An unexpected error occurred:', error);
-      }
-    }
-  }, [courseCreated, navigate]);
+  }, []);
 
   const markItemAsCompleted = (itemId: number) => {
     const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId);

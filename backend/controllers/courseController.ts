@@ -62,7 +62,6 @@ export const createCourse = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to create a new course' });
   }
 }
-
 export const editCourse = async (req: Request, res: Response) => {
   const courseId  = req.query.courseId;
   try {    
@@ -88,7 +87,6 @@ export const deleteCourse = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to delete the course' });
   }
 }
-
 export const viewCourseDetails = async (req: Request, res: Response) => {
   const courseId = req.query.courseId;
   try {
@@ -101,7 +99,6 @@ export const viewCourseDetails = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to retrieve course details' });
   }
 }
-
 export const listAllCourses = async (req: Request, res: Response) => {
   try {
     const courses = await CourseModel.find();

@@ -1,6 +1,7 @@
 import React, { useState ,useEffect} from 'react'
 import { Box, Typography, Button } from '@mui/material';
-import Tabs from '@mui/material/Tabs';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 import Tab from '@mui/material/Tab';
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
@@ -8,6 +9,7 @@ import TabList from '@mui/lab/TabList';
 import { Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useNavigate } from 'react-router';
 import Footer from './../homePage/footer/Footer';
 
 const CourseContent: React.FC<{ link: string; imageUrl: string; title: string; description: string }> = 
@@ -64,9 +66,14 @@ const IndexCourse: React.FC = () => {
   const [value, setValue] = React.useState("1");
   const isSmallScreen = useMediaQuery('(max-width:900px)');
   const isSmall = useMediaQuery('(max-width:600px)');
+  const navigate = useNavigate();
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+  };
+  const handleClick = async () => {
+    navigate(`/DevLoom/admin/createCourse`);
+   
   };
   return (
     <Box>
@@ -83,14 +90,14 @@ const IndexCourse: React.FC = () => {
           paddingTop:'100px'
         }}
       >
+        <Typography variant="h5" sx={{fontWeight:'600',letterSpacing:'-0.03em',marginBottom:'40px'}}>Explore our courses
+        </Typography>
        
-        <Typography variant="h5" sx={{fontWeight:'600',letterSpacing:'-0.03em',marginBottom:'40px'}}>Explore our courses</Typography>
-
           <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider',
             width: isSmall ? '400px' : isSmallScreen ? '600px' : '950px',margin: '0 auto', }}>
-          <TabList onChange={handleChange}   variant="scrollable"  scrollButtons="auto"  allowScrollButtonsMobile
 
+          <TabList onChange={handleChange}   variant="scrollable"  scrollButtons="auto"  allowScrollButtonsMobile
                aria-label="scrollable auto tabs example">
           <Tab label="All Course" value="1" />
           <Tab label="Websites" value="2"/>
@@ -101,6 +108,7 @@ const IndexCourse: React.FC = () => {
     </TabList>
   </Box>
         <TabPanel value="1">
+        <Fab color="primary" size="small" aria-label="add" onClick={handleClick}><AddIcon /></Fab>
         <CourseContent
               link={`/learn/html/:`} imageUrl="/images/html.png" title="HTML"
               description="HTML is at the core of every web page. It’s beginner-friendly and knowing the basics is useful for everyone who works in digital design, marketing, content, and more. If you’re interested in front-end web development, this course is a great place to start!"

@@ -60,40 +60,9 @@ const PythonCourse: React.FC = () => {
     }
   };
   useEffect(() => {
-
     initializeLessonsAndQuizzes();
-    const courseData = {
-      title: 'Python',
-      description: 'This is Python Course',
-    };
-    localStorage.removeItem('createdCourseIdToPython');
-
-    const storedCourseId = localStorage.getItem('createdCourseIdToPytho');
-    if (storedCourseId) {
-      setCourseId(storedCourseId);
-      setCourseCreated(true);
-      navigate(`/learn/python/${storedCourseId}`);
-
-    } else if (!courseCreated) {
-      try {
-        createCourse(courseData as ICourse)
-          .then(result => {
-            if (result && result.savedcourse && result.savedcourse._id) {
-
-              localStorage.setItem('createdCourseIdToPytho', result.savedcourse._id);
-              setCourseId(result.savedcourse._id);
-              setCourseCreated(true);
-              navigate(`/learn/python/${result.savedcourse._id}`);
-            }
-          })
-          .catch(error => {
-            console.error('Error creating course:', error);
-          });
-      } catch (error) {
-        console.error('An unexpected error occurred:', error);
-      }
-    }
-  }, [courseCreated, navigate]);
+    
+  }, []);
   const markItemAsCompleted = (itemId: number) => {
     const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId);
     if (index !== -1 && !lessonsAndQuizzes[index].completed) {

@@ -62,36 +62,8 @@ const CSSCourse: React.FC = () => {
   };
   useEffect(() => {
     initializeLessonsAndQuizzes();
-    const courseData = {
-      title: 'CSS',
-      description: 'This is CSS Course',
-    };
-
-    const storedCourseId = localStorage.getItem('createdCourseIdToCSS');
-    if (storedCourseId) {
-      setCourseId(storedCourseId);
-      setCourseCreated(true);
-      navigate(`/learn/css/${storedCourseId}`);
-
-    } else if (!courseCreated) {
-      try {
-        createCourse(courseData as ICourse)
-          .then(result => {
-            if (result && result.savedcourse && result.savedcourse._id) {
-              localStorage.setItem('createdCourseIdToCSS', result.savedcourse._id);
-              setCourseId(result.savedcourse._id);
-              setCourseCreated(true);
-              navigate(`/learn/css/${result.savedcourse._id}`);
-            }
-          })
-          .catch(error => {
-            console.error('Error creating course:', error);
-          });
-      } catch (error) {
-        console.error('An unexpected error occurred:', error);
-      }
-    }
-  }, [courseCreated, navigate]);
+   
+  }, []);
   const markItemAsCompleted = (itemId: number) => {
     const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId);
     if (index !== -1 && !lessonsAndQuizzes[index].completed) {
@@ -107,9 +79,7 @@ const CSSCourse: React.FC = () => {
     setHoveredItem(null);
   };
   
-  useEffect(() => {
-    console.log('Updated state:', lessonsAndQuizzes);
-  }, [lessonsAndQuizzes]);
+ 
   
   
    return (
