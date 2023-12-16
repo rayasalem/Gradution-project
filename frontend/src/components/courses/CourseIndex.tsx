@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router';
 import Footer from './../homePage/footer/Footer';
+import { getprofileInfo } from '../../api/userAction';
 
 const CourseContent: React.FC<{ link: string; imageUrl: string; title: string; description: string }> = 
 ({ link, imageUrl, title, description }) => (
@@ -64,6 +65,7 @@ const CourseContent: React.FC<{ link: string; imageUrl: string; title: string; d
 
 const IndexCourse: React.FC = () => {
   const [value, setValue] = React.useState("1");
+  const [userIsAddict, setuserIsAddict] = React.useState(false);
   const isSmallScreen = useMediaQuery('(max-width:900px)');
   const isSmall = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
@@ -73,8 +75,20 @@ const IndexCourse: React.FC = () => {
   };
   const handleClick = async () => {
     navigate(`/DevLoom/admin/createCourse`);
-   
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+          const profileInfo = await getprofileInfo(); 
+          if (profileInfo?.user?.role == 'admin') {
+            setuserIsAddict(true);
+          }
+      } catch (error) {
+        console.error('Error fetching profile info:', error);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <Box>
       <Box
@@ -108,7 +122,11 @@ const IndexCourse: React.FC = () => {
     </TabList>
   </Box>
         <TabPanel value="1">
-        <Fab color="primary" size="small" aria-label="add" onClick={handleClick}><AddIcon /></Fab>
+        {userIsAddict && (
+          <Fab color="primary" size="small" aria-label="add" onClick={handleClick}>
+            <AddIcon />
+           </Fab>
+            )}
         <CourseContent
               link={`/learn/html/:`} imageUrl="/images/html.png" title="HTML"
               description="HTML is at the core of every web page. It’s beginner-friendly and knowing the basics is useful for everyone who works in digital design, marketing, content, and more. If you’re interested in front-end web development, this course is a great place to start!"
