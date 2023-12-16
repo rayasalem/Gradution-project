@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createCourse } from './../../../api/userAction';
+import { createCourse, getCourseDetails } from './../../../api/userAction';
 import { useNavigate } from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -57,9 +57,22 @@ const ReactCourse: React.FC = () => {
         setLessonsAndQuizzes(JSON.parse(storedStatus));
       }
     };
-  useEffect(() => {
-    initializeLessonsAndQuizzes();
-  }, []);
+    useEffect(() => {
+      initializeLessonsAndQuizzes();
+      const fetchData = async () => {
+        try {
+          const Course = await getCourseDetails('React');
+          if (Course && Course.course) {
+            console.log(Course);
+            localStorage.setItem('createdCourseIdReact', Course.course._id);
+            navigate(`/learn/React/${Course.course._id}`);
+          }
+        } catch (error) {
+          console.error('An unexpected error occurred:', error);
+        }
+      };
+      fetchData();
+    }, []);
 
   const markItemAsCompleted = (itemId: number) => {
     const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId);

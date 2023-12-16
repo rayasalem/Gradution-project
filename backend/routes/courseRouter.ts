@@ -9,7 +9,7 @@ const courseRouter = Router();
 courseRouter.post('/createCourse',authorizeUser([roles.admin]), CourseController.createCourse);
 courseRouter.patch('/editCourse', authorizeUser([roles.admin]), validation(validators.editCourseSchema), CourseController.editCourse);
 courseRouter.delete('/deleteCourse',authorizeUser([roles.admin]),CourseController.deleteCourse);
-courseRouter.get('/CourseDetails', CourseController.viewCourseDetails);
+courseRouter.get('/CourseDetails/:title', CourseController.viewCourseDetails);
 courseRouter.get('/Courses',CourseController.listAllCourses);
 courseRouter.post('/enrollInCourse/:courseId',authorizeUser([roles.user]), CourseController.enrollInCourse);
 courseRouter.post('/unenrollCourse/:courseId',authorizeUser([roles.user]), CourseController.unenrollFromCourse);

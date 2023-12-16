@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createCourse, retrieveUserBitsAndHearts } from './../../../api/userAction';
+import { createCourse, getCourseDetails, retrieveUserBitsAndHearts } from './../../../api/userAction';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -59,10 +59,25 @@ const HTMLCourse: React.FC = () => {
     if (storedStatus) {
       setLessonsAndQuizzes(JSON.parse(storedStatus));
     }
-  };
+  }; 
   useEffect(() => {
     initializeLessonsAndQuizzes();
+    const fetchData = async () => {
+      try {
+        const Course = await getCourseDetails('HTML');
+        if (Course && Course.course) {
+          console.log(Course);
+          localStorage.setItem('createdCourseIdHTML', Course.course._id);
+          navigate(`/learn/html/${Course.course._id}`);
+        }
+      } catch (error) {
+        console.error('An unexpected error occurred:', error);
+      }
+    };
+    fetchData();
   }, []);
+
+  
   const markItemAsCompleted = (itemId: number) => {
     const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId);
     if (index !== -1 && !lessonsAndQuizzes[index].completed) {

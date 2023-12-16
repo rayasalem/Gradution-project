@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createCourse, retrieveUserBitsAndHearts } from './../../../api/userAction';
+import { createCourse, getCourseDetails, retrieveUserBitsAndHearts } from './../../../api/userAction';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -61,7 +61,19 @@ const PythonCourse: React.FC = () => {
   };
   useEffect(() => {
     initializeLessonsAndQuizzes();
-    
+    const fetchData = async () => {
+      try {
+        const Course = await getCourseDetails('Python');
+        if (Course && Course.course) {
+          console.log(Course);
+          localStorage.setItem('createdCourseIdPython', Course.course._id);
+          navigate(`/learn/Python/${Course.course._id}`);
+        }
+      } catch (error) {
+        console.error('An unexpected error occurred:', error);
+      }
+    };
+    fetchData();
   }, []);
   const markItemAsCompleted = (itemId: number) => {
     const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId);

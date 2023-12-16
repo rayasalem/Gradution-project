@@ -45,6 +45,11 @@ interface IQuestion{
   quizId?:string;
   lessonId?:string;
 }
+interface CourseDetailsResponse {
+  course: {
+    _id: string; 
+  };
+}
 export const createCourse = async (course: ICourse): Promise<ICourse | undefined> => {
   try {
     const response: AxiosResponse<ICourse> = await axiosInstance.post('/api/v1/course/createCourse', course);
@@ -248,5 +253,15 @@ export const updateUserInfo = async (userInfo: IUser): Promise<IUser | undefined
   } catch (error) {
     console.log("User updated error:", error);
     throw error;
+  }
+};
+export const getCourseDetails = async (title: string): Promise<CourseDetailsResponse | undefined> => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/course/CourseDetails/${title}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("get course error:", error);
   }
 };

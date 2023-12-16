@@ -88,9 +88,9 @@ export const deleteCourse = async (req: Request, res: Response) => {
   }
 }
 export const viewCourseDetails = async (req: Request, res: Response) => {
-  const courseId = req.query.courseId;
+  const {title} = req.params; 
   try {
-    const course = await CourseModel.findById(courseId);
+    const course = await CourseModel.findOne({ title });
     if (!course) {
       return res.status(404).json({ error: 'Course not found' });
     }
