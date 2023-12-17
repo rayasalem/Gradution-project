@@ -88,6 +88,9 @@ import Admin from './components/admin/Admin';
 import Update from './components/admin/changePassword/ChangePassword';
 import UpdateUser from './components/admin/updateUser/UpadteUser';
 import CreateCourse from './components/admin/course/CreateCourse';
+import JavaCourse from './components/courses/Java';
+import CreateLesson from './components/admin/lesson/CreateLesson';
+import UpdateLesson from './components/admin/lesson/UpdateLesson';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -107,6 +110,7 @@ function App() {
           <Route path='/DoneLesson' element={<DoneLessonPage/>} />
           <Route path='/profile' element={<ProfilePage/>} />
           <Route path="/learn" element={<IndexCourse/>} />
+          <Route path='/learn/Java/:courseId' element={<JavaCourse/>} />
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
           <Route path="/learn/html/:courseId/lesson1"element={<LessonOne/>}/>
           <Route path="/learn/html/:courseId/lesson2"element={<LessonTwo/>}/>
@@ -183,10 +187,9 @@ function App() {
           <Route path="/DevLoom/admin/changePassword/:userId" element={<Update/>} /> 
           <Route path="/DevLoom/admin/updateUser/:userId" element={<UpdateUser/>} /> 
           <Route path="/DevLoom/admin/createCourse" element={<CreateCourse/>} /> 
-          
+          <Route path="/DevLoom/admin/createLesson/:courseId" element={<CreateLesson/>} /> 
+          <Route path="/DevLoom/admin/updateLesson/:lessonId" element={<UpdateLesson/>} /> 
 
-
-          
         </Routes>
       </AuthProvider>
     </Router>

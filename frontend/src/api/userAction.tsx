@@ -88,7 +88,45 @@ export const createQuiz = async (userQuiz: IUserQuiz): Promise<IUserQuiz | undef
   }
 };
 
-
+export const updateLesson = async (lessonId: string, title: string,order:number) => {
+  try {
+    const response = await axiosInstance.put(`/api/v1/lesson/editLesson/${lessonId}`, {
+      title,order 
+    });
+    if (response.status === 200) {
+      console.log('Success, Lesson updated password');
+      return response.data;
+    }
+  } catch (error: any) {
+    console.log("Update Lesson error:", error);
+    throw error;
+  }
+};
+export const getLessonById = async (lessonId: string) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/lesson/LessonDetails/${lessonId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to retrieve user details:', error);
+    throw error;
+  }
+};
+export const deleteLessonById = async (lessonId: string) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/lesson/deleteLesson/${lessonId}`);
+    if (response.status === 200) {
+      console.log('Success, Lesson deleted ');
+      return response.data;
+    } else {
+      throw new Error('Failed to Lesson deleted');
+    }
+  } catch (error) {
+    console.error('Failed to Lesson deleted', error);
+    throw error;
+  }
+};
 export const createQuestion = async (userQuestion: IQuestion): Promise<IQuestion | undefined> => {
   try {
     const response: AxiosResponse<IQuestion> = await axiosInstance.post('/api/v1/question/createquestion', userQuestion);
@@ -258,6 +296,16 @@ export const updateUserInfo = async (userInfo: IUser): Promise<IUser | undefined
 export const getCourseDetails = async (title: string): Promise<CourseDetailsResponse | undefined> => {
   try {
     const response = await axiosInstance.get(`/api/v1/course/CourseDetails/${title}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("get course error:", error);
+  }
+};
+export const getlistLessonsInCourse = async (courseId: any) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/lesson/course/lesson/${courseId}`);
     if (response.status === 200) {
       return response.data;
     }

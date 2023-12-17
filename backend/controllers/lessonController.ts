@@ -37,7 +37,7 @@ export const createLesson = async (req: Request, res: Response) => {
 };
 
 export const editLesson = async (req: Request, res: Response) => {
-  const lessonId = req.query.lessonId;
+  const {lessonId} = req.params;
   try {
     const updatedLesson = await Lesson.findByIdAndUpdate(lessonId, req.body, { new: true });
 
@@ -52,8 +52,7 @@ export const editLesson = async (req: Request, res: Response) => {
 };
 
 export const deleteLesson = async (req: Request, res: Response) => {
-  const lessonId = req.query.lessonId;
-
+  const {lessonId} = req.params;
   try {
     const deletedLesson = await Lesson.findByIdAndRemove(lessonId);
 
@@ -61,15 +60,15 @@ export const deleteLesson = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Lesson not found' });
     }
 
-    res.status(204).send(); 
+    res.status(200).json({ error: ' delete the lesson' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete the lesson' });
   }
 };
 
 export const viewLessonDetails = async (req: Request, res: Response) => {
-  const lessonId = req.query.lessonId;
-  try {
+  const {lessonId} = req.params;
+    try {
     const lesson = await Lesson.findById(lessonId);
     if (!lesson) {
       return res.status(404).json({ error: 'Lesson not found' });
@@ -81,7 +80,7 @@ export const viewLessonDetails = async (req: Request, res: Response) => {
 };
 
 export const listLessonsInCourse = async (req: Request, res: Response) => {
-  const courseId = req.query.courseId;
+  const {courseId} = req.params;
   try {
     const lessons = await Lesson.find({ course: courseId });
 

@@ -75,7 +75,6 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
   }; 
   useEffect(() => {
     let isMounted = true;
-
     const createLessonAsync = async () => {
       try {
         if (!initialized) {

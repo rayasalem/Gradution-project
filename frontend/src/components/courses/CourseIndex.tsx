@@ -123,7 +123,7 @@ const IndexCourse: React.FC = () => {
   </Box>
         <TabPanel value="1">
         {userIsAddict && (
-          <Fab color="primary" size="small" aria-label="add" onClick={handleClick}>
+          <Fab color="primary" size="small" aria-label="add" onClick={handleClick} sx={{zIndex:'1'}}>
             <AddIcon />
            </Fab>
             )}

@@ -62,11 +62,10 @@ const LessonNineInPython: React.FC = () => {
         type: 'dragDrop',
         questionId: 'q2-l9-python',
         text: <p>Add an <code>else</code> statement that prints "It's a cloudy day!" 
-        <br></br>when <code>isSunny</code> is false. </p>,
+        <br></br>when <code>isSunny</code> is false.</p>,
         question: (
             <div>
             <p>
-              
               <code>
                 {'if isSunny:'}
               </code>

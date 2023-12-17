@@ -11,9 +11,9 @@ import { roles } from '../services/roles';
 const lessonRouter = Router();
 
 lessonRouter.post('/createLesson/:courseId',authorizeUser([roles.admin]),createLesson);
-lessonRouter.put('/editLesson',authorizeUser([roles.admin]),editLesson);
-lessonRouter.delete('/deleteLesson',authorizeUser([roles.admin]),deleteLesson);
-lessonRouter.get('/LessonDetails',authorizeUser([roles.admin,roles.user]),viewLessonDetails);
-lessonRouter.get('/course/lesson',authorizeUser([roles.admin,roles.user]),listLessonsInCourse);
+lessonRouter.put('/editLesson/:lessonId',authorizeUser([roles.admin]),editLesson);
+lessonRouter.delete('/deleteLesson/:lessonId',authorizeUser([roles.admin]),deleteLesson);
+lessonRouter.get('/LessonDetails/:lessonId',authorizeUser([roles.admin,roles.user]),viewLessonDetails);
+lessonRouter.get('/course/lesson/:courseId',authorizeUser([roles.admin,roles.user]),listLessonsInCourse);
 
 export default lessonRouter;

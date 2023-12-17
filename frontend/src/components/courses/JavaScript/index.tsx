@@ -63,7 +63,7 @@ const JSCourse: React.FC = () => {
       try {
         const Course = await getCourseDetails('JavaScript');
         if (Course && Course.course) {
-          console.log(Course);
+          setCourseId(Course.course._id)
           localStorage.setItem('createdCourseIdJavaScript', Course.course._id);
           navigate(`/learn/javaScript/${Course.course._id}`);
         }
@@ -150,7 +150,7 @@ const JSCourse: React.FC = () => {
           key={item.id}
           component={Link}
           to={
-            index === 0 || (courseCreated && index < lessonsAndQuizzes.length)
+            index === 0 || (index < lessonsAndQuizzes.length)
               ? `/learn/javaScript/${courseId}/${item.type}${item.OriginalID}`
               : '#'
           }
