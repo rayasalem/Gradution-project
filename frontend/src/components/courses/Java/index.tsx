@@ -8,7 +8,6 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import HttpsIcon from '@mui/icons-material/Https';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
 interface ICourse {
@@ -57,7 +56,6 @@ const JavaCourse: React.FC = () => {
     return lessonsAndQuizzes.find((item) => item.id === quizId)?.completed || false;
   };
   const LOCAL_STORAGE_KEY = 'lessonsAndQuizzesStatusJava';
-
   const initializeLessonsAndQuizzes = () => {
     const storedStatus = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (storedStatus) {
@@ -85,48 +83,60 @@ const JavaCourse: React.FC = () => {
       try {
         const createdCourseIdJAVA = localStorage.getItem('createdCourseIdJAVA');
         const allLessons = await getlistLessonsInCourse(createdCourseIdJAVA);
-        console.log(allLessons)
         if (allLessons?.lessons) {
-          const updatedLessonsAndQuizzes = lessonsAndQuizzes.map((item) => {
-            const correspondingLesson = allLessons.lessons.find(
-              (lesson: { _id: string; order: number; title: string }) => item.type ==="lesson" && lesson.order === item.OriginalID
-            );
+          setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
+            const updatedLessonsAndQuizzes = prevLessonsAndQuizzes.map((item) => {
+              const correspondingLesson = allLessons.lessons.find(
+                (lesson: { _id: string; order: number; title: string }) =>
+                  item.type === 'lesson' && lesson.order === item.OriginalID
+              );
   
-            if (correspondingLesson) {
-              return { ...item, contentTitle: correspondingLesson.title, lessonId: correspondingLesson._id };            }
-            return item;
+              if (correspondingLesson) {
+                return { ...item, contentTitle: correspondingLesson.title, lessonId: correspondingLesson._id };
+              }
+              return item;
+            });
+  
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessonsAndQuizzes));
+            return updatedLessonsAndQuizzes;
           });
-  
-          setLessonsAndQuizzes(updatedLessonsAndQuizzes);
-          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessonsAndQuizzes));
         }
       } catch (error) {
-        console.error('error in getAllLesson :', error);
+        console.error('error in getAllLesson:', error);
       }
     };
+  
     fetchData();
   }, []);
-
   
+
   const markItemAsCompleted = (itemId: number) => {
-    const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId);
-    if (index !== -1 && !lessonsAndQuizzes[index].completed) {
-      const updatedLessons = lessonsAndQuizzes.map((lesson, i) => {
-        if (i === index) {
-          return { ...lesson, completed: true };
-        }
-        return lesson;
-      });
-      setLessonsAndQuizzes(updatedLessons);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessons));
-    }
+    setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
+      const index = prevLessonsAndQuizzes.findIndex((item) => item.id === itemId);
+  
+      if (index !== -1 && !prevLessonsAndQuizzes[index].completed) {
+        const updatedLessons = prevLessonsAndQuizzes.map((lesson, i) => {
+          if (i === index) {
+            return { ...lesson, completed: true };
+          }
+          return lesson;
+        });
+        console.log('Updated Lessons:', updatedLessons);
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessons));
+  
+        return updatedLessons;
+      }
+  
+      return prevLessonsAndQuizzes;
+    });
     setHoveredItem(null);
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
           const profileInfo = await getprofileInfo(); 
-          if (profileInfo?.user?.role == 'admin') {
+          if (profileInfo?.user?.role === 'admin') {
             setuserIsAddict(true);
           }
       } catch (error) {
