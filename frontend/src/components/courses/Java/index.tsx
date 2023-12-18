@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { deleteLessonById, getCourseDetails, getlistLessonsInCourse, getprofileInfo, retrieveUserBitsAndHearts } from './../../../api/userAction';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +10,8 @@ import HttpsIcon from '@mui/icons-material/Https';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-
+import { deleteQuizById } from './../../../api/userAction';
+import { getlistQuizsInCourse } from './../../../api/userAction';
 interface ICourse {
   title: string;
   description: string;
@@ -24,6 +26,7 @@ interface ILessonQuiz {
   contentTitle: string;
   completed: boolean;
   lessonId?: string;
+  quizId?:string;
 }
 const JavaCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
@@ -78,6 +81,37 @@ const JavaCourse: React.FC = () => {
     };
     fetchData();
   }, []);
+  
+            
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const createdCourseIdJAVA = localStorage.getItem('createdCourseIdJAVA');
+        const allQuizzes = await  getlistQuizsInCourse(createdCourseIdJAVA);
+        if (allQuizzes?.Quiz) {
+          setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
+            const updatedLessonsAndQuizzes = prevLessonsAndQuizzes.map((item) => {
+              const correspondingQuiz = allQuizzes.Quiz.find(
+                (quiz: { _id: string; title: string }) =>
+                  item.type === 'quiz' 
+              );
+              if (correspondingQuiz) {
+                return { ...item, contentTitle: correspondingQuiz.title, quizId: correspondingQuiz._id };
+              }
+              return item;
+            });
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessonsAndQuizzes));
+            return updatedLessonsAndQuizzes;
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching quizzes:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -108,7 +142,6 @@ const JavaCourse: React.FC = () => {
   
     fetchData();
   }, []);
-  
 
   const markItemAsCompleted = (itemId: number) => {
     setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
@@ -133,8 +166,8 @@ const JavaCourse: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
+    const fetchDataForQuizzes = async () => {
+        try {
           const profileInfo = await getprofileInfo(); 
           if (profileInfo?.user?.role === 'admin') {
             setuserIsAddict(true);
@@ -143,7 +176,7 @@ const JavaCourse: React.FC = () => {
         console.error('Error fetching profile info:', error);
       }
     };
-    fetchData();
+    fetchDataForQuizzes ();
   }, []);
   const handleClick = async () => {
     const createdCourseIdJAVA = localStorage.getItem('createdCourseIdJAVA');
@@ -153,9 +186,21 @@ const JavaCourse: React.FC = () => {
     } else {
       console.error('No course ID found in local storage');
     }  };
+    const handleCreateQuiz = async () => {
+        const createdCourseIdJAVA = localStorage.getItem('createdCourseIdJAVA');
+    
+        if (createdCourseIdJAVA) {
+          navigate(`/DevLoom/admin/createQuiz/${createdCourseIdJAVA}`);
+        } else {
+          console.error('No course ID found in local storage');
+        }  };
     const deleteLesson = async (lessonId:any, event: React.MouseEvent<HTMLButtonElement>) => {
        await deleteLessonById(lessonId)
     };
+    const deleteQuiz = async (quizId:any, event: React.MouseEvent<HTMLButtonElement>) => {
+        await deleteQuizById(quizId)
+     };
+    
    return (
   <Box>
       <Box
@@ -210,11 +255,28 @@ const JavaCourse: React.FC = () => {
           </Typography>
         </Paper>
         {userIsAddict && (
-          <Button  size="small" aria-label="add" onClick={handleClick} sx={{zIndex:'1',color:'#e91e63',backgroundColor:'#78909c'}}>
+        <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <Button
+            size="small"
+            aria-label="add"
+            onClick={handleClick}
+            sx={{ zIndex: '1', color: '#e91e63', backgroundColor: '#78909c' }}
+          >
             <AddIcon />
             create new Lesson
-           </Button>
-            )}
+          </Button>
+          <Button
+            size="small"
+            aria-label="add-quiz"
+            onClick={handleCreateQuiz}
+            sx={{ zIndex: '1', color: '#e91e63', backgroundColor: '#78909c' }}
+          >
+            <AddIcon />
+            create new Quiz
+          </Button>
+        </Box>
+      )}
+      
         {lessonsAndQuizzes.map((item, index) => (
            <Button
            key={item.id}
@@ -281,22 +343,50 @@ const JavaCourse: React.FC = () => {
                     </Box>
                     
                    ) : null}
-                   {userIsAddict && item.type === 'lesson' &&(
-                    <Box>
-                      <Button
-                        color="primary"
-                        size="small"
-                        aria-label="update-lesson"
-                        onClick={() => navigate(`/DevLoom/admin/updateLesson/${item.lessonId}`)}
-                        sx={{ zIndex: '1' }}
-                      >
-                        Update Lesson
-                      </Button>
-                      <IconButton aria-label="delete" size="small" onClick={(event) => deleteLesson(item.lessonId, event)}>
-                      <DeleteIcon fontSize="inherit" />
-                    </IconButton> 
-                    </Box>
-                    )}
+             {
+  userIsAddict && item.type === 'lesson' && (
+    <Box>
+      <Button
+        color="primary"
+        size="small"
+        aria-label="update-lesson"
+        onClick={() => navigate(`/DevLoom/admin/updateLesson/${item.lessonId}`)}
+        sx={{ zIndex: '1' }}
+      >
+        Update Lesson
+      </Button>
+      <IconButton
+        aria-label="delete"
+        size="small"
+        onClick={(event) => deleteLesson(item.lessonId, event)}
+      >
+        <DeleteIcon fontSize="inherit" />
+      </IconButton>
+    </Box>
+  )}
+
+{userIsAddict &&
+  item.type === 'quiz' && (
+    <Box>
+      <Button
+        color="primary"
+        size="small"
+        aria-label="update-quiz"
+        onClick={() => navigate(`/DevLoom/admin/updateQuiz/${item.quizId}`)}
+        sx={{ zIndex: '1' }}
+      >
+        Update Quiz
+      </Button>
+      <IconButton
+        aria-label="delete-quiz"
+        size="small"
+        onClick={(event) => deleteQuiz(item.quizId, event)}
+      >
+        <DeleteIcon fontSize="inherit" />
+      </IconButton>
+    </Box>
+  )}
+
             </Paper>
             </Button>
         ))}

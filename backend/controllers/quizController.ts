@@ -55,6 +55,7 @@ catch(error){
     res.status(500).json({ message: 'Server error' });
 }
 }
+
 export const updateQuiz= async(req:Request ,res:Response)=>{
     try{
     const {quizId} = req.query;
@@ -81,6 +82,30 @@ export const deleteQuiz = async (req: Request, res: Response) => {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
+    }
+  };
+  export const listQuizesInCourse = async (req: Request, res: Response) => {
+    const {courseId} = req.params;
+    try {
+      const Quiz = await QuizModel.find({ course: courseId });
+  
+      res.status(200).json({ message: 'List of Quizes in the course', Quiz });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to retrieve Quizess in the course' });
+    }
+  };
+  export const editQuiz = async (req: Request, res: Response) => {
+    const quizId = req.query.quizId;
+    try {
+      const updatedLesson = await QuizModel.findByIdAndUpdate(quizId, req.body, { new: true });
+  
+      if (!updatedLesson) {
+        return res.status(404).json({ error: 'Lesson not found' });
+      }
+  
+      res.status(200).json({ message: 'Lesson details updated', lesson: updatedLesson });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to update lesson details' });
     }
   };
   

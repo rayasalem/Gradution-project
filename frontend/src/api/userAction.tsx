@@ -127,6 +127,55 @@ export const deleteLessonById = async (lessonId: string) => {
     throw error;
   }
 };
+export const updateQuiz = async (quizId: string, title: string) => {
+  try {
+    const response = await axiosInstance.put(`/api/v1/lesson/editQuiz/${quizId}`, {quizId,
+      title
+    });
+    if (response.status === 200) {
+      console.log('Success, Quiz updated password');
+      return response.data;
+    }
+  } catch (error: any) {
+    console.log("Update Quiz error:", error);
+    throw error;
+  }
+};
+export const getQuizById = async (quizId: string) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/lesson/getQuiz/${quizId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to retrieve user details:', error);
+    throw error;
+  }
+};
+export const deleteQuizById = async (quizId: string) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/lesson/deleteQuiz/${quizId}`);
+    if (response.status === 200) {
+      console.log('Success, Quiz deleted ');
+      return response.data;
+    } else {
+      throw new Error('Failed to Quiz deleted');
+    }
+  } catch (error) {
+    console.error('Failed to Quiz deleted', error);
+    throw error;
+  }
+};
+export const getlistQuizsInCourse = async (courseId: any) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/quiz/Quizzes/${courseId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("get course error:", error);
+  }
+};
 export const createQuestion = async (userQuestion: IQuestion): Promise<IQuestion | undefined> => {
   try {
     const response: AxiosResponse<IQuestion> = await axiosInstance.post('/api/v1/question/createquestion', userQuestion);
