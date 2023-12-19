@@ -5,6 +5,7 @@ import {
   deleteLesson,
   viewLessonDetails,
   listLessonsInCourse,
+  listQuestionsInLesson
 } from '../controllers/lessonController';
 import {authorizeUser} from "../middleware/authentication";
 import { roles } from '../services/roles';
@@ -15,5 +16,6 @@ lessonRouter.put('/editLesson/:lessonId',authorizeUser([roles.admin]),editLesson
 lessonRouter.delete('/deleteLesson/:lessonId',authorizeUser([roles.admin]),deleteLesson);
 lessonRouter.get('/LessonDetails/:lessonId',authorizeUser([roles.admin,roles.user]),viewLessonDetails);
 lessonRouter.get('/course/lesson/:courseId',authorizeUser([roles.admin,roles.user]),listLessonsInCourse);
+lessonRouter.get('/questions/:lessonId',authorizeUser([roles.admin]),listQuestionsInLesson);
 
 export default lessonRouter;

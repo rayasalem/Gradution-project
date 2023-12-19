@@ -89,3 +89,16 @@ export const listLessonsInCourse = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to retrieve lessons in the course' });
   }
 };
+export const listQuestionsInLesson = async (req: Request, res: Response) => {
+  try{
+    const {lessonId}=req.params
+      const lesson  =  await Lesson.findOne({ _id: lessonId }).populate({
+        path: 'questions',
+        options: { sort: { questionOrder: 1 } }, 
+      });
+      res.status(200).json({ message: 'List of questions in the Lesson', questions: lesson?.questions });
+    } catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Server error' });
+}
+};

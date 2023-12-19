@@ -41,21 +41,6 @@ catch(error){
     res.status(500).json({ message: 'Server error' });
 }
 }
-export const listQuizzes= async(req:Request ,res:Response) =>{
-    try{
- const quizId = req.query.quizId;
- const Quiz: IQuiz[] = await QuizModel.find({});
-if(!Quiz){
-    return res.status(404).json({ message: 'Quiz not found' });
-}
-return res.status(200).json({message:"Quiz found",Quiz});
-}
-catch(error){
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-}
-}
-
 export const deleteQuiz = async (req: Request, res: Response) => {
     try {
       const { quizId } = req.params;

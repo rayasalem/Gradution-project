@@ -37,7 +37,8 @@ interface IUserLesson {
   }
 }
 interface IQuestion{
- questionId:string;
+ questionId?:string;
+ questionOrder?:number;
   text: string;
   type: string;
   options?: string[];
@@ -169,6 +170,16 @@ export const deleteQuizById = async (quizId: string) => {
 export const getlistQuizsInCourse = async (courseId: any) => {
   try {
     const response = await axiosInstance.get(`/api/v1/quiz/Quizzes/${courseId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("get course error:", error);
+  }
+};
+export const getlistQustionInLesson = async (LessonId: any) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/lesson/questions/${LessonId}`);
     if (response.status === 200) {
       return response.data;
     }

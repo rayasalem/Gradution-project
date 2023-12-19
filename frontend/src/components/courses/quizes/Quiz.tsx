@@ -184,26 +184,16 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
         </div>
       ) : (
         <div> 
-              <Typography variant="h5">{quizQuestions[currentQuestion].text}</Typography>
-            <Box sx={{paddingTop:'20px'}}>
-            {quizQuestions[currentQuestion].options?.map((option, index) => (
-              <Button
-              className='draggable'
-                key={index}
-                variant="contained"
-                onClick={() => handleAnswerOptionClick(index)}
-                style={{ margin: '5px',  cursor: 'grab' ,border: '2px solid #c8d2db' ,boxShadow: '0 2px 0 1px #c8d2db',
-                backgroundColor: 'white',color:'black',width:'100%' }}
-              >
-                {option}
-              </Button>
-            ))}
-            </Box>
+             
            <MultipleChoiceQuestion
-             quizId={QizeID}
-            {...quizQuestions[currentQuestion]}
+            questionId={quizQuestions[currentQuestion].questionId}
+            text={quizQuestions[currentQuestion].text}
+            question={quizQuestions[currentQuestion].question}
+            options={quizQuestions[currentQuestion].options}
+            correctAnswers={quizQuestions[currentQuestion].correctAnswers}
             selectedAnswer={selectedAnswer}
             setSelectedAnswer={setSelectedAnswer}
+            quizId={QizeID}
           />
           
           <Button
@@ -224,4 +214,3 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
 };
 
 export default Quiz;
-

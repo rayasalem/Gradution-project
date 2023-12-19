@@ -93,6 +93,8 @@ import CreateLesson from './components/admin/lesson/CreateLesson';
 import UpdateLesson from './components/admin/lesson/UpdateLesson';
 import CreateQuiz from './components/admin/quiz/CreateQuiz';
 import UpdateQuiz from './components/admin/quiz/UpdateQuiz';
+import LessonOneInJava from './components/courses/Java/lessonJava/LessonOne';
+import CreateQustion from './components/admin/question/CreateQustion';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -113,6 +115,8 @@ function App() {
           <Route path='/profile' element={<ProfilePage/>} />
           <Route path="/learn" element={<IndexCourse/>} />
           <Route path='/learn/Java/:courseId' element={<JavaCourse/>} />
+          <Route path='/learn/Java/:LessonId/lesson1' element={<LessonOneInJava/>} />
+
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
           <Route path="/learn/html/:courseId/lesson1"element={<LessonOne/>}/>
           <Route path="/learn/html/:courseId/lesson2"element={<LessonTwo/>}/>
@@ -193,6 +197,7 @@ function App() {
           <Route path="/DevLoom/admin/updateLesson/:lessonId" element={<UpdateLesson/>} />
           <Route path="/DevLoom/admin/createQuiz/:courseId" element={<CreateQuiz/>} /> 
           <Route path="/DevLoom/admin/updateQuiz/:quizId" element={<UpdateQuiz/>} />  
+          <Route path="/DevLoom/admin/createQustion/:lessonId" element={<CreateQustion/>} />
 
         </Routes>
       </AuthProvider>

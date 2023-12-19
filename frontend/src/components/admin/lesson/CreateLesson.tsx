@@ -44,7 +44,7 @@ const CreateLesson: React.FC = () => {
           <Grid container spacing={2}>
               <Grid item xs={12}>
                   <TextField
-                      label="title"
+                      label="text"
                       fullWidth
                       className="input-field"
                       onChange={(e) => {settitle(e.target.value)

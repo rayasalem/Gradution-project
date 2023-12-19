@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Button } from '@mui/material';
 import {  createQuestion } from '../../../api/userAction';
 
 interface MultipleChoiceQuestionProps {
@@ -48,11 +48,34 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
   };
 
   return (
-    <Box >
-      <Typography sx={{ paddingTop: '10px' }}>
+    <Box>
+    <Typography sx={{ paddingTop: '10px' }}>{question}</Typography>
+    
+    <Box sx={{ paddingTop: '20px' }}>
+      {options.map((option, index) => (
+        <Button
+          className="draggable"
+          key={index}
+          variant="contained"
+          onClick={() => handleAnswerSelection(option)}
+          style={{
+            margin: '5px',
+            cursor: 'grab',
+            border: '2px solid #c8d2db',
+            boxShadow: '0 2px 0 1px #c8d2db',
+            backgroundColor: 'white',
+            color: 'black',
+            width: '100%',
+          }}
+        >
+          {option}
+        </Button>
+      ))}
+    </Box>
+    <Typography sx={{ paddingTop: '10px' }}>
         Selected Answer: {selectedAnswer}
       </Typography> 
-    </Box>
+  </Box>
   );
 };
 

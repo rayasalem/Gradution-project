@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { deleteLessonById, getCourseDetails, getlistLessonsInCourse, getprofileInfo, retrieveUserBitsAndHearts } from './../../../api/userAction';
+import { deleteLessonById, getCourseDetails, getlistLessonsInCourse, getprofileInfo } from './../../../api/userAction';
 import { useNavigate } from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -336,7 +336,7 @@ const JavaCourse: React.FC = () => {
           {item.type}
         </Typography>
         <Link
-          to={`/learn/Java/${courseId}/${item.type}${item.OriginalID}`}
+          to={`/learn/Java/${item.lessonId}/${item.type}${item.OriginalID}`}
           style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
         > 
         <Typography

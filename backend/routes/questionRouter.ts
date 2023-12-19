@@ -9,8 +9,6 @@ questionRouter.post('/createquestion', authorizeUser([roles.admin]), questionCon
 
 questionRouter.get('/getQuestion',authorizeUser([roles.admin]),questionController.getQuestion);
 
-questionRouter.get('/questions',authorizeUser([roles.admin]),questionController.listQuestions);
-
 questionRouter.put('/updateQuestion',authorizeUser([roles.admin]),authorizeUser([roles.admin]), validation(validators.updateQuestion), questionController.updateQuestion);
 
 questionRouter.delete('/deleteQuestion',authorizeUser([roles.admin]),authorizeUser([roles.admin]), questionController.deleteQuestion);

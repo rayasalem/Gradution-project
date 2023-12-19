@@ -1,6 +1,6 @@
 import {model,Schema,Document }from 'mongoose';
 export interface IQuestion extends Document{
-    questionId: string;
+  questionOrder: number;
     text: string;
     type: string; 
     options?: string[]; 
@@ -8,8 +8,8 @@ export interface IQuestion extends Document{
   }    
 
 const questionSchema = new Schema<IQuestion>({
-    questionId: {
-      type: String,
+    questionOrder: {
+      type: Number,
       required: true,
     },
     text: {
