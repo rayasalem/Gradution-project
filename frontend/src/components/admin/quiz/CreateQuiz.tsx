@@ -5,7 +5,7 @@ import { createQuiz } from '../../../api/userAction';
 
 const CreateQuiz: React.FC = () => {
   const [title, setTitle] = useState<string>('');
-  const [quizId, setQuizId] = useState<string>('');
+  const [Order, setOrder] = useState<number>(0);
   const { courseId } = useParams<{ courseId: string }>();
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -14,7 +14,7 @@ const CreateQuiz: React.FC = () => {
       const quizData = {
         title,
         course: courseId || '',
-        quizId: quizId,
+        order:Order,
         passingScore: 70,
       };
       
@@ -51,18 +51,19 @@ const CreateQuiz: React.FC = () => {
       />
     </Grid>
     <Grid item xs={12}>
-      <TextField
-        label="quizId"
-        type="string"
-        inputProps={{
-          min: 0,
-          step: 1,
-        }}
-        fullWidth
-        className="input-field"
-        onChange={(e) => setQuizId(e.target.value)}
-      />
-    </Grid>
+                  <TextField
+                      label="Order"
+                      type="number" 
+                        inputProps={{
+                        min: 0,
+                        step: 1,
+                       }}
+                      fullWidth
+                      className="input-field"
+                      onChange={(e) => setOrder(Number(e.target.value))}
+                  />
+    
+              </Grid>
     <Grid item xs={12}>
       <TextField
         label="Course ID"

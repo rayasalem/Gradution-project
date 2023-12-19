@@ -21,7 +21,7 @@ interface IUserQuiz{
   title: string;
   course: string; 
   questions?: string[]; 
-  quizId:string;
+  order?: number;
   passingScore:number;
   savedQuiz?:{
     _id: string;

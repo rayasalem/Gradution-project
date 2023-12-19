@@ -92,8 +92,8 @@ const JavaCourse: React.FC = () => {
           setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
             const updatedLessonsAndQuizzes = prevLessonsAndQuizzes.map((item) => {
               const correspondingQuiz = allQuizzes.Quiz.find(
-                (quiz: { _id: string; title: string }) =>
-                  item.type === 'quiz' 
+                (quiz: { _id: string;order: number; title: string }) =>
+                  item.type === 'quiz' && quiz.order === item.OriginalID
               );
               if (correspondingQuiz) {
                 return { ...item, contentTitle: correspondingQuiz.title, quizId: correspondingQuiz._id };

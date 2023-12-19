@@ -1,7 +1,7 @@
 import { Schema, model,Model, Document, Types } from 'mongoose';
 
 export interface IQuiz extends Document {
-    quizId: string;
+    order: number;
     title: string;
     description?: string;
     duration?: number; 
@@ -11,12 +11,11 @@ export interface IQuiz extends Document {
   } 
 
   const quizSchema = new Schema<IQuiz>({
-    quizId: {
-      type: String,
-      required: true,
-    },
     title: {
       type: String,
+      required: true,
+    }, order: {
+      type: Number,
       required: true,
     },
     description: {
