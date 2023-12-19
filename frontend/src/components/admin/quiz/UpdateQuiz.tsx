@@ -6,16 +6,16 @@ import { getQuizById, updateQuiz } from '../../../api/userAction';
 const UpdateQuiz: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [passingScore, setPassingScore] = useState<number>(0);
-  const [quizIdInput, setQuizIdInput] = useState<string>(''); // Added state for user input of quizId
+  const [Order, setOrder] = useState<number>(0);
   const { quizId } = useParams<{ quizId: string }>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getQuizById(quizId || '');
-        console.log(data);
-        setTitle(data?.quiz?.title || '');
-        setPassingScore(data?.quiz?.passingScore || 0);
+        setTitle(data?.Quiz?.title || '');
+        setPassingScore(data?.Quiz?.passingScore || 0);
+        setOrder(data?.Quiz?.order)
       } catch (error) {
         console.error('Error fetching quiz:', error);
       }
@@ -25,8 +25,8 @@ const UpdateQuiz: React.FC = () => {
 
   const updateQuizDetails = async () => {
     try {
-      if (quizIdInput && title) { // Validate both inputs before updating
-        const updated = await updateQuiz(quizIdInput, title);
+      if (quizId !== undefined) { 
+        const updated = await updateQuiz(quizId,title,passingScore,Order);
         console.log('Updated Quiz:', updated);
       } else {
         console.error('Please enter quizId and title');
@@ -52,14 +52,7 @@ const UpdateQuiz: React.FC = () => {
         Update Quiz
       </Typography>
       <div>
-        <TextField
-          label="Enter Quiz ID"
-          fullWidth
-          className="input-field"
-          value={quizIdInput}
-          onChange={(e) => setQuizIdInput(e.target.value)}
-        />
-        <Grid container spacing={2}>
+      <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
               label="Title"
@@ -71,7 +64,31 @@ const UpdateQuiz: React.FC = () => {
               onChange={(e) => setTitle(e.target.value)}
             />
           </Grid>
- 
+          <Grid item xs={12}>
+          
+        <TextField
+          label="passingScore"
+          fullWidth
+          className="input-field"
+          value={passingScore}
+          onChange={(e) => setPassingScore(Number(e.target.value))}
+        />
+          </Grid>
+       
+          <Grid item xs={12}>
+                  <TextField
+                      label="Order"
+                      type="number" 
+                        inputProps={{
+                        min: 0,
+                        step: 1,
+                       }}
+                      fullWidth
+                      className="input-field"
+                      value={Order}
+                      onChange={(e) => setOrder(Number(e.target.value))}
+                  />
+              </Grid>
           <Grid item xs={12}>
             <Button
               type="submit"

@@ -127,10 +127,10 @@ export const deleteLessonById = async (lessonId: string) => {
     throw error;
   }
 };
-export const updateQuiz = async (quizId: string, title: string) => {
+export const updateQuiz = async (quizId:string,title: string,passingScore:number ,order:number) => {
   try {
-    const response = await axiosInstance.put(`/api/v1/lesson/editQuiz/${quizId}`, {quizId,
-      title
+    const response = await axiosInstance.put(`/api/v1/quiz/editQuiz/${quizId}`, {quizId,
+      passingScore, title ,order
     });
     if (response.status === 200) {
       console.log('Success, Quiz updated password');
@@ -143,7 +143,7 @@ export const updateQuiz = async (quizId: string, title: string) => {
 };
 export const getQuizById = async (quizId: string) => {
   try {
-    const response = await axiosInstance.get(`/api/v1/lesson/getQuiz/${quizId}`);
+    const response = await axiosInstance.get(`/api/v1/quiz/getQuiz/${quizId}`);
     if (response.status === 200) {
       return response.data;
     }
@@ -154,7 +154,7 @@ export const getQuizById = async (quizId: string) => {
 };
 export const deleteQuizById = async (quizId: string) => {
   try {
-    const response = await axiosInstance.delete(`/api/v1/lesson/deleteQuiz/${quizId}`);
+    const response = await axiosInstance.delete(`/api/v1/quiz/deleteQuiz/${quizId}`);
     if (response.status === 200) {
       console.log('Success, Quiz deleted ');
       return response.data;

@@ -29,7 +29,7 @@ res.status(500).json({ message: 'Server error' });
 }
 export const getQuiz= async(req:Request ,res:Response) =>{
   try{
- const {quizId} = req.query;
+ const {quizId} = req.params;
  const Quiz: IQuiz|null = await QuizModel.findById(quizId);
 if(!Quiz){
     return res.status(404).json({ message: 'Quiz not found' });
@@ -56,24 +56,9 @@ catch(error){
 }
 }
 
-export const updateQuiz= async(req:Request ,res:Response)=>{
-    try{
-    const {quizId} = req.query;
-    const { title, description, duration,  passingScore } = req.body;
-    const updatedQuiz: IQuiz | null = await QuizModel.findByIdAndUpdate(quizId, { title, description, duration, passingScore }, { new: true });
-    if (!updatedQuiz) {
-        return res.status(404).json({ message: 'Quiz not found' });
-      }
-      res.json(updatedQuiz);
-    }
-     catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
-    }
-  };
 export const deleteQuiz = async (req: Request, res: Response) => {
     try {
-      const { quizId } = req.query;
+      const { quizId } = req.params;
       const deletedQuiz: IQuiz | null = await QuizModel.findByIdAndRemove(quizId);
       if (!deletedQuiz) {
         return res.status(404).json({ message: 'Quiz not found' });
@@ -84,7 +69,7 @@ export const deleteQuiz = async (req: Request, res: Response) => {
       res.status(500).json({ message: 'Server error' });
     }
   };
-  export const listQuizesInCourse = async (req: Request, res: Response) => {
+export const listQuizesInCourse = async (req: Request, res: Response) => {
     const {courseId} = req.params;
     try {
       const Quiz = await QuizModel.find({ course: courseId });
@@ -94,8 +79,8 @@ export const deleteQuiz = async (req: Request, res: Response) => {
       res.status(500).json({ error: 'Failed to retrieve Quizess in the course' });
     }
   };
-  export const editQuiz = async (req: Request, res: Response) => {
-    const quizId = req.query.quizId;
+export const editQuiz = async (req: Request, res: Response) => {
+    const {quizId} = req.params;
     try {
       const updatedLesson = await QuizModel.findByIdAndUpdate(quizId, req.body, { new: true });
   

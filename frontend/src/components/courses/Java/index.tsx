@@ -194,11 +194,31 @@ const JavaCourse: React.FC = () => {
         } else {
           console.error('No course ID found in local storage');
         }  };
-    const deleteLesson = async (lessonId:any, event: React.MouseEvent<HTMLButtonElement>) => {
-       await deleteLessonById(lessonId)
-    };
-    const deleteQuiz = async (quizId:any, event: React.MouseEvent<HTMLButtonElement>) => {
-        await deleteQuizById(quizId)
+        const deleteLesson = async (lessonId: any, originalId: number, event: React.MouseEvent<HTMLButtonElement>) => {
+          try {
+            await deleteLessonById(lessonId);
+            setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
+              const updatedLessons = prevLessonsAndQuizzes.filter(
+                (item) => item.type !== 'lesson' || item.OriginalID !== originalId
+              );
+              return updatedLessons;
+            });
+          } catch (error) {
+            console.error('Error deleting lesson:', error);
+          }
+        };
+    const deleteQuiz = async (quizId:any,originalId: number, event: React.MouseEvent<HTMLButtonElement>) => {
+      try {
+        await deleteQuizById(quizId);
+        setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
+          const updatedLessons = prevLessonsAndQuizzes.filter(
+            (item) => item.type !== 'quiz' || item.OriginalID !== originalId
+          );
+          return updatedLessons;
+        });
+      } catch (error) {
+        console.error('Error deleting quiz:', error);
+      }
      };
     
    return (
@@ -358,7 +378,7 @@ const JavaCourse: React.FC = () => {
       <IconButton
         aria-label="delete"
         size="small"
-        onClick={(event) => deleteLesson(item.lessonId, event)}
+        onClick={(event) => deleteLesson(item.lessonId,item.OriginalID, event)}
       >
         <DeleteIcon fontSize="inherit" />
       </IconButton>
@@ -380,13 +400,12 @@ const JavaCourse: React.FC = () => {
       <IconButton
         aria-label="delete-quiz"
         size="small"
-        onClick={(event) => deleteQuiz(item.quizId, event)}
+        onClick={(event) => deleteQuiz(item.quizId, item.OriginalID, event)}
       >
         <DeleteIcon fontSize="inherit" />
       </IconButton>
     </Box>
   )}
-
             </Paper>
             </Button>
         ))}
