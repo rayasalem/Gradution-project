@@ -3,14 +3,7 @@ import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonFourInCSS: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Display Property in CSS',
-    order: 4,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -146,7 +139,7 @@ const LessonFourInCSS: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="boxModel" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="boxModel"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

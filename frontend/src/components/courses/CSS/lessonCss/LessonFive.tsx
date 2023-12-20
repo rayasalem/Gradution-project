@@ -3,14 +3,8 @@ import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonFiveInCSS: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
-  const lessonData = {
-    title: 'Position Property in CSS',
-    order: 5,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -144,7 +138,7 @@ const LessonFiveInCSS: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="Position" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="Position" slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

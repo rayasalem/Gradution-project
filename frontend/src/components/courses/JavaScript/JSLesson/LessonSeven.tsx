@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
-import { useParams } from 'react-router-dom';
 
 const LessonSevenjs: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'DOM Manipulation in JavaScript',
-    order: 7,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -157,7 +149,7 @@ const LessonSevenjs: React.FC = () => {
 
   return (
     <div>
-      <LessonSlide key="lessonSeven" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="lessonSeven"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

@@ -3,14 +3,7 @@ import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonTwoInCSS: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Selectors and Specificity in CSS',
-    order: 2,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -159,7 +152,7 @@ const LessonTwoInCSS: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="selectorsAndSpecificity" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="selectorsAndSpecificity"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

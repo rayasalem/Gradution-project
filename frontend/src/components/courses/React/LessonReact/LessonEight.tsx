@@ -3,14 +3,7 @@ import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonEightReact: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Handling Forms in React',
-    order: 8,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -157,7 +150,7 @@ const LessonEightReact: React.FC = () => {
 
   return (
     <div>
-      <LessonSlide key="lessonEightReact" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="lessonEightReact"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

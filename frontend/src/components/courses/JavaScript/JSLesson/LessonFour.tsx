@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
-import { useParams } from 'react-router-dom';
 
 const LessonFourjs: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Control Flow and Loops in JavaScript',
-    order: 4,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -157,7 +149,7 @@ const LessonFourjs: React.FC = () => {
 
   return (
     <div>
-      <LessonSlide key="lessonFour" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="lessonFour"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

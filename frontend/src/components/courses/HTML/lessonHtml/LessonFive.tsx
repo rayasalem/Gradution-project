@@ -3,14 +3,7 @@ import LessonSlide from '../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonFive: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Understanding HTML Tables',
-    order: 5,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -107,7 +100,7 @@ const LessonFive: React.FC = () => {
 
   return (
     <div>
-      <LessonSlide key="LessonHTMLTable" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="LessonHTMLTable" slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

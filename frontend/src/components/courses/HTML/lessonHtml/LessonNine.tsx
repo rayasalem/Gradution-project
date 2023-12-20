@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import LessonSlide from '../../lessons/lessonStyle/LessonSlide';
-import { useParams } from 'react-router-dom';
 
 const LessonNine: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Understanding HTML Metadata',
-    order: 9,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -157,7 +149,7 @@ const LessonNine: React.FC = () => {
 
   return (
     <div>
-      <LessonSlide key="LessonMetadata" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="LessonMetadata" slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

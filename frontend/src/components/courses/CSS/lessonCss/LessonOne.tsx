@@ -3,14 +3,7 @@ import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonOneInCSS: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Introduction to CSS Course',
-    order: 1,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -98,7 +91,7 @@ const LessonOneInCSS: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="Introduction to CSS Course" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="Introduction to CSS Course"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

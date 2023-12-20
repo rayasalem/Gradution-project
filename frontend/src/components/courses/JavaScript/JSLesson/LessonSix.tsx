@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
 import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
-import { useParams } from 'react-router-dom';
 
 const LessonSixjs: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Scope and Closures in JavaScript',
-    order: 6,
-    course: courseId || '',
-  };
-
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null); 
   const slides: LessonSlide[] = [
     {
       type: 'text',
@@ -157,7 +148,7 @@ const LessonSixjs: React.FC = () => {
 
   return (
     <div>
-      <LessonSlide key="lessonSix" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="lessonSix" slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

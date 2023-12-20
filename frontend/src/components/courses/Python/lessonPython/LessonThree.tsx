@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
-import { useParams } from 'react-router-dom';
 
 const LessonThreeInPython: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Python Strings',
-    order: 3,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -106,7 +98,7 @@ const LessonThreeInPython: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="pythonStrings" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="pythonStrings"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

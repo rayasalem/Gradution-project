@@ -3,14 +3,7 @@ import LessonSlide from '../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonTen: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'HTML5 Features: Exploring New Capabilities',
-    order: 10,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -112,7 +105,6 @@ const LessonTen: React.FC = () => {
     <div>
       <LessonSlide
         key="LessonHTML5Features"
-        lessonData={lessonData}
         slides={slides}
         selectedAnswer={selectedAnswer}
         setSelectedAnswer={setSelectedAnswer}

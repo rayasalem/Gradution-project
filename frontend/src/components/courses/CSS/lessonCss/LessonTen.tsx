@@ -3,15 +3,7 @@ import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonTenInCSS: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'CSS Fonts and Typography',
-    order: 10,
-    course: courseId || '',
-  };
-
   const slides: LessonSlide[] = [
     {
       type: 'text',
@@ -117,7 +109,7 @@ const LessonTenInCSS: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="fontProperties" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="fontProperties"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

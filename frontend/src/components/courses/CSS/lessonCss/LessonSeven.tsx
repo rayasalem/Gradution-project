@@ -3,14 +3,9 @@ import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonSevenInCSS: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
-  const lessonData = {
-    title: 'CSS Outline Style',
-    order: 7,
-    course: courseId || '',
-  };
+
 
   const slides: LessonSlide[] = [
     {
@@ -134,7 +129,7 @@ const LessonSevenInCSS: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="Outline" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="Outline"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

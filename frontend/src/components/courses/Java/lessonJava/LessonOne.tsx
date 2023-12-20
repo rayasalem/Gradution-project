@@ -25,11 +25,6 @@ const LessonOneInJava = () => {
     const isTextSlideResponse = (response: any): response is ITextSlideResponse => {
       return 'message' in response && 'textSlides' in response;
     };
-    const lessonData = {
-      title: 'Lesson Eight in html Course',
-      order: 8,
-      course: LessonId || '',
-    };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -98,7 +93,7 @@ const createTextSlide = async () => {
       )}
      <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
        {(recoilMergedArray as LessonSlide[]).length > 0 && (
-  <LessonSlide lessonData={lessonData} slides={recoilMergedArray as LessonSlide[]} />
+  <LessonSlide  slides={recoilMergedArray as LessonSlide[]} />
        )}
        </Box>
         </Box>

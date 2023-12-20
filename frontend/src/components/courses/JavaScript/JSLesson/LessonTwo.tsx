@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
 import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
-import { useParams } from 'react-router-dom';
 
 const LessonTwojs: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
-  const lessonData = {
-    title: 'Operators and Expressions in JavaScript',
-    order: 2,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -159,7 +152,7 @@ const LessonTwojs: React.FC = () => {
 
   return (
     <div>
-      <LessonSlide key="lessonTwo" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="lessonTwo"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

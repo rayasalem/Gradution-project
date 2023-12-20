@@ -3,14 +3,8 @@ import LessonSlide from '../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonSix: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
-  const lessonData = {
-    title: 'Understanding Semantic HTML',
-    order: 5,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -102,7 +96,7 @@ const LessonSix: React.FC = () => {
 
   return (
     <div>
-      <LessonSlide key="LessonSemanticHTML" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="LessonSemanticHTML"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

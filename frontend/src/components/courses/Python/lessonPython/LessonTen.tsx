@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
-import { useParams } from 'react-router-dom';
 
 const LessonTenInPython: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Python For Loops',
-    order: 10,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -137,7 +129,7 @@ const LessonTenInPython: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="pythonForLoops" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="pythonForLoops" slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

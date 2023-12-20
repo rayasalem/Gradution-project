@@ -3,14 +3,9 @@ import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonEightInCSS: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
-  const lessonData = {
-    title: 'Responsive Design',
-    order: 8,
-    course: courseId || '',
-  };
+
 
   const slides: LessonSlide[] = [
     {
@@ -109,7 +104,7 @@ const LessonEightInCSS: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="responsiveDesign" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="responsiveDesign"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

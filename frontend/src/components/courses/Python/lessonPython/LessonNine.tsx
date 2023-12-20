@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
-import { useParams } from 'react-router-dom';
 
 const LessonNineInPython: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'Python If...Else Statements',
-    order: 9,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -155,7 +147,7 @@ const LessonNineInPython: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="pythonIfElse" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="pythonIfElse" slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };

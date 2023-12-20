@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
 import LessonSlide from '../../lessons/lessonStyle/LessonSlide';
-import { useParams } from 'react-router-dom';
 
 const LessonEight = () => {
-const { courseId } = useParams<{ courseId: string }>();
 const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-const lessonData = {
-        title: 'Lesson Eight in html Course',
-        order: 8,
-        course: courseId || '',
-      };
-    
+
       const slides: LessonSlide[] = [
         {
           type: 'text',
@@ -125,7 +118,7 @@ const lessonData = {
       ];
   return (
     <div>
-     <LessonSlide key="lessonEight" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+     <LessonSlide key="lessonEight"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   )
 }

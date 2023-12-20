@@ -20,15 +20,6 @@ import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 
-
-
-interface IUserLesson {
-  title: string;
-  order: number;
-  course: string;
-  questions?: string[];
-}
-
 interface DragDropSlide {
   type: 'dragDrop';
   questionId: string;
@@ -54,13 +45,12 @@ interface multipleChoice{
 type LessonSlide = DragDropSlide | TextSlide | multipleChoice;
 
 interface LessonSlideProps {
-  lessonData: IUserLesson;
   slides: LessonSlide[];
   selectedAnswer?: string | null;
   setSelectedAnswer?: Dispatch<SetStateAction<string | null>>;
 }
 
-const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
+const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -88,33 +78,9 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
     }
   }; 
   useEffect(() => {
-    let isMounted = true;
-    const createLessonAsync = async () => {
-      try {
-        if (!initialized) {
-          if (lessonData.course) {
-            const response = await createLesson(lessonData);
-            setLessonID(response?.lesson?._id)
-          } else {
-            console.error('CourseId is not defined in lessonData.');
-          }
-          setInitialized(true);
-        }
-      } catch (error) {
-        console.error('Failed to create lesson:', error);
-      }
-    };
-
-    createLessonAsync();
-    createUserBitsAndHeartsAsync();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [initialized, lessonData.course]);
-  useEffect(() => {
     const fetch_Data = async () => {
       try {
+      
         const { heartsCount } = await retrieveUserBitsAndHearts();
         setHeartCount(heartsCount)
         
@@ -124,6 +90,7 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
     };
 
     fetch_Data();
+    createUserBitsAndHeartsAsync();
   }, []); 
   const handleHeartLoss = async () => {
     try {

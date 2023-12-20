@@ -3,14 +3,7 @@ import LessonSlide from './../../lessons/lessonStyle/LessonSlide';
 import { useParams } from 'react-router-dom';
 
 const LessonSixInCSS: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-
-  const lessonData = {
-    title: 'CSS Colors: RGB, HEX, HSL',
-    order: 6,
-    course: courseId || '',
-  };
 
   const slides: LessonSlide[] = [
     {
@@ -125,7 +118,7 @@ const LessonSixInCSS: React.FC = () => {
   
   return (
     <div>
-      <LessonSlide key="color" lessonData={lessonData} slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
+      <LessonSlide key="color"  slides={slides} selectedAnswer={selectedAnswer} setSelectedAnswer={setSelectedAnswer} />
     </div>
   );
 };
