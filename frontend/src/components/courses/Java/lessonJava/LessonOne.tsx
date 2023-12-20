@@ -72,7 +72,7 @@ const createTextSlide = async () => {
 };
 
   return (
-    <Box sx={{ display: 'flex',alignItems: 'center',justifyContent: 'center',paddingTop:'80px'}}>
+    <Box sx={{ display: 'flex',alignItems: 'center',flexDirection: 'column',justifyContent: 'center',paddingTop:'80px'}}>
 
 {userIsAddict && (
         <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
@@ -96,10 +96,14 @@ const createTextSlide = async () => {
           </Button>
         </Box>
       )}
-      <LessonSlide lessonData={lessonData} slides={recoilMergedArray as LessonSlide[]}/>
+     <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+       {(recoilMergedArray as LessonSlide[]).length > 0 && (
+  <LessonSlide lessonData={lessonData} slides={recoilMergedArray as LessonSlide[]} />
+       )}
+       </Box>
         </Box>
     
-  )
-}
+         )
+          }
 
 export default LessonOneInJava

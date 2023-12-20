@@ -10,7 +10,7 @@ const TextSlide: React.FC<TextSlideProps> = ({ text }) => {
   return (
     <Box sx={{paddingTop:'70px',display:'flex',justifyContent:'center'}}>
       <Typography variant="body1" >
-      {React.cloneElement(text as React.ReactElement)}
+      {typeof text === 'string' ? text : React.cloneElement(text as React.ReactElement)}
       </Typography>
   </Box>
   );

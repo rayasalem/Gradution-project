@@ -185,6 +185,21 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
 
       setAttemptedAnswer(true);
       setShowContinueButton(true);
+    } else if (currentSlideData.type === 'multipleChoice') {
+      const correctAnswers = (currentSlideData as multipleChoice).correctAnswer;
+      const isAnswerCorrect = correctAnswers.includes(selectedAnswer || '');
+  
+      setIsAnswerCorrect(isAnswerCorrect);
+  
+      if (isAnswerCorrect) {
+        console.log('Correct answer!');
+      } else {
+        console.log('Incorrect answer!');
+        handleHeartLoss();
+      }
+  
+      setAttemptedAnswer(true);
+      setShowContinueButton(true);
     }
   };
 
@@ -272,6 +287,16 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
             Back
           </Button>
           {currentSlideData.type === 'dragDrop' && !showContinueButton && (
+            <Button
+              onClick={handleCheckAnswer}
+              variant="contained"
+              sx={{ width: '45%' }}
+              disabled={!selectedAnswer}
+            >
+              Check Answer
+            </Button>
+          )}
+          {currentSlideData.type === 'multipleChoice' && !showContinueButton && (
             <Button
               onClick={handleCheckAnswer}
               variant="contained"

@@ -64,8 +64,8 @@ const DoneLessonPage = () => {
           backgroundColor: 'white',
           padding: '20px',
           color: 'black',
-          marginTop: '150px',
-          marginLeft: '300px',
+          // marginTop: '30px',
+          marginLeft: '100px',
         }}
       >
         <Box style={{ border: '1px solid white' }}>
@@ -96,10 +96,11 @@ const DoneLessonPage = () => {
             </Box>
           </Box>
         </Box>
-      </Box>
+      
       <hr style={{ width: '100%', margin: '0', padding: '0' }} />
       <Box mt={3} mb={3} sx={{ textAlign: 'center' }}>
         <Button variant="contained" color="primary" component={Link} to={removeLastPart}>Continue</Button>
+      </Box>
       </Box>
     </>
   );
