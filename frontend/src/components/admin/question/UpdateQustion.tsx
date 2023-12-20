@@ -1,39 +1,47 @@
-import React, {  useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Container, Grid } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import {  createQuestion } from '../../../api/userAction';
+import { getQustionById, updateQustion } from '../../../api/userAction';
 
 
-const CreateQustion = () => {
-  const { lessonId } = useParams<{ lessonId: string }>();
-  const [text, setText] = useState<string>('');
-  const [questionOrder, setquestionOrder] = useState<number>(0);
-  const [type, setType] = useState<string>('');
-  const [correctAnswer, setcorrectAnswer] = useState<string>('');
-  const [options, setoptions] = useState<string[]>([]);
-  
-
+const UpdateQustion = () => {
+    const { questionId } = useParams<{ questionId: string }>();
     const [successMessage, setSuccessMessage] = useState('');
-
-    const createNewQustion = async () => {
+    const [text, setText] = useState<string>('');
+    const [questionOrder, setquestionOrder] = useState<number>(0);
+    const [type, setType] = useState<string>('');
+    const [correctAnswer, setcorrectAnswer] = useState<string>('');
+    const [options, setoptions] = useState<string[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const questionData = await getQustionById(questionId);
+    
+            setText(questionData.text);
+            setquestionOrder(questionData.order);
+            setType(questionData.type);
+            setcorrectAnswer(questionData.correctAnswer);
+            setoptions(questionData.options || []);
+          } catch (error) {
+            console.error('Error fetching question details:', error);
+          }
+        };
+        fetchData();
+      }, [questionId]);
+      const handleUpdateQuestion = async () => {
         try {
-            await createQuestion({
-                order:questionOrder,
-                text,
-                type,
-                options,
-                correctAnswer
-                ,lessonId
-              });
-           setSuccessMessage('Create successfully!');
+          await updateQustion(questionId, text, questionOrder, type, options, correctAnswer);
+          setSuccessMessage('Question updated successfully!');
+        
         } catch (error) {
-          console.error('Failed to create qustion:', error);
+          console.error('Error updating question:', error);
         }
       };
-      const handleOptionsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const optionsArray = e.target.value.split('\n').map((option) => option.trim());
-        setoptions(optionsArray);
-      };
+      const handleDisplayOptionsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const updatedDisplayOptions = e.target.value.split('\n').map((option) => option.trim());
+        setoptions(updatedDisplayOptions);
+    };
+
   return (
     <Container style={{
         display: 'flex',
@@ -47,7 +55,7 @@ const CreateQustion = () => {
         marginTop:'120px'
     }}>
         <Typography variant="h4" align="center" gutterBottom>
-            Create new Qustion
+            Update Qustion
         </Typography>
         <div  >
             <Grid container spacing={2}>
@@ -56,11 +64,12 @@ const CreateQustion = () => {
                         label="title"
                         fullWidth
                         className="input-field"
+                        value={text}
                         onChange={(e) => {setText(e.target.value)
                         }}
                     />
                 </Grid>
- <Grid item xs={12}>
+            <Grid item xs={12}>
                   <TextField
                       label="questionOrder"
                       type="number" 
@@ -70,30 +79,20 @@ const CreateQustion = () => {
                        }}
                       fullWidth
                       className="input-field"
+                      value={questionOrder}
                       onChange={(e) => setquestionOrder(Number(e.target.value))}
 
                   />
-    
               </Grid>               
-                <Grid item xs={12}>
-                  <TextField
-                      label="Lesson ID"
-                      fullWidth
-                      className="input-field"
-                      value={lessonId}
-
-                  />
-    
-              </Grid>
               <Grid item xs={12}>
                     <TextField
                         label="type"
                         fullWidth
                         className="input-field"
+                        value={type}
                         onChange={(e) => {setType(e.target.value)
                         }}
                     />
-                    
                 </Grid>
                 <Grid item xs={12}>
                 <TextField
@@ -102,8 +101,8 @@ const CreateQustion = () => {
               rows={4} 
               fullWidth
               className="input-field"
+              onChange={handleDisplayOptionsChange}
               value={options.join('\n')}
-              onChange={handleOptionsChange}
             />
                     
                 </Grid>
@@ -112,6 +111,7 @@ const CreateQustion = () => {
                         label="correctAnswer"
                         fullWidth
                         className="input-field"
+                        value={correctAnswer}
                         onChange={(e) => {setcorrectAnswer(e.target.value)
                         }}
                     />
@@ -125,8 +125,10 @@ const CreateQustion = () => {
                 <Grid item xs={12}>
                     <Button type="submit" variant="contained" color="primary" style={{
                         marginTop: '10px'
-                    }}onClick={createNewQustion} >
-                        Create Qustion
+                    }}
+                    onClick={handleUpdateQuestion}
+                     >
+                        Update
                     </Button>
                 </Grid>
             </Grid>
@@ -135,4 +137,4 @@ const CreateQustion = () => {
   )
 }
 
-export default CreateQustion
+export default UpdateQustion

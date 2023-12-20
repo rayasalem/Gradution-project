@@ -205,7 +205,45 @@ export const createQuestion = async (userQuestion: IQuestion): Promise<IQuestion
     throw error;
   }
 };
-
+export const getQustionById = async (questionId: any) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/question/getQuestion/${questionId}`);
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to retrieve user details:', error);
+    throw error;
+  }
+};
+export const updateQustion = async (questionId: any, text: string,order:number,type:string,options:string[],correctAnswer:string) => {
+  try {
+    const response = await axiosInstance.put(`/api/v1/question/updateQuestion/${questionId}`, {
+      text,order ,type,options,correctAnswer
+    });
+    if (response.status === 201) {
+      console.log('Success, Qustion updated ');
+      return response.data;
+    }
+  } catch (error: any) {
+    console.log("Update Qustion error:", error);
+    throw error;
+  }
+};
+export const deleteQustionById = async (questionId: string) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/question/deleteQuestion/${questionId}`);
+    if (response.status === 201) {
+      console.log('Success, Quiz deleted ');
+      return response.data;
+    } else {
+      throw new Error('Failed to Quiz deleted');
+    }
+  } catch (error) {
+    console.error('Failed to Quiz deleted', error);
+    throw error;
+  }
+};
 export const createBitAndHeartUser = async (): Promise<IUserBitsAndHearts | undefined> => {
   try {
     const response: AxiosResponse<IUserBitsAndHearts> = await axiosInstance.post('/api/v1/user-bits-and-hearts/newBit');
@@ -400,5 +438,44 @@ export const getAllTextSlides = async (lessonId: any): Promise<ITextSlide[] | un
   } catch (error) {
     console.error('Failed to retrieve all Text Slides:', error);
     throw error;
+  }
+};
+export const updateTextLesson = async (textSlideId: string, text: string, order: number): Promise<IUserLesson | undefined> => {
+  try {
+    const response: AxiosResponse<IUserLesson> = await axiosInstance.put(`/api/v1/textSlide/editTextSlide/${textSlideId}`, {
+      text,
+      order
+    });
+    if (response.status === 200) {
+      console.log('Success, Text Lesson updated');
+      return response.data;
+    }
+  } catch (error: any) {
+    console.log("Update Text Lesson error:", error);
+    throw error;
+  }
+};
+export const deleteTextSlideById = async (textSlideId: string) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/textSlide/deleteTextSlide/${textSlideId}`);
+    if (response.status === 200) {
+      console.log('Success, Text Slide deleted');
+      return response.data;
+    } else {
+      throw new Error('Failed to delete Text Slide');
+    }
+  } catch (error) {
+    console.error('Failed to delete Text Slide', error);
+    throw error;
+  }
+};
+export const viewTextSlideDetails = async (textSlideId: string) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/textSlide/textSlideDetails/${textSlideId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("get course error:", error);
   }
 };

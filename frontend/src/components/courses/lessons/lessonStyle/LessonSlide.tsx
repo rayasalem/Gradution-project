@@ -7,15 +7,20 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import DoneLessonPage from '../LessonDone';
-import { createLesson, deductHeartUser } from '../../../../api/userAction';
+import { createLesson, deductHeartUser, deleteQustionById, deleteTextSlideById } from '../../../../api/userAction';
 import { createBitAndHeartUser } from '../../../../api/userAction';
-import { Typography, Icon } from '@mui/material';
+import { Typography, Icon, TextField } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BitsLessonEnd from './LessonHearts/BitsLessonEnd';
 import { updateUserHeartsat, retrieveUserBitsAndHearts } from './../../../../api/userAction';
 import MultipleChoiceQuestion from '../../quizes/MultipleChoiceQuestion';
+import { useNavigate } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+
+
 
 interface IUserLesson {
   title: string;
@@ -37,12 +42,14 @@ interface DragDropSlide {
 interface TextSlide {
   type: 'text';
   text: JSX.Element;
+  _id?:any
 }
 interface multipleChoice{
   text: string;
   type:string;
   options: string[];
   correctAnswer: string;
+  _id:any;
 }
 type LessonSlide = DragDropSlide | TextSlide | multipleChoice;
 
@@ -66,6 +73,7 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
   });
   const [initialized, setInitialized] = useState(false);
   const [LessonID, setLessonID] = useState<string | undefined>(undefined); 
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -137,7 +145,18 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
       console.error('Failed to deduct hearts:', error);
     }
   };
-
+  const handleEditQuestion = (questionId:any) => {
+    navigate(`/DevLoom/admin/updateQustion/${questionId}`)
+  };
+  const handledeleteQuestion = async(questionId:any) => {
+   await deleteQustionById(questionId)
+  };
+  const handleEditTextSlide = (textSlideId:any) => {
+    navigate(`/DevLoom/admin/updateTextSlide/${textSlideId}`)
+  };
+  const handledeleteTextSlide = async(textSlideId:any) => {
+    await deleteTextSlideById(textSlideId)
+   };
   const getAnswerFeedbackIcon = () => {
     if (isAnswerCorrect === null) {
       return null;
@@ -251,15 +270,48 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
             />
           )}
 
-          {currentSlideData.type === 'text' && <TextSlide text={(currentSlideData as TextSlide).text} />}
+          {currentSlideData.type === 'text' && (
+             <Box>
+               <Button
+            onClick={() => handleEditTextSlide(currentSlideData._id)}
+            variant="contained"
+            sx={{ width: '160px' }}
+          >
+            Edit TextField
+          </Button>
+          <IconButton
+        aria-label="delete-quiz"
+        size="medium"
+            onClick={() => handledeleteTextSlide(currentSlideData._id)}
+          >
+           <DeleteIcon fontSize="inherit" />
+           </IconButton>
+          <TextSlide text={(currentSlideData as TextSlide).text} />
+          </Box>)}
           {currentSlideData.type === 'multipleChoice' && (
+            <Box>
+            <Button
+            onClick={() => handleEditQuestion(currentSlideData._id)}
+            variant="contained"
+            sx={{ width: '160px' }}
+          >
+            Edit Question
+          </Button>
+          <IconButton
+        aria-label="delete-quiz"
+        size="medium"
+            onClick={() => handledeleteQuestion(currentSlideData._id)}
+          >
+           <DeleteIcon fontSize="inherit" />
+           </IconButton>
           <MultipleChoiceQuestion 
           text={(currentSlideData as multipleChoice).text} 
           options={(currentSlideData as multipleChoice).options}
           correctAnswers={(currentSlideData as multipleChoice).correctAnswer}
               selectedAnswer={selectedAnswer}
               setSelectedAnswer={setSelectedAnswer}
-          />)}
+          />
+          </Box>)}
 
         </DndProvider>
         {getAnswerFeedbackIcon()}

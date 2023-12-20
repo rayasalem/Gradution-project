@@ -46,7 +46,6 @@ const ModalBitsEnd: React.FC<ModalComponentProps> = ({open, onClose}) => {
   const handleXClick = () => {
     onClose(); 
     
-    navigate('learn'); 
   };
   return (
     <Modal open={open} onClose={onClose}>

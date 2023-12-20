@@ -4,7 +4,6 @@ import TextSlideModel, { ITextSlide } from '../db/schemas/TextSlideSchema';
 
 export const createTextSlide = async (req: Request, res: Response) => {
   try {
-    // const lessonId = req.params.lessonId;
     const {lessonId, type, order, text } = req.body;
     const lesson = await Lesson.findById(lessonId);
 
@@ -74,7 +73,6 @@ export const listTextSlidesInLesson = async (req: Request, res: Response) => {
   const { lessonId } = req.params;
   try {
     const textSlides = await TextSlideModel.find({ lessonId }).sort({ order: 1 });
-
     res.status(200).json({ message: 'List of text slides in the lesson', textSlides });
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve text slides in the lesson' });

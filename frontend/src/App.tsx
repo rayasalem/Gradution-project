@@ -96,6 +96,8 @@ import UpdateQuiz from './components/admin/quiz/UpdateQuiz';
 import LessonOneInJava from './components/courses/Java/lessonJava/LessonOne';
 import CreateQustion from './components/admin/question/CreateQustion';
 import CreateTextSlide from './components/admin/TextSlide/CreateTextSlide';
+import UpdateQustion from './components/admin/question/UpdateQustion';
+import UpdateTextSlide from './components/admin/TextSlide/UpdateTextSlide';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -200,6 +202,10 @@ function App() {
           <Route path="/DevLoom/admin/updateQuiz/:quizId" element={<UpdateQuiz/>} />  
           <Route path="/DevLoom/admin/createQustion/:lessonId" element={<CreateQustion/>} />
           <Route path="/DevLoom/admin/createTextSlide/:lessonId" element={<CreateTextSlide/>} />
+          <Route path="/DevLoom/admin/updateQustion/:questionId" element={<UpdateQustion/>} />
+          <Route path="/DevLoom/admin/updateTextSlide/:textSlideId" element={<UpdateTextSlide/>} />
+
+
         </Routes>
       </AuthProvider>
     </Router>
