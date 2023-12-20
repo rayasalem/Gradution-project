@@ -30,7 +30,7 @@ export interface IQuiz extends Document {
     },
     questions: [{
       type:Schema.Types.ObjectId,
-     ref: 'QuestionModel',
+     ref: 'Question',
     }],
     passingScore: {
       type: Number,

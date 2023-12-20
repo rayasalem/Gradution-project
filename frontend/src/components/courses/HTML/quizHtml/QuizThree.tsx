@@ -11,15 +11,7 @@ interface MultipleChoiceQuestionProps {
 }
 
 const QuizThree: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
-
-  const quizData = {
-    quizId: 'HTML5-Quiz',
-    title: 'HTML5 Quiz',
-    course: courseId || '',
-    passingScore: 6,
-  };
-
+ 
   const quizQuestions: MultipleChoiceQuestionProps[] = [
     {
       questionId: 'q1_HTMLMedia',
@@ -132,7 +124,7 @@ const QuizThree: React.FC = () => {
 
   return (
     <div>
-      <Quiz quizData={quizData} quizQuestions={quizQuestions} />
+      <Quiz  quizQuestions={quizQuestions} />
     </div>
   );
 };

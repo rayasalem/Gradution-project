@@ -78,6 +78,19 @@ export const editQuiz = async (req: Request, res: Response) => {
       res.status(500).json({ error: 'Failed to update lesson details' });
     }
   };
+  export const listQuestionsInQuiz = async (req: Request, res: Response) => {
+    try{
+      const {quizId}=req.params
+        const Quiz  =  await QuizModel.findOne({ _id: quizId }).populate({
+          path: 'questions',
+          options: { sort: { order: 1 } }, 
+        });
+        res.status(200).json({ message: 'List of questions in the Quiz', questions: Quiz?.questions });
+      } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+  };
   
   
   

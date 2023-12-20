@@ -336,8 +336,8 @@ const JavaCourse: React.FC = () => {
           {item.type}
         </Typography>
         <Link
-          to={`/learn/Java/${item.lessonId}/${item.type}${item.OriginalID}`}
-          style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
+            to={`/learn/Java/${item.type}/${item.type === 'lesson' ? item.lessonId : item.quizId}`}   
+       style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
         > 
         <Typography
           variant='body1'

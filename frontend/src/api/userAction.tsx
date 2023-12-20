@@ -417,6 +417,16 @@ export const getlistLessonsInCourse = async (courseId: any) => {
     console.log("get course error:", error);
   }
 };
+export const getlistQustionInQuiz = async (quizId: any) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/quiz/questions/${quizId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log("get questions error:", error);
+  }
+};
 export const createTextLesson = async (textSlideData: ITextSlide): Promise<ITextSlide| undefined> => {
   try {
     const response: AxiosResponse<ITextSlide> = await axiosInstance.post(`/api/v1/textSlide/createTextSlide`,textSlideData);

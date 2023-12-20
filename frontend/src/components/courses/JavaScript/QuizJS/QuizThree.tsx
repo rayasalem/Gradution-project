@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import Quiz from '../../quizes/Quiz';
 
 const QuizThreejs: React.FC = () => {
-    const { courseId } = useParams<{ courseId: string }>();
-
-    const quizData = {
-        quizId: 'Q3.1',
-        title: 'JavaScript Advanced Topics Quiz',
-        course: courseId || '',
-        passingScore: 6,
-    };
 
     const quizQuestions = [
         {
@@ -87,7 +78,7 @@ const QuizThreejs: React.FC = () => {
 
     return (
         <div>
-            <Quiz quizData={quizData} quizQuestions={quizQuestions} />
+            <Quiz  quizQuestions={quizQuestions} />
         </div>
     );
 };

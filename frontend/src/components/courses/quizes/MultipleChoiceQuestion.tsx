@@ -24,8 +24,10 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
   quizId
 }) => {
   useEffect(() => {
-    createQuestionAndQuiz();
-  }, [questionId]); 
+    if (questionId) {
+      createQuestionAndQuiz();
+    }
+  }, [questionId]);
 
   const createQuestionAndQuiz = async () => {
     try {
@@ -49,10 +51,10 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
 
   return (
     <Box>
-    <Typography sx={{ paddingTop: '10px' }}>{text}</Typography>
+    <Typography >{text}</Typography>
     
     <Box sx={{ paddingTop: '20px' }}>
-      {options.map((option, index) => (
+      {options && options.map((option, index) => (
         <Button
           className="draggable"
           key={index}

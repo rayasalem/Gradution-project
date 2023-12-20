@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import DoneLessonPage from '../LessonDone';
-import { createLesson, deductHeartUser, deleteQustionById, deleteTextSlideById } from '../../../../api/userAction';
+import { createLesson, deductHeartUser, deleteQustionById, deleteTextSlideById, getprofileInfo } from '../../../../api/userAction';
 import { createBitAndHeartUser } from '../../../../api/userAction';
 import { Typography, Icon, TextField } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -63,9 +63,22 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
   });
   const [initialized, setInitialized] = useState(false);
   const [LessonID, setLessonID] = useState<string | undefined>(undefined); 
+  const [userIsAddict, setuserIsAddict] = React.useState(false);
   const navigate = useNavigate();
 
-
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+          const profileInfo = await getprofileInfo(); 
+          if (profileInfo?.user?.role === 'admin') {
+            setuserIsAddict(true);
+          }
+      } catch (error) {
+        console.error('Error fetching profile info:', error);
+      }
+    };
+    fetchData ();
+  }, []);
   useEffect(() => {
     localStorage.setItem('heartCount', heartCount.toString());
   }, [heartCount]);
@@ -239,7 +252,8 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
 
           {currentSlideData.type === 'text' && (
              <Box>
-               <Button
+               {userIsAddict && (<Box>
+                 <Button
             onClick={() => handleEditTextSlide(currentSlideData._id)}
             variant="contained"
             sx={{ width: '160px' }}
@@ -253,11 +267,14 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
           >
            <DeleteIcon fontSize="inherit" />
            </IconButton>
+               </Box>)}
+              
           <TextSlide text={(currentSlideData as TextSlide).text} />
           </Box>)}
           {currentSlideData.type === 'multipleChoice' && (
             <Box>
-            <Button
+               {userIsAddict && (<Box> 
+                <Button
             onClick={() => handleEditQuestion(currentSlideData._id)}
             variant="contained"
             sx={{ width: '160px' }}
@@ -271,6 +288,9 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
           >
            <DeleteIcon fontSize="inherit" />
            </IconButton>
+
+               </Box>)}
+           
           <MultipleChoiceQuestion 
           text={(currentSlideData as multipleChoice).text} 
           options={(currentSlideData as multipleChoice).options}

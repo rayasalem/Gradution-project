@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import Quiz from '../../quizes/Quiz';
 interface MultipleChoiceQuestionProps {
     questionId: string;
@@ -10,14 +9,7 @@ interface MultipleChoiceQuestionProps {
   
   }
 const QuizTwo: React.FC = () => {
-    const { courseId } = useParams<{ courseId: string }>();
-
-    const quizData = {
-        quizId: 'Q1.2',
-        title: 'HTML Quiz',
-        course: courseId || '',
-        passingScore: 6,
-    };
+   
     const quizQuestions: MultipleChoiceQuestionProps[] = [
         {
             questionId: 'q1_HTMLForms',
@@ -93,7 +85,7 @@ const QuizTwo: React.FC = () => {
     
     return (
         <div>
-            <Quiz quizData={quizData} quizQuestions={quizQuestions} />
+            <Quiz  quizQuestions={quizQuestions} />
         </div>
     );
 };

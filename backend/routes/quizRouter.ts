@@ -8,12 +8,10 @@ import { Router } from 'express';
 const quizRouter = Router();
 
 quizRouter.post('/createquiz/:courseId', authorizeUser([roles.admin]), quizController.creatQuiz);
-
 quizRouter.get('/getQuiz/:quizId',authorizeUser([roles.admin]), quizController.getQuiz);
-
 quizRouter.put('/editQuiz/:quizId', authorizeUser([roles.admin]), validation(validators.updateQuiz), quizController.editQuiz);
-
 quizRouter.delete('/deleteQuiz/:quizId', authorizeUser([roles.admin]), quizController.deleteQuiz);
-
 quizRouter.get('/Quizzes/:courseId', authorizeUser([roles.admin]),quizController.listQuizesInCourse);
+quizRouter.get('/questions/:quizId',authorizeUser([roles.admin]),quizController.listQuestionsInQuiz);
+
 export default quizRouter;

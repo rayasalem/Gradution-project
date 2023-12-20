@@ -1,36 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Typography, Container, Paper } from '@mui/material';
 import MultipleChoiceQuestion from './MultipleChoiceQuestion';
-import { createQuiz, earnBitsBitsAndHearts } from './../../../api/userAction';
+import { createQuiz, deleteQustionById, earnBitsBitsAndHearts, getprofileInfo } from './../../../api/userAction';
 import { Icon, Box } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import { Link, useLocation } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 interface MultipleChoiceQuestionProps {
-  questionId: string;
+  questionId?: string;
   text: string;
-  question: string;
+  question?: string;
   options: string[];
   correctAnswers: string;
   quizId?: string; 
-
+  correctAnswer?: string;
+  _id?:any;
 }
 interface QuizProps {
-  quizData: {
-    quizId: string;
-    title: string;
-    course: string;
-    passingScore: number;
-  
-  };
   quizQuestions: MultipleChoiceQuestionProps[]; 
 }
 interface IUserBitsAndHearts {
     actionType: 'lesson' | 'elementaryLevel' | 'proficientLevel' | 'advancedLevel';
   }
 
-const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
+const Quiz: React.FC<QuizProps> = ({  quizQuestions}) => {
+  const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [score, setScore] = useState<number>(0);
@@ -40,33 +37,23 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
   const [QizeID, setQizeID] = useState<string | undefined>(undefined); 
   const location = useLocation();
   const currentPathname = location.pathname;
+  const navigate = useNavigate();
 
   const removeLastPart = currentPathname.replace(/\/[^/]+$/, '');
+ 
   useEffect(() => {
-    let isMounted = true;
-
-    const createQuizAsync = async () => {
-      try {
-        if (!initialized) {
-          if (quizData.course) {
-            const response = await createQuiz(quizData);
-            setQizeID(response?.savedQuiz?._id);
-          } else {
-            console.error('CourseId is not defined in lessonData.');
+    const fetchData = async () => {
+        try {
+          const profileInfo = await getprofileInfo(); 
+          if (profileInfo?.user?.role === 'admin') {
+            setuserIsAddict(true);
           }
-          setInitialized(true);
-        }
       } catch (error) {
-        console.error('Failed to create lesson:', error);
+        console.error('Error fetching profile info:', error);
       }
     };
-
-    createQuizAsync();
-    
-    return () => {
-      isMounted = false;
-    };
-  }, [initialized, quizData.course]);
+    fetchData ();
+  }, []);
   const createUserBitsAndHeartsAsync = async () => {
     try {
       let actionType: IUserBitsAndHearts['actionType'] = 'proficientLevel';
@@ -108,9 +95,8 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
 
   const nextQuestion = () => {
     const currentQuestionData = quizQuestions[currentQuestion];
-    const correctAnswers = currentQuestionData.correctAnswers;
-
-    if (selectedAnswer !== null && correctAnswers.includes(selectedAnswer)) {
+    const correctAnswer = currentQuestionData.correctAnswer;
+    if (selectedAnswer !== null && correctAnswer && selectedAnswer === correctAnswer) {
       setScore(score + 1);
     }
 
@@ -130,13 +116,15 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
       return 15;
     }
   };
-  const restartQuiz = () => {
-    setCurrentQuestion(0);
-    setScore(0);
-    setShowScore(false);
+ 
+  const handleEditQuestion = (questionId:any) => {
+    navigate(`/DevLoom/admin/updateQustion/${questionId}`)
+  };
+  const handledeleteQuestion = async(questionId:any) => {
+   await deleteQustionById(questionId)
   };
   return (
-    <Container maxWidth="sm" sx={{ paddingTop: '100px' }}>
+    <Container maxWidth="sm" sx={{ paddingTop: '30px' }}>
       {showScore ? (
         <div>
     <Box
@@ -184,13 +172,30 @@ const Quiz: React.FC<QuizProps> = ({ quizData , quizQuestions}) => {
         </div>
       ) : (
         <div> 
-             
+           {userIsAddict && (
+             <Box>
+              <Button
+            onClick={() => handleEditQuestion(quizQuestions[currentQuestion]?._id)}
+            variant="contained"
+            sx={{ width: '160px' }}
+          >
+            Edit Question
+          </Button>
+          <IconButton
+        aria-label="delete-quiz"
+        size="medium"
+            onClick={() => handledeleteQuestion(quizQuestions[currentQuestion]?._id)}
+          >
+           <DeleteIcon fontSize="inherit" />
+           </IconButton>
+           </Box>
+           )}
            <MultipleChoiceQuestion
-            questionId={quizQuestions[currentQuestion].questionId}
-            text={quizQuestions[currentQuestion].text}
-            question={quizQuestions[currentQuestion].question}
-            options={quizQuestions[currentQuestion].options}
-            correctAnswers={quizQuestions[currentQuestion].correctAnswers}
+            questionId={quizQuestions[currentQuestion]?.questionId}
+            text={quizQuestions[currentQuestion]?.text}
+            question={quizQuestions[currentQuestion]?.question}
+            options={quizQuestions[currentQuestion]?.options}
+            correctAnswers={quizQuestions[currentQuestion]?.correctAnswers}
             selectedAnswer={selectedAnswer}
             setSelectedAnswer={setSelectedAnswer}
             quizId={QizeID}

@@ -92,14 +92,14 @@ const Navbar: React.FC = () =>{
           <MenuIcon />
           </IconButton>
            <Typography variant="h5" component="div" className='title' sx={{ left: 0 }}>
-            Devloem </Typography>
+            Devloom </Typography>
         </Toolbar>
         </AppBar>
       ) : (
         <AppBar position="fixed"  sx={{ marginTop:0,background: '#f9f9fa',height:'10vh',width: '100vw',padding:'5px',top: 0, left: 0, right: 0 }}>
           <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="h5" component="div" className='title' sx={{ left: 0 }}>
-           Devloem </Typography>
+           Devloom </Typography>
             <div style={{ display: 'flex', gap: '10px' }}>
             <Button onClick={handleMainpage} className="item">
               HomePage

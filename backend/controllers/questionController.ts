@@ -6,13 +6,7 @@ import Lesson, { ILesson } from '../db/schemas/lessonSchema';
 export const creatQuestion = async (req: Request, res: Response) => {
   try {
     const { order, text, type, options, correctAnswer, quizId, lessonId } = req.body;
-
-    const existingQuestion = await QuestionModel.findOne({ order });
-
-    if (existingQuestion) {
-      return res.status(400).json({ message: 'Question with the same ID already exists' });
-    }
-
+   
     const newQuestion: IQuestion = new QuestionModel({ order, text, type, options, correctAnswer });
     const savedQuestion: IQuestion = await newQuestion.save();
 
