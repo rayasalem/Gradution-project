@@ -94,7 +94,7 @@ export const listQuestionsInLesson = async (req: Request, res: Response) => {
     const {lessonId}=req.params
       const lesson  =  await Lesson.findOne({ _id: lessonId }).populate({
         path: 'questions',
-        options: { sort: { questionOrder: 1 } }, 
+        options: { sort: { order: 1 } }, 
       });
       res.status(200).json({ message: 'List of questions in the Lesson', questions: lesson?.questions });
     } catch (error) {

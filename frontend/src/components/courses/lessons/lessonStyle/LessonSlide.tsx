@@ -15,6 +15,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BitsLessonEnd from './LessonHearts/BitsLessonEnd';
 import { updateUserHeartsat, retrieveUserBitsAndHearts } from './../../../../api/userAction';
+import MultipleChoiceQuestion from '../../quizes/MultipleChoiceQuestion';
 
 interface IUserLesson {
   title: string;
@@ -37,14 +38,19 @@ interface TextSlide {
   type: 'text';
   text: JSX.Element;
 }
-
-type LessonSlide = DragDropSlide | TextSlide;
+interface multipleChoice{
+  text: string;
+  type:string;
+  options: string[];
+  correctAnswer: string;
+}
+type LessonSlide = DragDropSlide | TextSlide | multipleChoice;
 
 interface LessonSlideProps {
   lessonData: IUserLesson;
   slides: LessonSlide[];
-  selectedAnswer: string | null;
-  setSelectedAnswer: Dispatch<SetStateAction<string | null>>;
+  selectedAnswer?: string | null;
+  setSelectedAnswer?: Dispatch<SetStateAction<string | null>>;
 }
 
 const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
@@ -220,9 +226,9 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
           {currentSlideData.type === 'dragDrop' && currentSlideData.options && (
             <QuestionWithDragandDrop
             lessonId={LessonID}
-              questionId={currentSlideData.questionId}
+              questionId={(currentSlideData as DragDropSlide).questionId}
               text={currentSlideData.text}
-              question={currentSlideData.question}
+              question={(currentSlideData as DragDropSlide).question}
               options={currentSlideData.options}
               correctAnswer={currentSlideData.correctAnswer}
               selectedAnswer={selectedAnswer}
@@ -231,6 +237,15 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ lessonData, slides }) => {
           )}
 
           {currentSlideData.type === 'text' && <TextSlide text={(currentSlideData as TextSlide).text} />}
+          {currentSlideData.type === 'multipleChoice' && (
+          <MultipleChoiceQuestion 
+          text={(currentSlideData as multipleChoice).text} 
+          options={(currentSlideData as multipleChoice).options}
+          correctAnswers={(currentSlideData as multipleChoice).correctAnswer}
+              selectedAnswer={selectedAnswer}
+              setSelectedAnswer={setSelectedAnswer}
+          />)}
+
         </DndProvider>
         {getAnswerFeedbackIcon()}
       </Box>

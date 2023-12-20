@@ -38,7 +38,7 @@ interface IUserLesson {
 }
 interface IQuestion{
  questionId?:string;
- questionOrder?:number;
+ order?:number;
   text: string;
   type: string;
   options?: string[];
@@ -50,6 +50,12 @@ interface CourseDetailsResponse {
   course: {
     _id: string; 
   };
+}
+interface ITextSlide {
+  lessonId: any;
+  type: string;
+  order: number;
+  text: string;
 }
 export const createCourse = async (course: ICourse): Promise<ICourse | undefined> => {
   try {
@@ -371,5 +377,28 @@ export const getlistLessonsInCourse = async (courseId: any) => {
     }
   } catch (error) {
     console.log("get course error:", error);
+  }
+};
+export const createTextLesson = async (textSlideData: ITextSlide): Promise<ITextSlide| undefined> => {
+  try {
+    const response: AxiosResponse<ITextSlide> = await axiosInstance.post(`/api/v1/textSlide/createTextSlide`,textSlideData);
+
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Create text lesson error:', error);
+    throw error;
+  }
+};
+export const getAllTextSlides = async (lessonId: any): Promise<ITextSlide[] | undefined> => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/textSlide/lesson/textSlides/${lessonId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to retrieve all Text Slides:', error);
+    throw error;
   }
 };

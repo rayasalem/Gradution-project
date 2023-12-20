@@ -5,15 +5,15 @@ import Lesson, { ILesson } from '../db/schemas/lessonSchema';
 
 export const creatQuestion = async (req: Request, res: Response) => {
   try {
-    const { questionOrder, text, type, options, correctAnswer, quizId, lessonId } = req.body;
+    const { order, text, type, options, correctAnswer, quizId, lessonId } = req.body;
 
-    const existingQuestion = await QuestionModel.findOne({ questionOrder });
+    const existingQuestion = await QuestionModel.findOne({ order });
 
     if (existingQuestion) {
       return res.status(400).json({ message: 'Question with the same ID already exists' });
     }
 
-    const newQuestion: IQuestion = new QuestionModel({ questionOrder, text, type, options, correctAnswer });
+    const newQuestion: IQuestion = new QuestionModel({ order, text, type, options, correctAnswer });
     const savedQuestion: IQuestion = await newQuestion.save();
 
     if (quizId) {
@@ -43,25 +43,7 @@ export const creatQuestion = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-//  export const creatQuestion = async(req:Request,res:Response)=>{
-//     try{
-//       const { questionId, text, type, options, correctAnswer } = req.body;
 
-//       const existingQuestion = await QuestionModel.findOne({ questionId });
-  
-//       if (existingQuestion) {
-//         return res.status(400).json({ message: 'Question with the same ID already exists' });
-//       }
-  
-//       const newQuestion: IQuestion | null = await new QuestionModel({ questionId, text, type, options, correctAnswer });
-//       const savedQuestion: IQuestion = await newQuestion.save();
-  
-//       res.status(201).json(savedQuestion);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: 'Server error' });
-//     }
-// }
 export const getQuestion= async (req: Request, res: Response) => {
     try {
         const { questionId } = req.query;

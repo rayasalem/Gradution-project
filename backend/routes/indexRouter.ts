@@ -12,9 +12,10 @@ import blogRouter from './blogRouter';
 import commentRouter from './commentRouter';
 import tagRouter from './tagRouter';
 import postRouter from './postRouter';
+import textSlideRouter from './TextSlideRoute';
 export {
   courseRouter,lessonRouter,
   userRouter,authRouter,bitsAndHeartsRouter,
   progressRouter,quizRouter,questionRouter,quizTakerRouter,
-  categoryRouter,blogRouter,commentRouter,postRouter,tagRouter
+  categoryRouter,blogRouter,commentRouter,postRouter,tagRouter,textSlideRouter
 }

@@ -3,9 +3,9 @@ import { Typography, Box, Button } from '@mui/material';
 import {  createQuestion } from '../../../api/userAction';
 
 interface MultipleChoiceQuestionProps {
-  questionId: string;
+  questionId?: string;
   text: string;
-  question: string;
+  question?: string;
   options: string[];
   correctAnswers: string;
   selectedAnswer: string | null;
@@ -49,7 +49,7 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
 
   return (
     <Box>
-    <Typography sx={{ paddingTop: '10px' }}>{question}</Typography>
+    <Typography sx={{ paddingTop: '10px' }}>{text}</Typography>
     
     <Box sx={{ paddingTop: '20px' }}>
       {options.map((option, index) => (

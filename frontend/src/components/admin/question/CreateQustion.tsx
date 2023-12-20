@@ -18,7 +18,7 @@ const CreateQustion = () => {
     const createNewQustion = async () => {
         try {
             await createQuestion({
-                questionOrder,
+                order:questionOrder,
                 text,
                 type,
                 options,
