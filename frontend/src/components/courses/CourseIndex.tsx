@@ -128,11 +128,11 @@ const IndexCourse: React.FC = () => {
            </Fab>
             )}
         <CourseContent
-              link={`/learn/html/:`} imageUrl="/images/html.png" title="HTML"
+              link={`/learn/html/:`} imageUrl="/images/HTML.png" title="HTML"
               description="HTML is at the core of every web page. It’s beginner-friendly and knowing the basics is useful for everyone who works in digital design, marketing, content, and more. If you’re interested in front-end web development, this course is a great place to start!"
            />
         <CourseContent
-              link={`/learn/Java/:`} imageUrl="/images/Java-.png" title="Java"
+              link={`/learn/Java/:`} imageUrl="/images/Java.png" title="Java"
               description="This simple, beginner-friendly Java course requires no previous coding knowledge. All you need is a mobile phone or desktop computer and 5 minutes a day! You’ll learn all about the key concepts of Java, and will be writing clear"
             />
         <CourseContent
@@ -148,7 +148,7 @@ const IndexCourse: React.FC = () => {
               description="JavaScript, renowned as the world's most popular programming language, serves as the backbone of the Web. Its user-friendly nature makes it an ideal language for learners, allowing for a smooth progression from basic concepts to advanced techniques in this comprehensive tutorial."
             />
         <CourseContent
-              link={`/learn/css/:`} imageUrl="/images/css.png" title="CSS"
+              link={`/learn/css/:`} imageUrl="/images/CSS.png" title="CSS"
               description="CSS, the styling language for HTML, dictates the visual presentation of web content, allowing designers to craft visually appealing and responsive layouts."
            />
         <CourseContent

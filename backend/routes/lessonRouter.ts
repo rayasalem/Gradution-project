@@ -16,6 +16,6 @@ lessonRouter.put('/editLesson/:lessonId',authorizeUser([roles.admin]),editLesson
 lessonRouter.delete('/deleteLesson/:lessonId',authorizeUser([roles.admin]),deleteLesson);
 lessonRouter.get('/LessonDetails/:lessonId',authorizeUser([roles.admin,roles.user]),viewLessonDetails);
 lessonRouter.get('/course/lesson/:courseId',authorizeUser([roles.admin,roles.user]),listLessonsInCourse);
-lessonRouter.get('/questions/:lessonId',authorizeUser([roles.admin]),listQuestionsInLesson);
+lessonRouter.get('/questions/:lessonId',authorizeUser([roles.admin,roles.user]),listQuestionsInLesson);
 
 export default lessonRouter;

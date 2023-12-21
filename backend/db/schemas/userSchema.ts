@@ -41,11 +41,11 @@ const userSchema: Schema = new Schema<IUser>({
     enum: ['admin', 'user'],
     default: 'user',
   },
-  enrolledCourses: [{ type: Types.ObjectId, ref: 'Course' }],
+  enrolledCourses: [{ type: Types.ObjectId, ref: 'CourseModel' }],
   completedLessons: [{ type: Types.ObjectId, ref: 'Lesson' }],
   ratings: [
     {
-      courseId: { type: Types.ObjectId, ref: 'Course' },
+      courseId: { type: Types.ObjectId, ref: 'CourseModel' },
       rating: Number,
     },
   ],

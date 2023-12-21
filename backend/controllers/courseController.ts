@@ -109,7 +109,7 @@ export const listAllCourses = async (req: Request, res: Response) => {
   }
 }
 export const enrollInCourse = async (req: Request, res: Response) => {
-  const courseId = req.query.courseId as string;
+  const {courseId }= req.params ;
   const userId = req.user?._id;
   try {
     const user = await User.findById(userId);
@@ -130,6 +130,7 @@ export const enrollInCourse = async (req: Request, res: Response) => {
     await course.save();
     res.status(200).json({ message: 'Enrolled in the course', course });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Failed to enroll in the course' });
   }
 }

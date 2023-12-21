@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Box, Paper, Typography } from '@mui/material';
+import { Avatar, Box, Paper, Typography, Button } from '@mui/material';
 import Footer from '../homePage/footer/Footer';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
-import { getprofileInfo, retrieveUserBitsAndHearts } from '../../api/userAction';
-
-
+import { getprofileInfo, retrieveUserBitsAndHearts,getlistOfUserCoures } from '../../api/userAction';
+import { Link } from 'react-router-dom';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import { useRecoilState } from 'recoil';
+import { coursesState } from '../recoilState';
+interface Course {
+  _id: any;
+  title: string;
+}
 const ProfilePage:React.FC = () => {
+  const [userIsAddict, setuserIsAddict] = React.useState(false);
+  const [courses, setCourses] = useRecoilState<Course[]>(coursesState as any);
   const [bitsCount, setBitsCount] = useState<number>();
   const [uploadedImage, setUploadedImage] = useState('/images/user.png');
   const [userName, setUserName] = useState('');
   const [Bio, setBio] = useState('');
   const [Country, setCountry] = useState('');
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,6 +33,21 @@ const ProfilePage:React.FC = () => {
     fetchData();
   }, []); 
   useEffect(() => {
+    const fetchDataCourse = async () => {
+      try {
+        const response = await getlistOfUserCoures();
+        const uniqueCourses = Array.from(new Set(response.Course.map((course: Course) => course._id)))
+        .map((_id: any) => response.Course.find((course: Course) => course._id === _id) as Course);
+
+      setCourses(uniqueCourses);
+      } catch (error) {
+        console.error('Error to Get List of User Course:', error);
+      }
+    };
+
+    fetchDataCourse();
+  }, [setCourses]); 
+  useEffect(() => {
     const fetchData = async () => {
       try {
           const profileInfo = await getprofileInfo(); 
@@ -32,7 +56,9 @@ const ProfilePage:React.FC = () => {
             setBio(profileInfo?.user?.bio)
             setCountry(profileInfo?.user?.country)
             setUploadedImage(profileInfo?.user?.avatar)
-           console.log(profileInfo)
+            if (profileInfo?.user?.role === 'admin') {
+              setuserIsAddict(true);
+            }
           }
       } catch (error) {
         console.error('Error fetching profile info:', error);
@@ -41,6 +67,7 @@ const ProfilePage:React.FC = () => {
 
     fetchData();
   }, []);
+  
   return (
     <Box>
       <Box
@@ -50,7 +77,6 @@ const ProfilePage:React.FC = () => {
           minHeight: '100vh',
           backgroundColor: '#f2f5f7',
           maxWidth: '100vw',
-          overflow: 'hidden',
         }}
       >
            <Box
@@ -58,7 +84,6 @@ const ProfilePage:React.FC = () => {
           minHeight: '55vh',
           backgroundColor: 'rgb(45, 56, 70)',
           maxWidth: '100vw',
-          overflow: 'hidden',
           borderBottomLeftRadius: '50%',
           borderBottomRightRadius: '50%',
           display: 'flex',
@@ -89,8 +114,55 @@ const ProfilePage:React.FC = () => {
          
 
         </Box>
-
-        
+        {!userIsAddict && (
+        <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        '& > :not(style)': {
+          m: 1,
+          width: 330,
+        },
+       
+        justifyContent: 'center',
+      }}
+    >
+      
+      <Paper elevation={3} sx={{ maxHeight: '300px', 
+        overflow: 'auto',}}>
+        <Typography sx={{color:'#2d3846',fontSize:'20px',fontWeight:'600',padding:'8px',marginBottom:'20px'}}> Courses Progress</Typography>
+        {courses  && Array.isArray(courses) && courses.map((course) => (<Button
+        key={course._id}
+    component={Link}
+    to={`/learn/${course.title}/:`} 
+    sx={{width:'300px',padding:'10px'}}>
+        <Box sx={{ display: 'flex'}}>
+        <Box >
+        <img
+        src={`./images/${course.title}.png`}
+          alt={course.title}
+          style={{
+            width: '40px',
+            maxWidth: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            marginBottom: '10px',
+          }}
+        />
+        </Box>
+        <Box sx={{ paddingLeft:'10px',width:'150px'}}>
+        <Typography sx={{color:'#6b7f99'}}>{course.title}</Typography>
+        <Typography sx={{color:'#6b7f99'}}>In Progress</Typography>
+        </Box>
+        <Box sx={{ paddingLeft:'10px'}}>
+      <PlayCircleOutlineIcon >
+      </PlayCircleOutlineIcon>
+      </Box>
+        </Box>
+        </Button> ))}
+      </Paper>
+    </Box>
+  )}
         </Box>
         <Footer/>
         </Box>

@@ -14,12 +14,13 @@ myMulter(fileValidation.image).single('image'),handleErrorMiddleware,
 router.patch('/updatePassword',authorizeUser([roles.user,roles.admin]),userController.updatePassword)
 router.get('/allUsers',authorizeUser([roles.admin]),userController.getAllUsers)
 router.delete('/delete',authorizeUser([roles.admin,roles.user]),userController.deleteUser)
-router.get('/:id',authorizeUser([roles.admin]),validation(validators.getUserById), userController.getUserById);
+router.get('/:id',authorizeUser([roles.admin,roles.user]),validation(validators.getUserById), userController.getUserById);
 router.put("/updateUser",authorizeUser([roles.user,roles.admin]), userController.updateUser);
 router.post('/cerateUser',validation(validators.createUser), userController.createUser)
 router.delete('/deleteUser/:id',authorizeUser([roles.admin]),userController.deleteUserById)
 router.put("/updateUserPassword/:id",authorizeUser([roles.admin]), userController.updateUserPassword);
 router.put("/updateUserbyAdmin/:id",authorizeUser([roles.admin]), userController.updateUserByAdmin);
+router.get('/profile/UserCoures',authorizeUser([roles.user]),userController.listOfUserCoures);
 
 
 export default router;

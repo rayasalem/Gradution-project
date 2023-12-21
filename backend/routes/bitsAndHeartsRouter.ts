@@ -7,14 +7,14 @@ import { roles } from "../services/roles";
 
 const router =Router();
 
-router.post('/bit',authorizeUser([roles.admin]),bitsHeartRouter.earnBits);
-router.post('/newBit',authorizeUser([roles.admin]),bitsHeartRouter.createBitAndHeartUser);
-router.patch('/update-hearts',authorizeUser([roles.admin]),bitsHeartRouter.updateHearts)
-router.patch('/update-heartsat',authorizeUser([roles.admin]),bitsHeartRouter.updateHeartsAT)
-router.patch('/deduct-heart', authorizeUser([roles.admin]), bitsHeartRouter.deductHearts);
-router.patch('/deduct-bit', authorizeUser([roles.admin]), bitsHeartRouter.deductBits);
-router.get('/', authorizeUser([roles.admin]), bitsHeartRouter.retrieveUserBitsAndHearts);
-router.get('/leaderBoard', authorizeUser([roles.admin]), bitsHeartRouter.getBitLeaderboard);
+router.post('/bit',authorizeUser([roles.admin,roles.user]),bitsHeartRouter.earnBits);
+router.post('/newBit',authorizeUser([roles.admin,roles.user]),bitsHeartRouter.createBitAndHeartUser);
+router.patch('/update-hearts',authorizeUser([roles.admin,roles.user]),bitsHeartRouter.updateHearts)
+router.patch('/update-heartsat',authorizeUser([roles.admin,roles.user]),bitsHeartRouter.updateHeartsAT)
+router.patch('/deduct-heart', authorizeUser([roles.admin,roles.user]), bitsHeartRouter.deductHearts);
+router.patch('/deduct-bit', authorizeUser([roles.admin,roles.user]), bitsHeartRouter.deductBits);
+router.get('/', authorizeUser([roles.admin,roles.user]), bitsHeartRouter.retrieveUserBitsAndHearts);
+router.get('/leaderBoard', authorizeUser([roles.admin,roles.user]), bitsHeartRouter.getBitLeaderboard);
 
 
 

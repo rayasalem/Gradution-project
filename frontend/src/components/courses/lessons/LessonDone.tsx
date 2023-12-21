@@ -64,11 +64,12 @@ const DoneLessonPage = () => {
           backgroundColor: 'white',
           padding: '20px',
           color: 'black',
-          // marginTop: '30px',
+          marginTop: '130px',
           marginLeft: '100px',
+         
         }}
       >
-        <Box style={{ border: '1px solid white' }}>
+        <Box style={{ border: '1px solid white' , paddingLeft: '130px',}}>
           <Box sx={borderStylesGeneral}>
             <Icon component={CheckCircleIcon} style={{ fontSize: 50, color: '#77ed00' }} />
             <Typography variant="h5" align="center" color="black" sx={{ marginTop: '30px' }}>

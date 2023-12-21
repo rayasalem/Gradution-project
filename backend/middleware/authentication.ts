@@ -20,6 +20,7 @@ const getUserFromToken = async (token: string, AUTHTOKEN: string,authbearertoken
 };
 
 const checkUserRole = (user: IUser, accessRole: string[]) => {
+  
   if (!accessRole.includes(user.role)) {
     throw new Error("Not authorized");
   }

@@ -69,6 +69,18 @@ export const createCourse = async (course: ICourse): Promise<ICourse | undefined
     throw error;
   }
 };
+export const getlistOfUserCoures = async () => {
+  try {
+    const response= await axiosInstance.get(`/api/v1/user/profile/UserCoures`);
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('create quiz error:', error);
+    throw error;
+  }
+};
 export const createLesson = async (userLesson: IUserLesson): Promise<IUserLesson | undefined> => {
   try {
     const response: AxiosResponse<IUserLesson> = await axiosInstance.post(`/api/v1/lesson/createLesson/${userLesson.course}`, userLesson);
@@ -94,7 +106,18 @@ export const createQuiz = async (userQuiz: IUserQuiz): Promise<IUserQuiz | undef
     throw error;
   }
 };
+export const enrollInCourse = async (courseId: any) => {
+  try {
+    const response= await axiosInstance.post(`/api/v1/course/enrollInCourse/${courseId}`);
 
+    if (response && response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('create quiz error:', error);
+    throw error;
+  }
+};
 export const updateLesson = async (lessonId: string, title: string,order:number) => {
   try {
     const response = await axiosInstance.put(`/api/v1/lesson/editLesson/${lessonId}`, {

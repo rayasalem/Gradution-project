@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { deleteLessonById, getCourseDetails, getlistLessonsInCourse, getprofileInfo } from './../../../api/userAction';
+import { deleteLessonById, enrollInCourse, getCourseDetails, getlistLessonsInCourse, getprofileInfo } from './../../../api/userAction';
 import { useNavigate } from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -10,8 +9,11 @@ import HttpsIcon from '@mui/icons-material/Https';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
 import { deleteQuizById } from './../../../api/userAction';
 import { getlistQuizsInCourse } from './../../../api/userAction';
+import { useParams } from 'react-router-dom';
+
 interface ICourse {
   title: string;
   description: string;
@@ -29,6 +31,7 @@ interface ILessonQuiz {
   quizId?:string;
 }
 const JavaCourse: React.FC = () => {
+  const { CourseId } = useParams<{ CourseId: string }>();
   const [courseId, setCourseId] = useState<string | null>(null);
   const [heartsCount, setheartsCount] = useState<number>(0);
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
@@ -178,6 +181,17 @@ const JavaCourse: React.FC = () => {
     };
     fetchDataForQuizzes ();
   }, []);
+  useEffect(() => {
+    const fetchenrolledCourses = async () => {
+        try {
+          const createdCourseIdJAVA = localStorage.getItem('createdCourseIdJAVA');
+          const res =await enrollInCourse(createdCourseIdJAVA)
+      } catch (error) {
+        console.error('Error fetching enrolledCourses:', error);
+      }
+    };
+    fetchenrolledCourses ();
+  }, []);
   const handleClick = async () => {
     const createdCourseIdJAVA = localStorage.getItem('createdCourseIdJAVA');
 
@@ -252,7 +266,7 @@ const JavaCourse: React.FC = () => {
         >
           <Box>
             <img
-              src='/images/Java-.png'
+              src='/images/Java.png'
               alt='JAVA'
               style={{
                 width: '100px',
@@ -303,7 +317,7 @@ const JavaCourse: React.FC = () => {
             style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
             onMouseEnter={() => setHoveredItem(item.id)}
             onMouseLeave={() => setHoveredItem(null)}
-               disabled={index !== 0 && !lessonCompleted(lessonsAndQuizzes[index - 1].id)}   
+               disabled={userIsAddict ? false :index !== 0 && !lessonCompleted(lessonsAndQuizzes[index - 1].id)}   
                onClick={() => markItemAsCompleted(item.id)}
        >
             <Paper
@@ -355,27 +369,30 @@ const JavaCourse: React.FC = () => {
                 
               </Box>
 
-                 {index !== 0 &&
-                ((item.type === 'lesson' && !lessonCompleted(lessonsAndQuizzes[index - 1]?.id)) ||
-                 (item.type === 'quiz' && !quizCompleted(lessonsAndQuizzes[index - 1]?.id))) ? (
-                 <Box sx={{position: 'absolute', top: 0, right: 0, margin: '10px'}}>
-                    <HttpsIcon />
-                    </Box>
-                    
-                   ) : null}
-             {
-  userIsAddict && item.type === 'lesson' && (
-    <Box>
-      <Button
-        color="primary"
-        size="small"
-        aria-label="update-lesson"
-        onClick={() => navigate(`/DevLoom/admin/updateLesson/${item.lessonId}`)}
-        sx={{ zIndex: '1' }}
-      >
-        Update Lesson
-      </Button>
-      <IconButton
+              {!userIsAddict &&((item.type === 'lesson' || item.type === 'quiz') &&
+                   index !== 0 && !lessonCompleted(lessonsAndQuizzes[index - 1]?.id)) ? (
+                <Box sx={{ position: 'absolute', top: 0, right: 0, margin: '10px' }}>
+                    <HttpsIcon /> 
+                  </Box>
+                 ) : null}
+                 {item.type === 'lesson' && lessonsAndQuizzes[index + 1]?.type === 'lesson' &&
+                  lessonCompleted(item.id) && lessonCompleted(lessonsAndQuizzes[index + 1]?.id) ? (
+                   <Box sx={{ position: 'absolute', top: 0, right: 0, margin: '10px' }}>
+                      <CheckIcon sx={{ color: 'green', fontSize: 30 }} />
+                          </Box>
+                       ) : null}
+             {userIsAddict && item.type === 'lesson' && (
+            <Box>
+             <Button
+               color="primary"
+               size="small"
+               aria-label="update-lesson"
+               onClick={() => navigate(`/DevLoom/admin/updateLesson/${item.lessonId}`)}
+              sx={{ zIndex: '1' }}
+                 >
+                Update Lesson
+              </Button>
+             <IconButton
         aria-label="delete"
         size="small"
         onClick={(event) => deleteLesson(item.lessonId,item.OriginalID, event)}

@@ -197,3 +197,15 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
     next(Object.assign(new Error('Server error'), { cause: 500 }));
   }
 };
+export const listOfUserCoures = async (req: Request, res: Response) => {
+  try{
+    const userCourse  =  await userModel.findById(req.user?._id).populate({
+      path: 'enrolledCourses',
+      model: 'Course', 
+    });
+      res.status(200).json({ message: 'List of User Course ',Course: userCourse?.enrolledCourses });
+    } catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Server error' });
+}
+};

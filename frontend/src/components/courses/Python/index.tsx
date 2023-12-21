@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createCourse, getCourseDetails, retrieveUserBitsAndHearts } from './../../../api/userAction';
+import { createCourse, enrollInCourse, getCourseDetails, retrieveUserBitsAndHearts } from './../../../api/userAction';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -74,6 +74,17 @@ const PythonCourse: React.FC = () => {
       }
     };
     fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchenrolledCourses = async () => {
+        try {
+          const createdCourseIdPython = localStorage.getItem('createdCourseIdPython');
+          const res =await enrollInCourse(createdCourseIdPython)
+      } catch (error) {
+        console.error('Error fetching enrolledCourses:', error);
+      }
+    };
+    fetchenrolledCourses ();
   }, []);
   const markItemAsCompleted = (itemId: number) => {
     const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId);
