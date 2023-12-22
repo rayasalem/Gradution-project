@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import Course, { ICourse } from '../db/schemas/courseSchema';
 import UserProgress,{IUserProgress}  from './../db/schemas/userProgressSchema';
+import Lesson from '../db/schemas/lessonSchema';
+import QuizModel from '../db/schemas/quizSchema';
 interface ProgressData {
     is_completed: boolean;
     timestamp: Date;
@@ -36,7 +38,7 @@ export const trackCourseProgress = async (req: Request, res: Response) => {
           await UserProgress.create({ user_id:userId, quiz_id: quiz._id, is_completed: false }); 
         }
       }
-      res.json({ message: 'Course progress tracked successfully' });
+      res.status(200).json({ message: 'Course progress tracked successfully' });
     } catch (error) {
       res.status(500).json({ message: 'Server error', error });
     }
@@ -84,6 +86,7 @@ export const completeLesson = async (req: Request, res: Response) => {
       }
       userProgress.is_completed = true;
       await userProgress.save();
+      await Lesson.findByIdAndUpdate(lessonId, { is_completed: true });
       res.json({ message: 'Lesson marked as completed' });
     } catch (error) {
       res.status(500).json({ message: 'Server error', error });
@@ -105,6 +108,7 @@ export const completeQuiz = async (req: Request, res: Response) => {
       }
       userProgress.is_completed = true;
       await userProgress.save();
+      await QuizModel.findByIdAndUpdate(quizId, { is_completed: true });
       res.json({ message: 'Quiz marked as completed' });
     } catch (error) {
       res.status(500).json({ message: 'Server error', error });

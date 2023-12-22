@@ -512,3 +512,38 @@ export const viewTextSlideDetails = async (textSlideId: string) => {
     console.log("get course error:", error);
   }
 };
+export const trackCourseProgress = async (courseId: any) => {
+  try {
+    const response= await axiosInstance.post(`/api/v1/courses/${courseId}/track-progress`);
+
+    if (response && response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('track Course Progress error:', error);
+    throw error;
+  }
+};
+export const completeLesson = async (lessonId: any) => {
+  try {
+    const response= await axiosInstance.patch(`/api/v1/courses/complete-lesson/${lessonId}`);
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('completeLesson error:', error);
+    throw error;
+  }
+};
+export const completeQuiz = async (quizId: any) => {
+  try {
+    const response= await axiosInstance.patch(`/api/v1/courses/complete-quiz/${quizId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('completeQuiz error:', error);
+    throw error;
+  }
+};

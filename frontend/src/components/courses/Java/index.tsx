@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { deleteLessonById, enrollInCourse, getCourseDetails, getlistLessonsInCourse, getprofileInfo } from './../../../api/userAction';
+import React, { useState, useEffect} from 'react';
+import { deleteLessonById, enrollInCourse, getCourseDetails, getlistLessonsInCourse, getprofileInfo, trackCourseProgress } from './../../../api/userAction';
 import { useNavigate } from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -26,42 +26,43 @@ interface ILessonQuiz {
   OriginalID: number;
   type: string;
   contentTitle: string;
-  completed: boolean;
   lessonId?: string;
   quizId?:string;
 }
 const JavaCourse: React.FC = () => {
-  const { CourseId } = useParams<{ CourseId: string }>();
+  const [hasEffectRun, setHasEffectRun] = useState(false);
+    const { CourseId } = useParams<{ CourseId: string }>();
   const [courseId, setCourseId] = useState<string | null>(null);
   const [heartsCount, setheartsCount] = useState<number>(0);
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
-    { id: 1, OriginalID: 1, type: 'lesson', contentTitle: '', completed: false },
-    { id: 2, OriginalID: 2, type: 'lesson', contentTitle: '', completed: false },
-    { id: 3, OriginalID: 3, type: 'lesson', contentTitle: '', completed: false },
-    { id: 4, OriginalID: 1, type: 'quiz', contentTitle: '', completed: false },
-    { id: 5, OriginalID: 4, type: 'lesson', contentTitle: '', completed: false },
-    { id: 6, OriginalID: 5, type: 'lesson', contentTitle: '', completed: false },
-    { id: 7, OriginalID: 6, type: 'lesson', contentTitle: '', completed: false },
-    { id: 8, OriginalID: 2, type: 'quiz', contentTitle: '', completed: false },
-    { id: 9, OriginalID: 7, type: 'lesson', contentTitle: '', completed: false },
-    { id: 10, OriginalID: 8, type: 'lesson', contentTitle: '', completed: false },
-    { id: 11, OriginalID: 9, type: 'lesson', contentTitle: '', completed: false },
-    { id: 12, OriginalID: 10, type: 'lesson', contentTitle: '', completed: false },
-    { id: 13, OriginalID: 3, type: 'quiz', contentTitle: '' , completed: false},
+    { id: 1, OriginalID: 1, type: 'lesson', contentTitle: ''},
+    { id: 2, OriginalID: 2, type: 'lesson', contentTitle: '' },
+    { id: 3, OriginalID: 3, type: 'lesson', contentTitle: ''},
+    { id: 4, OriginalID: 1, type: 'quiz', contentTitle: ''},
+    { id: 5, OriginalID: 4, type: 'lesson', contentTitle: ''},
+    { id: 6, OriginalID: 5, type: 'lesson', contentTitle: ''},
+    { id: 7, OriginalID: 6, type: 'lesson', contentTitle: '' },
+    { id: 8, OriginalID: 2, type: 'quiz', contentTitle: ''},
+    { id: 9, OriginalID: 7, type: 'lesson', contentTitle: '' },
+    { id: 10, OriginalID: 8, type: 'lesson', contentTitle: ''},
+    { id: 11, OriginalID: 9, type: 'lesson', contentTitle: '' },
+    { id: 12, OriginalID: 10, type: 'lesson', contentTitle: '' },
+    { id: 13, OriginalID: 3, type: 'quiz', contentTitle: ''},
   ]);
 
   const navigate = useNavigate();
-  const lessonCompleted = (lessonId: number) => {
-    return lessonsAndQuizzes.find((item) => item.id === lessonId)?.completed || false;
-  };
+  // const lessonCompleted = (lessonId: number) => {
+  //   return lessonsAndQuizzes.find((item) => item.id === lessonId)?.completed || false;
+  // };
 
-  const quizCompleted = (quizId: number) => {
-    return lessonsAndQuizzes.find((item) => item.id === quizId)?.completed || false;
-  };
+  // const quizCompleted = (quizId: number) => {
+  //   return lessonsAndQuizzes.find((item) => item.id === quizId)?.completed || false;
+  // };
   const LOCAL_STORAGE_KEY = 'lessonsAndQuizzesStatusJava';
+
   const initializeLessonsAndQuizzes = () => {
     const storedStatus = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (storedStatus) {
@@ -84,6 +85,7 @@ const JavaCourse: React.FC = () => {
     };
     fetchData();
   }, []);
+  
   
             
   useEffect(() => {
@@ -145,28 +147,46 @@ const JavaCourse: React.FC = () => {
   
     fetchData();
   }, []);
+  useEffect(() => {
+    const fetchProgressData = async () => {
+    
+      const storedHasEffectRun = localStorage.getItem('hasEffectRun');
 
-  const markItemAsCompleted = (itemId: number) => {
-    setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
-      const index = prevLessonsAndQuizzes.findIndex((item) => item.id === itemId);
-  
-      if (index !== -1 && !prevLessonsAndQuizzes[index].completed) {
-        const updatedLessons = prevLessonsAndQuizzes.map((lesson, i) => {
-          if (i === index) {
-            return { ...lesson, completed: true };
-          }
-          return lesson;
-        });
-        console.log('Updated Lessons:', updatedLessons);
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessons));
-  
-        return updatedLessons;
+      if (!storedHasEffectRun) {
+        try {
+          const createdCourseIdJAVA = localStorage.getItem('createdCourseIdJAVA');
+          const progressData = await trackCourseProgress(createdCourseIdJAVA);
+        } catch (error) {
+          console.error('An unexpected error occurred:', error);
+        }
+        setHasEffectRun(true);
+        localStorage.setItem('hasEffectRun', 'true');
       }
+    };
+    fetchProgressData();
+  }, []);
+
+  // const markItemAsCompleted = (itemId: number) => {
+  //   setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
+  //     const index = prevLessonsAndQuizzes.findIndex((item) => item.id === itemId);
   
-      return prevLessonsAndQuizzes;
-    });
-    setHoveredItem(null);
-  };
+  //     if (index !== -1 && !prevLessonsAndQuizzes[index].completed) {
+  //       const updatedLessons = prevLessonsAndQuizzes.map((lesson, i) => {
+  //         if (i === index) {
+  //           return { ...lesson, completed: true };
+  //         }
+  //         return lesson;
+  //       });
+  //       console.log('Updated Lessons:', updatedLessons);
+  //       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessons));
+  
+  //       return updatedLessons;
+  //     }
+  
+  //     return prevLessonsAndQuizzes;
+  //   });
+  //   setHoveredItem(null);
+  // };
 
   useEffect(() => {
     const fetchDataForQuizzes = async () => {
@@ -317,8 +337,8 @@ const JavaCourse: React.FC = () => {
             style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
             onMouseEnter={() => setHoveredItem(item.id)}
             onMouseLeave={() => setHoveredItem(null)}
-               disabled={userIsAddict ? false :index !== 0 && !lessonCompleted(lessonsAndQuizzes[index - 1].id)}   
-               onClick={() => markItemAsCompleted(item.id)}
+              //  disabled={userIsAddict ? false :index !== 0 && !lessonCompleted(lessonsAndQuizzes[index - 1].id)}   
+              //  onClick={() => markItemAsCompleted(item.id)}
        >
             <Paper
               elevation={3}
@@ -369,7 +389,7 @@ const JavaCourse: React.FC = () => {
                 
               </Box>
 
-              {!userIsAddict &&((item.type === 'lesson' || item.type === 'quiz') &&
+              {/* {!userIsAddict &&((item.type === 'lesson' || item.type === 'quiz') &&
                    index !== 0 && !lessonCompleted(lessonsAndQuizzes[index - 1]?.id)) ? (
                 <Box sx={{ position: 'absolute', top: 0, right: 0, margin: '10px' }}>
                     <HttpsIcon /> 
@@ -380,7 +400,7 @@ const JavaCourse: React.FC = () => {
                    <Box sx={{ position: 'absolute', top: 0, right: 0, margin: '10px' }}>
                       <CheckIcon sx={{ color: 'green', fontSize: 30 }} />
                           </Box>
-                       ) : null}
+                       ) : null} */}
              {userIsAddict && item.type === 'lesson' && (
             <Box>
              <Button

@@ -5,6 +5,7 @@ export interface ILesson extends Document {
   order: number;
   course: Types.ObjectId | string;
   questions: Types.ObjectId[];
+  is_completed:boolean;
 }
 const lessonSchema: Schema = new Schema<ILesson>({
   title: {
@@ -23,6 +24,10 @@ const lessonSchema: Schema = new Schema<ILesson>({
     type: Schema.Types.ObjectId,
     ref: 'Question', 
   }],
+  is_completed: {
+    type: Boolean,
+    default: false, 
+  }
 });
 
 const Lesson:Model<ILesson> = model<ILesson>('Lesson', lessonSchema);

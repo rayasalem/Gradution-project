@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Lesson,{ILesson} from '../db/schemas/lessonSchema';
 import Course from '../db/schemas/courseSchema';
+import CourseModel from '../db/schemas/courseSchema';
 
 export const createLesson = async (req: Request, res: Response) => {
   try {
@@ -59,7 +60,7 @@ export const deleteLesson = async (req: Request, res: Response) => {
     if (!deletedLesson) {
       return res.status(404).json({ error: 'Lesson not found' });
     }
-
+    await CourseModel.updateMany({}, { $pull: { lessons: lessonId } });
     res.status(200).json({ error: ' delete the lesson' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete the lesson' });

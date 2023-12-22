@@ -48,7 +48,9 @@ export const deleteQuiz = async (req: Request, res: Response) => {
       if (!deletedQuiz) {
         return res.status(404).json({ message: 'Quiz not found' });
       }
+      await CourseModel.updateMany({}, { $pull: { quizzes: quizId } })
       res.json({ message: 'Quiz deleted' });
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
@@ -78,7 +80,7 @@ export const editQuiz = async (req: Request, res: Response) => {
       res.status(500).json({ error: 'Failed to update lesson details' });
     }
   };
-  export const listQuestionsInQuiz = async (req: Request, res: Response) => {
+export const listQuestionsInQuiz = async (req: Request, res: Response) => {
     try{
       const {quizId}=req.params
         const Quiz  =  await QuizModel.findOne({ _id: quizId }).populate({

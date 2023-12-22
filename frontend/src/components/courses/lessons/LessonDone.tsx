@@ -3,14 +3,16 @@ import { Icon, Typography, Box, Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
-import { earnBitsBitsAndHearts } from './../../../api/userAction';
+import { completeLesson, earnBitsBitsAndHearts } from './../../../api/userAction';
 import { Link, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
 interface IUserBitsAndHearts {
   actionType: 'lesson' | 'elementaryLevel' | 'proficientLevel' | 'advancedLevel';
 }
 const DoneLessonPage = () => {
+  const { LessonId } = useParams<{ LessonId: string }>();
   const location = useLocation();
   const currentPathname = location.pathname;
 
@@ -47,6 +49,7 @@ const DoneLessonPage = () => {
           actionType: 'lesson',
         };
         const bitsAndHeartsResponse = await earnBitsBitsAndHearts(userBitsAndHeartsData);
+          await completeLesson(LessonId);
       } catch (error) {
         console.error('Failed to create user bits and hearts:', error);
       }
@@ -64,8 +67,8 @@ const DoneLessonPage = () => {
           backgroundColor: 'white',
           padding: '20px',
           color: 'black',
-          marginTop: '130px',
-          marginLeft: '100px',
+          marginTop: '100px',
+          marginLeft: '70px',
          
         }}
       >

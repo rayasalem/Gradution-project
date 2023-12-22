@@ -1,4 +1,4 @@
-import { Schema, model,Model, Document, Types } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 
 export interface IQuiz extends Document {
     order: number;
@@ -7,7 +7,8 @@ export interface IQuiz extends Document {
     duration?: number; 
     questions: Types.ObjectId[];
     passingScore: number;
-  course: Types.ObjectId | string;
+    course: Types.ObjectId | string;
+    is_completed:boolean;
   } 
 
   const quizSchema = new Schema<IQuiz>({
@@ -36,6 +37,10 @@ export interface IQuiz extends Document {
       type: Number,
       required: true,
     },
+    is_completed: {
+      type: Boolean,
+      default: false, 
+    }
   },{ timestamps: true });
   
   const QuizModel =  model<IQuiz>('Quiz', quizSchema);

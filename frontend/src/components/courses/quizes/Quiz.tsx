@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Typography, Container, Paper } from '@mui/material';
 import MultipleChoiceQuestion from './MultipleChoiceQuestion';
-import { createQuiz, deleteQustionById, earnBitsBitsAndHearts, getprofileInfo } from './../../../api/userAction';
+import { completeQuiz, createQuiz, deleteQustionById, earnBitsBitsAndHearts, getprofileInfo } from './../../../api/userAction';
 import { Icon, Box } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
@@ -9,6 +9,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import { useParams } from 'react-router-dom';
 interface MultipleChoiceQuestionProps {
   questionId?: string;
   text: string;
@@ -27,6 +28,7 @@ interface IUserBitsAndHearts {
   }
 
 const Quiz: React.FC<QuizProps> = ({  quizQuestions}) => {
+  const { quizId } = useParams<{ quizId: string }>();
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -92,7 +94,9 @@ const Quiz: React.FC<QuizProps> = ({  quizQuestions}) => {
   const handleAnswerOptionClick = (index: number) => {
     setSelectedAnswer(quizQuestions[currentQuestion].options[index]);
   };
-
+  const CompleteQuiz =async () => {
+    await completeQuiz(quizId)
+  };
   const nextQuestion = () => {
     const currentQuestionData = quizQuestions[currentQuestion];
     const correctAnswer = currentQuestionData.correctAnswer;
@@ -167,7 +171,7 @@ const Quiz: React.FC<QuizProps> = ({  quizQuestions}) => {
     </Box>
     <hr style={{ width: '100%', margin: '0', padding: '0' }} />
     <Box mt={3} mb={3} sx={{ textAlign: 'center' }}>
-      <Button variant="contained" color="primary" component={Link} to={removeLastPart}>Continue</Button>
+      <Button variant="contained" color="primary" component={Link} to={removeLastPart} onClick={CompleteQuiz}>Continue</Button>
     </Box>
         </div>
       ) : (
