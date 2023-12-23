@@ -180,19 +180,19 @@ function App() {
           <Route path='/learn/React/:LessonId/lesson10' element={<LessonTenReact/>} />
           <Route path='/learn/React/:quizId/quiz3' element={<QuizThreeReact/>} />
           <Route path='/learn/javaScript/:courseId' element={<JSCourse/>} />
-          <Route path='/learn/javaScript/:courseId/lesson1' element={<LessonOnejs/>} />
-          <Route path='/learn/javaScript/:courseId/lesson2' element={<LessonTwojs/>} />
-          <Route path='/learn/javaScript/:courseId/lesson3' element={<LessonThreejs/>} />
-          <Route path='/learn/javaScript/:courseId/quiz2' element={<QuizOnejs/>} />
-          <Route path='/learn/javaScript/:courseId/lesson4' element={<LessonFourjs/>} />
-          <Route path='/learn/javaScript/:courseId/lesson5' element={<LessonFivejs/>} />
-          <Route path='/learn/javaScript/:courseId/lesson6' element={<LessonSixjs/>} />
-          <Route path='/learn/javaScript/:courseId/quiz2' element={<QuizTwojs/>} />
-          <Route path='/learn/javaScript/:courseId/lesson7' element={<LessonSevenjs/>} />
-          <Route path='/learn/javaScript/:courseId/lesson8' element={<LessonEightjs/>} />
-          <Route path='/learn/javaScript/:courseId/lesson9' element={<LessonNinejs/>} />
-          <Route path='/learn/javaScript/:courseId/lesson10' element={<LessonTenjs/>} />
-          <Route path='/learn/javaScript/:courseId/quiz3' element={<QuizThreejs/>} />
+          <Route path='/learn/javaScript/:LessonId/lesson1' element={<LessonOnejs/>} />
+          <Route path='/learn/javaScript/:LessonId/lesson2' element={<LessonTwojs/>} />
+          <Route path='/learn/javaScript/:LessonId/lesson3' element={<LessonThreejs/>} />
+          <Route path='/learn/javaScript/:quizId/quiz2' element={<QuizOnejs/>} />
+          <Route path='/learn/javaScript/:LessonId/lesson4' element={<LessonFourjs/>} />
+          <Route path='/learn/javaScript/:LessonId/lesson5' element={<LessonFivejs/>} />
+          <Route path='/learn/javaScript/:LessonId/lesson6' element={<LessonSixjs/>} />
+          <Route path='/learn/javaScript/:quizId/quiz2' element={<QuizTwojs/>} />
+          <Route path='/learn/javaScript/:LessonId/lesson7' element={<LessonSevenjs/>} />
+          <Route path='/learn/javaScript/:LessonId/lesson8' element={<LessonEightjs/>} />
+          <Route path='/learn/javaScript/:LessonId/lesson9' element={<LessonNinejs/>} />
+          <Route path='/learn/javaScript/:LessonId/lesson10' element={<LessonTenjs/>} />
+          <Route path='/learn/javaScript/:quizId/quiz3' element={<QuizThreejs/>} />
           <Route path='/profile/settings' element={<ModelSetting/>} />
 
           <Route path="/DevLoom/admin" element={<Admin/>} /> 
