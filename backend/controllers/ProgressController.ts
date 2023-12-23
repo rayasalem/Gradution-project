@@ -89,6 +89,7 @@ export const completeLesson = async (req: Request, res: Response) => {
       await Lesson.findByIdAndUpdate(lessonId, { is_completed: true });
       res.json({ message: 'Lesson marked as completed' });
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: 'Server error', error });
     }
   };

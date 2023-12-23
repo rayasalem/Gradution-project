@@ -124,19 +124,19 @@ function App() {
           <Route path='/learn/Java/quiz/:quizId' element={<QuizJava/>} />
 
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
-          <Route path="/learn/html/:courseId/lesson1"element={<LessonOne/>}/>
-          <Route path="/learn/html/:courseId/lesson2"element={<LessonTwo/>}/>
-          <Route path="/learn/html/:courseId/lesson3"element={<LessonThree/>}/>
-          <Route path="/learn/html/:courseId/Quiz1" element={<QuizOne />} />
-          <Route path="/learn/html/:courseId/lesson4" element={<LessonFour />} />
-          <Route path="/learn/html/:courseId/lesson5" element={<LessonFive />} />
-          <Route path="/learn/html/:courseId/lesson6" element={<LessonSix />} />
-          <Route path="/learn/html/:courseId/Quiz2" element={<QuizTwo />} />
-          <Route path="/learn/html/:courseId/lesson7" element={<LessonSeven />} />
-          <Route path="/learn/html/:courseId/lesson8" element={<LessonEight />} />
-          <Route path="/learn/html/:courseId/lesson9" element={<LessonNine />} />
-          <Route path="/learn/html/:courseId/lesson10" element={<LessonTen />} />
-          <Route path="/learn/html/:courseId/Quiz3" element={<QuizThree />} />
+          <Route path="/learn/html/:LessonId/lesson1"element={<LessonOne/>}/>
+          <Route path="/learn/html/:LessonId/lesson2"element={<LessonTwo/>}/>
+          <Route path="/learn/html/:LessonId/lesson3"element={<LessonThree/>}/>
+          <Route path="/learn/html/:quizId/Quiz1" element={<QuizOne />} />
+          <Route path="/learn/html/:LessonId/lesson4" element={<LessonFour />} />
+          <Route path="/learn/html/:LessonId/lesson5" element={<LessonFive />} />
+          <Route path="/learn/html/:LessonId/lesson6" element={<LessonSix />} />
+          <Route path="/learn/html/:quizId/Quiz2" element={<QuizTwo />} />
+          <Route path="/learn/html/:LessonId/lesson7" element={<LessonSeven />} />
+          <Route path="/learn/html/:LessonId/lesson8" element={<LessonEight />} />
+          <Route path="/learn/html/:LessonId/lesson9" element={<LessonNine />} />
+          <Route path="/learn/html/:LessonId/lesson10" element={<LessonTen />} />
+          <Route path="/learn/html/:quizId/Quiz3" element={<QuizThree />} />
           <Route path='/learn/css/:courseId' element={<CSSCourse/>} />
           <Route path='/learn/css/:courseId/lesson1' element={<LessonOneInCSS/>} />
           <Route path='/learn/css/:courseId/lesson2' element={<LessonTwoInCSS/>} />

@@ -28,6 +28,7 @@ interface ILessonQuiz {
   contentTitle: string;
   lessonId?: string;
   quizId?:string;
+  is_completed?: boolean;
 }
 const JavaCourse: React.FC = () => {
   const [hasEffectRun, setHasEffectRun] = useState(false);
@@ -54,13 +55,6 @@ const JavaCourse: React.FC = () => {
   ]);
 
   const navigate = useNavigate();
-  // const lessonCompleted = (lessonId: number) => {
-  //   return lessonsAndQuizzes.find((item) => item.id === lessonId)?.completed || false;
-  // };
-
-  // const quizCompleted = (quizId: number) => {
-  //   return lessonsAndQuizzes.find((item) => item.id === quizId)?.completed || false;
-  // };
   const LOCAL_STORAGE_KEY = 'lessonsAndQuizzesStatusJava';
 
   const initializeLessonsAndQuizzes = () => {
@@ -97,11 +91,11 @@ const JavaCourse: React.FC = () => {
           setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
             const updatedLessonsAndQuizzes = prevLessonsAndQuizzes.map((item) => {
               const correspondingQuiz = allQuizzes.Quiz.find(
-                (quiz: { _id: string;order: number; title: string }) =>
+                (quiz: { _id: string;order: number;is_completed:boolean; title: string }) =>
                   item.type === 'quiz' && quiz.order === item.OriginalID
               );
               if (correspondingQuiz) {
-                return { ...item, contentTitle: correspondingQuiz.title, quizId: correspondingQuiz._id };
+                return { ...item, contentTitle: correspondingQuiz.title, quizId: correspondingQuiz._id,is_completed: correspondingQuiz.is_completed};
               }
               return item;
             });
@@ -126,16 +120,15 @@ const JavaCourse: React.FC = () => {
           setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
             const updatedLessonsAndQuizzes = prevLessonsAndQuizzes.map((item) => {
               const correspondingLesson = allLessons.lessons.find(
-                (lesson: { _id: string; order: number; title: string }) =>
+                (lesson: { _id: string; order: number;is_completed:boolean; title: string }) =>
                   item.type === 'lesson' && lesson.order === item.OriginalID
               );
   
               if (correspondingLesson) {
-                return { ...item, contentTitle: correspondingLesson.title, lessonId: correspondingLesson._id };
+                return { ...item, contentTitle: correspondingLesson.title, lessonId: correspondingLesson._id,is_completed: correspondingLesson.is_completed};
               }
               return item;
             });
-  
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessonsAndQuizzes));
             return updatedLessonsAndQuizzes;
           });
@@ -165,28 +158,6 @@ const JavaCourse: React.FC = () => {
     };
     fetchProgressData();
   }, []);
-
-  // const markItemAsCompleted = (itemId: number) => {
-  //   setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
-  //     const index = prevLessonsAndQuizzes.findIndex((item) => item.id === itemId);
-  
-  //     if (index !== -1 && !prevLessonsAndQuizzes[index].completed) {
-  //       const updatedLessons = prevLessonsAndQuizzes.map((lesson, i) => {
-  //         if (i === index) {
-  //           return { ...lesson, completed: true };
-  //         }
-  //         return lesson;
-  //       });
-  //       console.log('Updated Lessons:', updatedLessons);
-  //       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessons));
-  
-  //       return updatedLessons;
-  //     }
-  
-  //     return prevLessonsAndQuizzes;
-  //   });
-  //   setHoveredItem(null);
-  // };
 
   useEffect(() => {
     const fetchDataForQuizzes = async () => {
@@ -337,8 +308,7 @@ const JavaCourse: React.FC = () => {
             style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
             onMouseEnter={() => setHoveredItem(item.id)}
             onMouseLeave={() => setHoveredItem(null)}
-              //  disabled={userIsAddict ? false :index !== 0 && !lessonCompleted(lessonsAndQuizzes[index - 1].id)}   
-              //  onClick={() => markItemAsCompleted(item.id)}
+            disabled={userIsAddict ? false :index !== 0 && !(lessonsAndQuizzes[index - 1].is_completed)}   
        >
             <Paper
               elevation={3}
@@ -389,18 +359,18 @@ const JavaCourse: React.FC = () => {
                 
               </Box>
 
-              {/* {!userIsAddict &&((item.type === 'lesson' || item.type === 'quiz') &&
-                   index !== 0 && !lessonCompleted(lessonsAndQuizzes[index - 1]?.id)) ? (
+               {!userIsAddict &&( 
+                   index !== 0 && !(lessonsAndQuizzes[index]?.is_completed) &&
+                    !(lessonsAndQuizzes[index - 1]?.is_completed)) ? (
                 <Box sx={{ position: 'absolute', top: 0, right: 0, margin: '10px' }}>
                     <HttpsIcon /> 
                   </Box>
                  ) : null}
-                 {item.type === 'lesson' && lessonsAndQuizzes[index + 1]?.type === 'lesson' &&
-                  lessonCompleted(item.id) && lessonCompleted(lessonsAndQuizzes[index + 1]?.id) ? (
+                 {!userIsAddict && (lessonsAndQuizzes[index]?.is_completed) ? (
                    <Box sx={{ position: 'absolute', top: 0, right: 0, margin: '10px' }}>
                       <CheckIcon sx={{ color: 'green', fontSize: 30 }} />
                           </Box>
-                       ) : null} */}
+                       ) : null} 
              {userIsAddict && item.type === 'lesson' && (
             <Box>
              <Button
