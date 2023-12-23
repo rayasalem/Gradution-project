@@ -166,19 +166,19 @@ function App() {
           <Route path='/learn/python/:LessonId/lesson10' element={<LessonTenInPython/>} />
           <Route path='/learn/python/:quizId/quiz3' element={<QuizThreeInPython/>} />
           <Route path='/learn/React/:courseId' element={<ReactCourse/>} />
-          <Route path='/learn/React/:courseId/lesson1' element={<LessonOneReact/>} />
-          <Route path='/learn/React/:courseId/lesson2' element={<LessonTwoReact/>} />
-          <Route path='/learn/React/:courseId/lesson3' element={<LessonThreeReact/>} />
-          <Route path='/learn/React/:courseId/quiz1' element={<QuizOneReact/>} />
-          <Route path='/learn/React/:courseId/lesson4' element={<LessonFourReact/>} />
-          <Route path='/learn/React/:courseId/lesson5' element={<LessonFiveReact/>} />
-          <Route path='/learn/React/:courseId/lesson6' element={<LessonSixReact/>} />
-          <Route path='/learn/React/:courseId/quiz2' element={<QuizTwoReact/>} />
-          <Route path='/learn/React/:courseId/lesson7' element={<LessonSevenReact/>} />
-          <Route path='/learn/React/:courseId/lesson8' element={<LessonEightReact/>} />
-          <Route path='/learn/React/:courseId/lesson9' element={<LessonNineReact/>} />
-          <Route path='/learn/React/:courseId/lesson10' element={<LessonTenReact/>} />
-          <Route path='/learn/React/:courseId/quiz3' element={<QuizThreeReact/>} />
+          <Route path='/learn/React/:LessonId/lesson1' element={<LessonOneReact/>} />
+          <Route path='/learn/React/:LessonId/lesson2' element={<LessonTwoReact/>} />
+          <Route path='/learn/React/:LessonId/lesson3' element={<LessonThreeReact/>} />
+          <Route path='/learn/React/:quizId/quiz1' element={<QuizOneReact/>} />
+          <Route path='/learn/React/:LessonId/lesson4' element={<LessonFourReact/>} />
+          <Route path='/learn/React/:LessonId/lesson5' element={<LessonFiveReact/>} />
+          <Route path='/learn/React/:LessonId/lesson6' element={<LessonSixReact/>} />
+          <Route path='/learn/React/:quizId/quiz2' element={<QuizTwoReact/>} />
+          <Route path='/learn/React/:LessonId/lesson7' element={<LessonSevenReact/>} />
+          <Route path='/learn/React/:LessonId/lesson8' element={<LessonEightReact/>} />
+          <Route path='/learn/React/:LessonId/lesson9' element={<LessonNineReact/>} />
+          <Route path='/learn/React/:LessonId/lesson10' element={<LessonTenReact/>} />
+          <Route path='/learn/React/:quizId/quiz3' element={<QuizThreeReact/>} />
           <Route path='/learn/javaScript/:courseId' element={<JSCourse/>} />
           <Route path='/learn/javaScript/:courseId/lesson1' element={<LessonOnejs/>} />
           <Route path='/learn/javaScript/:courseId/lesson2' element={<LessonTwojs/>} />
