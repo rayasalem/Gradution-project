@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { createCourse, enrollInCourse, getCourseDetails, retrieveUserBitsAndHearts } from './../../../api/userAction';
+import { createCourse, deleteLessonById, deleteQuizById, enrollInCourse, getCourseDetails, getlistLessonsInCourse, getlistQuizsInCourse, getprofileInfo, retrieveUserBitsAndHearts, trackCourseProgress } from './../../../api/userAction';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import BookIcon from '@mui/icons-material/Book';
 import QuizIcon from '@mui/icons-material/Quiz';
 import HttpsIcon from '@mui/icons-material/Https';
-import { useAuth } from '../../AuthContext';
+import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface ICourse {
   title: string;
@@ -17,41 +20,38 @@ interface ICourse {
 }
 interface ILessonQuiz {
   id: number;
-  OriginalID: string;
+  OriginalID: number;
   type: string;
   contentTitle: string;
-  completed: boolean;
+  lessonId?: string;
+  quizId?:string;
+  is_completed?: boolean;
 }
 const CSSCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
+  const [hasEffectRun, setHasEffectRun] = useState(false);
   const [heartsCount, setheartsCount] = useState<number>(0);
+  const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [courseCreated, setCourseCreated] = useState<boolean>(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
-    { id: 1, OriginalID: '1', type: 'lesson', contentTitle: 'Introduction to CSS', completed: false },
-    { id: 2, OriginalID: '2', type: 'lesson', contentTitle: 'Selectors and Specificity in CSS', completed: false },
-    { id: 3, OriginalID: '3', type: 'lesson', contentTitle: 'Box Model in CSS', completed: false },
-    { id: 4, OriginalID: '1', type: 'quiz', contentTitle: 'HTML Quiz ONE', completed: false },
-    { id: 5, OriginalID: '4', type: 'lesson', contentTitle: 'Display Property in CSS', completed: false },
-    { id: 6, OriginalID: '5', type: 'lesson', contentTitle: 'Position Property in CSS', completed: false },
-    { id: 7, OriginalID: '6', type: 'lesson', contentTitle: 'CSS Colors: RGB, HEX, HSL', completed: false },
-    { id: 8, OriginalID: '2', type: 'quiz', contentTitle: 'CSS Quiz TWO', completed: false },
-    { id: 9, OriginalID: '7', type: 'lesson', contentTitle: 'CSS Outline Style', completed: false },
-    { id: 10, OriginalID: '8', type: 'lesson', contentTitle: 'Responsive Design', completed: false },
-    { id: 11, OriginalID: '9', type: 'lesson', contentTitle: 'CSS Text Properties', completed: false },
-    { id: 12, OriginalID: '10', type: 'lesson', contentTitle: 'CSS Fonts and Typography', completed: false },
-    { id: 13, OriginalID: '3', type: 'quiz', contentTitle: 'Final CSS Quiz ' , completed: false},
+    { id: 1, OriginalID: 1, type: 'lesson', contentTitle: ''  },
+    { id: 2, OriginalID: 2, type: 'lesson', contentTitle: ''  },
+    { id: 3, OriginalID: 3, type: 'lesson', contentTitle: ''  },
+    { id: 4, OriginalID: 1, type: 'quiz', contentTitle: ''  },
+    { id: 5, OriginalID: 4, type: 'lesson', contentTitle: ''},
+    { id: 6, OriginalID: 5, type: 'lesson', contentTitle: ''},
+    { id: 7, OriginalID: 6, type: 'lesson', contentTitle: ''},
+    { id: 8, OriginalID: 2, type: 'quiz', contentTitle: ''},
+    { id: 9, OriginalID: 7, type: 'lesson', contentTitle: ''},
+    { id: 10, OriginalID:8, type: 'lesson', contentTitle: ''},
+    { id: 11, OriginalID:9, type: 'lesson', contentTitle: ''},
+    { id: 12, OriginalID:10, type: 'lesson', contentTitle: ''},
+    { id: 13, OriginalID: 3, type: 'quiz', contentTitle: ''},
   ]);
 
   const navigate = useNavigate();
-  const lessonCompleted = (lessonId: number) => {
-    return lessonsAndQuizzes.find((item) => item.id === lessonId)?.completed || false;
-  };
-
-  const quizCompleted = (quizId: number) => {
-    return lessonsAndQuizzes.find((item) => item.id === quizId)?.completed || false;
-  };
   const LOCAL_STORAGE_KEY = 'lessonsAndQuizzesStatusCss';
 
   const initializeLessonsAndQuizzes = () => {
@@ -77,6 +77,95 @@ const CSSCourse: React.FC = () => {
     fetchData();
   }, []);
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const createdCourseIdCss = localStorage.getItem('createdCourseIdJavacss');
+        const allQuizzes = await  getlistQuizsInCourse(createdCourseIdCss);
+        if (allQuizzes?.Quiz) {
+          setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
+            const updatedLessonsAndQuizzes = prevLessonsAndQuizzes.map((item) => {
+              const correspondingQuiz = allQuizzes.Quiz.find(
+                (quiz: { _id: string;order: number;is_completed:boolean; title: string }) =>
+                  item.type === 'quiz' && quiz.order === item.OriginalID
+              );
+              if (correspondingQuiz) {
+                return { ...item, contentTitle: correspondingQuiz.title, quizId: correspondingQuiz._id,is_completed: correspondingQuiz.is_completed};
+              }
+              return item;
+            });
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessonsAndQuizzes));
+            return updatedLessonsAndQuizzes;
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching quizzes:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const createdCourseIdCss = localStorage.getItem('createdCourseIdJavacss');
+        const allLessons = await getlistLessonsInCourse(createdCourseIdCss);
+        if (allLessons?.lessons) {
+          setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
+            const updatedLessonsAndQuizzes = prevLessonsAndQuizzes.map((item) => {
+              const correspondingLesson = allLessons.lessons.find(
+                (lesson: { _id: string; order: number;is_completed:boolean; title: string }) =>
+                  item.type === 'lesson' && lesson.order === item.OriginalID
+              );
+  
+              if (correspondingLesson) {
+                return { ...item, contentTitle: correspondingLesson.title, lessonId: correspondingLesson._id,is_completed: correspondingLesson.is_completed};
+              }
+              return item;
+            });
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessonsAndQuizzes));
+            return updatedLessonsAndQuizzes;
+          });
+        }
+      } catch (error) {
+        console.error('error in getAllLesson:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchProgressData = async () => {
+    
+      const storedHasEffectRun = localStorage.getItem('hasEffectRun-');
+
+      if (!storedHasEffectRun) {
+        try {
+          const createdCourseIdCss = localStorage.getItem('createdCourseIdJavacss');
+          const progressData = await trackCourseProgress(createdCourseIdCss);
+        } catch (error) {
+          console.error('An unexpected error occurred:', error);
+        }
+        setHasEffectRun(true);
+        localStorage.setItem('hasEffectRun-', 'true');
+      }
+    };
+    fetchProgressData();
+  }, []);
+  useEffect(() => {
+    const fetchDataForQuizzes = async () => {
+        try {
+          const profileInfo = await getprofileInfo(); 
+          if (profileInfo?.user?.role === 'admin') {
+            setuserIsAddict(true);
+          }
+      } catch (error) {
+        console.error('Error fetching profile info:', error);
+      }
+    };
+    fetchDataForQuizzes ();
+  }, []);
+  useEffect(() => {
     const fetchenrolledCourses = async () => {
         try {
           const createdCourseIdCss = localStorage.getItem('createdCourseIdJavacss');
@@ -86,25 +175,48 @@ const CSSCourse: React.FC = () => {
       }
     };
     fetchenrolledCourses ();
-  }, []);
-  const markItemAsCompleted = (itemId: number) => {
-    const index = lessonsAndQuizzes.findIndex((item) => item.id === itemId);
-    if (index !== -1 && !lessonsAndQuizzes[index].completed) {
-      const updatedLessons = lessonsAndQuizzes.map((lesson, i) => {
-        if (i === index) {
-          return { ...lesson, completed: true };
-        }
-        return lesson;
+  }, []);  
+  const handleClick = async () => {
+    const createdCourseIdCss = localStorage.getItem('createdCourseIdJavacss');
+
+    if (createdCourseIdCss) {
+      navigate(`/DevLoom/admin/createLesson/${createdCourseIdCss}`);
+    } else {
+      console.error('No course ID found in local storage');
+    }  };
+    const handleCreateQuiz = async () => {
+    const createdCourseIdCss = localStorage.getItem('createdCourseIdJavacss');
+        if (createdCourseIdCss) {
+          navigate(`/DevLoom/admin/createQuiz/${createdCourseIdCss}`);
+        } else {
+          console.error('No course ID found in local storage');
+        }  };
+  const deleteLesson = async (lessonId: any, originalId: number, event: React.MouseEvent<HTMLButtonElement>) => {
+    try {
+      await deleteLessonById(lessonId);
+      setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
+        const updatedLessons = prevLessonsAndQuizzes.filter(
+          (item) => item.type !== 'lesson' || item.OriginalID !== originalId
+        );
+        return updatedLessons;
       });
-      setLessonsAndQuizzes(updatedLessons);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessons));
+    } catch (error) {
+      console.error('Error deleting lesson:', error);
     }
-    setHoveredItem(null);
   };
-  
- 
-  
-  
+const deleteQuiz = async (quizId:any,originalId: number, event: React.MouseEvent<HTMLButtonElement>) => {
+try {
+  await deleteQuizById(quizId);
+  setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
+    const updatedLessons = prevLessonsAndQuizzes.filter(
+      (item) => item.type !== 'quiz' || item.OriginalID !== originalId
+    );
+    return updatedLessons;
+  });
+} catch (error) {
+  console.error('Error deleting quiz:', error);
+}
+};
    return (
   <Box>
       <Box
@@ -158,21 +270,36 @@ const CSSCourse: React.FC = () => {
           Ever seen a website and thought “Wow, that’s beautiful”? Chances are that a CSS whiz had a hand in creating it! If you’re interested in visual design, CSS is the perfect language for you. CSS is also great for those interested in front-end web development. It’s an essential tool for styling web content, and is used to define the visual appearance of design and layout variations for different screen and device sizes. CSS is a perfect partner for those learning HTML and JavaScript.           </Typography>
         </Paper>
 
-        {lessonsAndQuizzes.map((item, index) => (
-   <Button
-     key={item.id}
-       component={Link}
-        to={
-         index === 0 || (index < lessonsAndQuizzes.length)
-         ? `/learn/css/${courseId}/${item.type}${item.OriginalID}`
-        : '#'
-       }
-      style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
-      onMouseEnter={() => setHoveredItem(item.id)}
-      onMouseLeave={() => setHoveredItem(null)}
-         disabled={index !== 0 && !lessonCompleted(lessonsAndQuizzes[index - 1].id)}   
-         onClick={() => markItemAsCompleted(item.id)}
- >
+        {userIsAddict && (
+        <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <Button
+            size="small"
+            aria-label="add"
+            onClick={handleClick}
+            sx={{ zIndex: '1', color: '#e91e63', backgroundColor: '#78909c' }}
+          >
+            <AddIcon />
+            create new Lesson
+          </Button>
+          <Button
+            size="small"
+            aria-label="add-quiz"
+            onClick={handleCreateQuiz}
+            sx={{ zIndex: '1', color: '#e91e63', backgroundColor: '#78909c' }}
+          >
+            <AddIcon />
+            create new Quiz
+          </Button>
+        </Box>
+      )}
+{lessonsAndQuizzes.map((item, index) => (
+           <Button
+           key={item.id}
+            style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
+            onMouseEnter={() => setHoveredItem(item.id)}
+            onMouseLeave={() => setHoveredItem(null)}
+            disabled={userIsAddict ? false :index !== 0 && !(lessonsAndQuizzes[index - 1].is_completed)}   
+       >
             <Paper
               elevation={3}
               sx={{
@@ -190,6 +317,7 @@ const CSSCourse: React.FC = () => {
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {item.type === 'lesson' && <BookIcon sx={{ fontSize: 40, color: 'blue' }} />} 
                 {item.type === 'quiz' && <QuizIcon sx={{ fontSize: 40, color: '#835088' }} />} 
+                
                 <Typography
           variant='body2'
           sx={{
@@ -201,6 +329,10 @@ const CSSCourse: React.FC = () => {
         >
           {item.type}
         </Typography>
+        <Link
+            to={`/learn/css/${item.type === 'lesson' ? item.lessonId : item.quizId}/${item.type}${item.OriginalID}`}   
+       style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
+        > 
         <Typography
           variant='body1'
           sx={{
@@ -213,16 +345,64 @@ const CSSCourse: React.FC = () => {
             fontFamily: 'Tahoma, sans-serif',          }}
         >
                   {item.contentTitle}
-                </Typography>
+                </Typography></Link>
+                
               </Box>
 
-                 {index !== 0 &&
-                ((item.type === 'lesson' && !lessonCompleted(lessonsAndQuizzes[index - 1]?.id)) ||
-                 (item.type === 'quiz' && !quizCompleted(lessonsAndQuizzes[index - 1]?.id))) ? (
-                 <Box sx={{position: 'absolute', top: 0, right: 0, margin: '10px'}}>
-                    <HttpsIcon />
-                    </Box>
-                   ) : null}
+               {!userIsAddict &&( 
+                   index !== 0 && !(lessonsAndQuizzes[index]?.is_completed) &&
+                    !(lessonsAndQuizzes[index - 1]?.is_completed)) ? (
+                <Box sx={{ position: 'absolute', top: 0, right: 0, margin: '10px' }}>
+                    <HttpsIcon /> 
+                  </Box>
+                 ) : null}
+                 {!userIsAddict && (lessonsAndQuizzes[index]?.is_completed) ? (
+                   <Box sx={{ position: 'absolute', top: 0, right: 0, margin: '10px' }}>
+                      <CheckIcon sx={{ color: 'green', fontSize: 30 }} />
+                          </Box>
+                       ) : null} 
+                       {userIsAddict && item.type === 'lesson' && (
+            <Box>
+             <Button
+               color="primary"
+               size="small"
+               aria-label="update-lesson"
+               onClick={() => navigate(`/DevLoom/admin/updateLesson/${item.lessonId}`)}
+              sx={{ zIndex: '1' }}
+                 >
+                Update Lesson
+              </Button>
+             <IconButton
+        aria-label="delete"
+        size="small"
+        onClick={(event) => deleteLesson(item.lessonId,item.OriginalID, event)}
+      >
+        <DeleteIcon fontSize="inherit" />
+      </IconButton>
+    </Box>
+  )}
+
+{userIsAddict &&
+  item.type === 'quiz' && (
+    <Box>
+      <Button
+        color="primary"
+        size="small"
+        aria-label="update-quiz"
+        onClick={() => navigate(`/DevLoom/admin/updateQuiz/${item.quizId}`)}
+        sx={{ zIndex: '1' }}
+      >
+        Update Quiz
+      </Button>
+      <IconButton
+        aria-label="delete-quiz"
+        size="small"
+        onClick={(event) => deleteQuiz(item.quizId, item.OriginalID, event)}
+      >
+        <DeleteIcon fontSize="inherit" />
+      </IconButton>
+    </Box>
+  )}
             </Paper>
           </Button>
           

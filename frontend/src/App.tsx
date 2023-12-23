@@ -138,19 +138,19 @@ function App() {
           <Route path="/learn/html/:LessonId/lesson10" element={<LessonTen />} />
           <Route path="/learn/html/:quizId/Quiz3" element={<QuizThree />} />
           <Route path='/learn/css/:courseId' element={<CSSCourse/>} />
-          <Route path='/learn/css/:courseId/lesson1' element={<LessonOneInCSS/>} />
-          <Route path='/learn/css/:courseId/lesson2' element={<LessonTwoInCSS/>} />
-          <Route path='/learn/css/:courseId/lesson3' element={<LessonThreeInCSS/>} />
-          <Route path='/learn/css/:courseId/quiz1' element={<QuizOneInCss/>} />
-          <Route path='/learn/css/:courseId/lesson4' element={<LessonFourInCSS/>} />
-          <Route path='/learn/css/:courseId/lesson5' element={<LessonFiveInCSS/>} />
-          <Route path='/learn/css/:courseId/lesson6' element={<LessonSixInCSS/>} />
-          <Route path='/learn/css/:courseId/quiz2' element={<QuizTwoInCss/>} />
-          <Route path='/learn/css/:courseId/lesson7' element={<LessonSevenInCSS/>} />
-          <Route path='/learn/css/:courseId/lesson9' element={<LessonNineInCSS/>} />
-          <Route path='/learn/css/:courseId/lesson8' element={<LessonEightInCSS/>} />
-          <Route path='/learn/css/:courseId/lesson10' element={<LessonTenInCSS/>} />
-          <Route path='/learn/css/:courseId/quiz3' element={<QuizThreeInCss/>} />
+          <Route path='/learn/css/:LessonId/lesson1' element={<LessonOneInCSS/>} />
+          <Route path='/learn/css/:LessonId/lesson2' element={<LessonTwoInCSS/>} />
+          <Route path='/learn/css/:LessonId/lesson3' element={<LessonThreeInCSS/>} />
+          <Route path='/learn/css/:quizId/quiz1' element={<QuizOneInCss/>} />
+          <Route path='/learn/css/:LessonId/lesson4' element={<LessonFourInCSS/>} />
+          <Route path='/learn/css/:LessonId/lesson5' element={<LessonFiveInCSS/>} />
+          <Route path='/learn/css/:LessonId/lesson6' element={<LessonSixInCSS/>} />
+          <Route path='/learn/css/:quizId/quiz2' element={<QuizTwoInCss/>} />
+          <Route path='/learn/css/:LessonId/lesson7' element={<LessonSevenInCSS/>} />
+          <Route path='/learn/css/:LessonId/lesson9' element={<LessonNineInCSS/>} />
+          <Route path='/learn/css/:LessonId/lesson8' element={<LessonEightInCSS/>} />
+          <Route path='/learn/css/:LessonId/lesson10' element={<LessonTenInCSS/>} />
+          <Route path='/learn/css/:quizId/quiz3' element={<QuizThreeInCss/>} />
           <Route path='/learn/python/:courseId' element={<PythonCourse/>} />
           <Route path='/learn/python/:courseId/lesson1' element={<LessonOneInPython/>} />
           <Route path='/learn/python/:courseId/lesson2' element={<LessonTwoInPython/>} />
