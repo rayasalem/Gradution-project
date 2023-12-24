@@ -11,14 +11,21 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import Footer from '../homePage/footer/Footer';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 import './discuss.css';
 const Discuss = () => {
     const [Sort, setSort] = React.useState('');
+    const navigate = useNavigate();
 
   const handleChange = (event: SelectChangeEvent) => {
     setSort(event.target.value);
   };
+  const CreatePost = () => {
+    navigate(`/discuss/New`);
+
+  };
+  
   return (
     <Box>
       <Box
@@ -58,7 +65,7 @@ const Discuss = () => {
 
         </Select>
       </FormControl>
-      <Button variant="contained"sx={{height:'54px',backgroundColor:'#2493df',fontFamily:'Fira Sans",sans-serif'}}>
+      <Button variant="contained" onClick={CreatePost} sx={{height:'54px',backgroundColor:'#2493df',fontFamily:'Fira Sans",sans-serif'}}>
         Ask a question</Button>
         </Box>
         <Paper
