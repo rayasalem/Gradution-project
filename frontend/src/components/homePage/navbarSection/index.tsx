@@ -39,6 +39,7 @@ const Navbar: React.FC = () =>{
   const handleSignIn= (event: React.MouseEvent<HTMLElement>) =>{ history('/signin'); }
   const handleMainpage= (event: React.MouseEvent<HTMLElement>) =>{ history('/'); }
   const handleCoursepage= (event: React.MouseEvent<HTMLElement>) =>{ history('/learn'); }
+  const handleDiscuss= (event: React.MouseEvent<HTMLElement>) =>{ history('/discuss'); }
   const handlecompilerOpen  = (event: React.MouseEvent<HTMLElement>) => { setCompilerCategoryAnchorEl(event.currentTarget); };
   const handleSignUp = (event: React.MouseEvent<HTMLElement>) => {
     history('/signup');
@@ -123,7 +124,7 @@ const Navbar: React.FC = () =>{
               <Link href={lang.link}>{lang.language} Compiler</Link>
             </MenuItem>))}
               </Menu>
-              <Button className="item">Discuss</Button>
+              <Button className="item" onClick={handleDiscuss}>Discuss</Button>
               <Button className="item">Blog</Button>
       {authenticated ?( <>
               <Tooltip title="Account settings">

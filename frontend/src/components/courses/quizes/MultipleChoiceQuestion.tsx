@@ -53,7 +53,7 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
     <Box>
     <Typography >{text}</Typography>
     
-    <Box sx={{ paddingTop: '20px' }}>
+    <Box sx={{ paddingTop: '20px',width:'500px' }}>
       {options && options.map((option, index) => (
         <Button
           className="draggable"

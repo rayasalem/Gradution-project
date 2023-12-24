@@ -100,6 +100,7 @@ import UpdateQustion from './components/admin/question/UpdateQustion';
 import UpdateTextSlide from './components/admin/TextSlide/UpdateTextSlide';
 import CreateQustionInQuiz from './components/admin/question/CreateQustionInQuiz';
 import QuizJava from './components/courses/Java/quizJava/QuizJava';
+import Discuss from './components/discuss/indexDiscuss';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -118,6 +119,7 @@ function App() {
           <Route path="*" element={<PageNotFound />} /> 
           <Route path='/DoneLesson' element={<DoneLessonPage/>} />
           <Route path='/profile' element={<ProfilePage/>} />
+          <Route path='/discuss' element={<Discuss/>} />
           <Route path="/learn" element={<IndexCourse/>} />
           <Route path='/learn/Java/:courseId' element={<JavaCourse/>} />
           <Route path='/learn/Java/lesson/:LessonId' element={<LessonOneInJava/>} />
