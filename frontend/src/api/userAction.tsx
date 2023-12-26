@@ -57,6 +57,11 @@ interface ITextSlide {
   order: number;
   text: string;
 }
+interface Ipost{
+  title:string;
+  content:string;
+  tags:string[];
+}
 export const createCourse = async (course: ICourse): Promise<ICourse | undefined> => {
   try {
     const response: AxiosResponse<ICourse> = await axiosInstance.post('/api/v1/course/createCourse', course);
@@ -544,6 +549,88 @@ export const completeQuiz = async (quizId: any) => {
     }
   } catch (error) {
     console.error('completeQuiz error:', error);
+    throw error;
+  }
+};
+export const CreatePost = async (postData: Ipost) => {
+  try {
+    const response= await axiosInstance.post(`/api/v1/Discuss/createPost`,postData);
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error Create Post:', error);
+    throw error;
+  }
+};
+export const GetAllPost = async (page: number,size: number) => {
+  try {
+    const response= await axiosInstance.get(`/api/v1/Discuss/getPosts?page=${page}&size=${size}`);
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error Geting Post:', error);
+    throw error;
+  }
+};
+export const GetHotPost = async () => {
+  try {
+    const response= await axiosInstance.get(`/api/v1/Discuss/gethotPosts`);
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error Geting Post:', error);
+    throw error;
+  }
+};
+export const GetTrendingPost = async (page: number,size: number) => {
+  try {
+    const response= await axiosInstance.get(`/api/v1/Discuss/getTrendingPost?page=${page}&size=${size}`);
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error Geting Post:', error);
+    throw error;
+  }
+};
+export const GetUnansweredPost = async (page: number,size: number) => {
+  try {
+    const response= await axiosInstance.get(`/api/v1/Discuss/getUnansweredPost?page=${page}&size=${size}`);
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error Geting Post:', error);
+    throw error;
+  }
+};
+export const GetMyPost = async (page: number,size: number) => {
+  try {
+    const response= await axiosInstance.get(`/api/v1/Discuss/getMyPost?page=${page}&size=${size}`);
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error Geting Post:', error);
+    throw error;
+  }
+};
+export const SearchInPost = async (querysearch:String) => {
+  try {
+    const response= await axiosInstance.get(`/api/v1/Discuss/search/searchInPost?querysearch=${querysearch}`);
+    // console.log('SearchInPost Response:', response);
+
+    if (response && response.status === 200 && response.data) {
+      return response.data;
+    } else {
+      console.error('Invalid search response:', response);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error search in Post:', error);
     throw error;
   }
 };

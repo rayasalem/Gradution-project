@@ -1,8 +1,25 @@
-import React from 'react'
+import React, {  useState } from 'react';
 import { Box, Button, TextField, Typography,Paper,InputLabel} from '@mui/material'
 import { Link } from 'react-router-dom';
 import './newPost.css';
+import { CreatePost } from '../../../api/userAction';
 const NewPost = () => {
+  const [title, settitle] = useState<string>('');
+  const [content, setcontent] = useState<string>('');
+  const [tags, setTag] = useState<string[]>([]);
+
+  const handleSubmit = async () => {
+    try {
+      const postData = {
+        title,content,tags
+      };
+     const post = await CreatePost(postData);
+  
+    
+    } catch (err) {
+        console.log('Error Create Post:', err);
+    }
+};
   return (
     <Box>
     <Box
@@ -29,6 +46,7 @@ const NewPost = () => {
             fullWidth
             className="discussNewField"
             sx={{borderColor:'#2493df',backgroundColor:'#fff'}}
+            onChange={(e) => {settitle(e.target.value)}}
                         />
         <InputLabel className="discussNewLabel"sx={{fontSize:'16px',fontWeight:'400',marginBottom:'8px',color:'#6b7f99'}}>Tip: write as if asking a friend, being as specific as possibleTag</InputLabel>
         <InputLabel className="discussNewLabel"sx={{fontSize:'20px',fontWeight:'600',marginBottom:'8px',color:'#6b7f99'}}>Description</InputLabel>
@@ -40,6 +58,7 @@ const NewPost = () => {
             rows={4}
             className="discussNewField"
             sx={{borderColor:'#2493df',backgroundColor:'#fff'}}
+            onChange={(e) => {setcontent(e.target.value)}}
                         />
         <InputLabel className="discussNewLabel"sx={{fontSize:'20px',fontWeight:'600',marginBottom:'8px',color:'#6b7f99'}}>Tag</InputLabel>
         <TextField
@@ -48,14 +67,16 @@ const NewPost = () => {
             fullWidth
             className="discussNewField"
             sx={{borderColor:'#2493df',backgroundColor:'#fff'}}
+            onChange={(e) => { setTag(e.target.value.split(' ').map(tag => tag.trim())) }}
                         />
         <InputLabel className="discussNewLabel" sx={{fontSize:'16px',fontWeight:'400',marginBottom:'8px',color:'#6b7f99'}}>You can add up to 10 tags</InputLabel>
         </Box>
         <Box >
         <Button className="discussNewButton" variant="outlined"sx={{height:'54px',marginLeft:'5px',width:'150px'}}
         component={Link}to={'/discuss'}>Cancel</Button>
-        <Button className="discussNewButton"variant="contained"sx={{height:'54px',marginLeft:'30px',width:'200px'}}
-       >Post question</Button>
+        <Button className="discussNewButton" variant="contained"sx={{height:'54px',marginLeft:'30px',width:'200px'}}
+                  onClick={handleSubmit} 
+          >Post question</Button>
         </Box>
         </Box>
         </Box>

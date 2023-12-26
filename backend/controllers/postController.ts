@@ -1,25 +1,21 @@
 import { Request, Response } from 'express';
 import Post, { IPost } from '../db/schemas/postSchema';
 import TagModel from '../db/schemas/tagSchema';
+import { pagination } from '../services/pagination';
 
 export const createPost = async (req: Request, res: Response) => {
     try {
-      const { title, content, tags }:IPost = req.body;
-      const existingTags = await TagModel.find({ _id: { $in: tags } });
-      if (existingTags.length !== tags.length) {
-        return res.status(400).json({ message: 'One or more tags do not exist' });
-      }
+      const { title, content, tags } = req.body;
       const newPost = {
         title,
         content,
         tags,
         author: req.user?._id,
-        timestamp: new Date(),
       };
       const createdPost = await Post.create(newPost);
       return res.status(201).json({ message: 'Post created successfully', post: createdPost });
     } catch (error) {
-      return res.status(400).json({ message: 'Failed to create post', error });
+      return res.status(500).json({ message: 'Failed to create post', error });
     }
   };
 export const updatePost = async (req: Request, res: Response) => {
@@ -47,7 +43,6 @@ export const deletePost = async (req: Request, res: Response) => {
         try {
           const postId = req.params.postId; 
           const deletedPost = await Post.findByIdAndDelete(postId);
-      
           if (!deletedPost) {
             return res.status(404).json({ message: 'Post not found' });
           }
@@ -57,7 +52,6 @@ export const deletePost = async (req: Request, res: Response) => {
           return res.status(400).json({ message: 'Failed to delete post', error });
         }
       };
-      
 export const getPostById = async (req: Request, res: Response) => {
         try {
           const postId = req.params.postId; 
@@ -116,4 +110,140 @@ export const removeLike = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Failed to remove like', error });
     }
   };
-  
+export const gitAllPost = async (req: Request, res: Response) =>{
+  try{
+  const page = Number(req.query.page);
+    const size = Number(req.query.size);
+    if(!page || !size) {
+      return res.status(400).json({ message: 'Invalid or missing query parameters' });
+    }
+    const {limit,skip}=pagination(page,size);
+    const posts = await Post.find().skip(skip).populate({path: 'author',
+    select: 'username avatar',}).sort({ created_at: -1 })
+    .limit(limit);
+    res.status(201).json({ message: 'posts:', posts});
+  } catch (error) {
+    res.status(500).json({ message: 'server error' });
+  }
+}
+export const getHotPostsForToday =async (req: Request, res: Response) =>{
+  try{
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+    const hotPosts = await Post.aggregate([
+      {
+        $match: {
+          created_at: {
+            $gte: todayStart,
+            $lte: todayEnd,
+          },
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          created_at: 1,
+          likeCount: { $size: '$likes' },
+        },
+      },
+      {
+        $sort: {
+          likeCount: -1,
+        },
+      },
+      {
+        $limit: 5, 
+      },
+    ]);
+    res.status(201).json({ message: 'hotPosts:', hotPosts});
+  }
+  catch (error) {
+    res.status(500).json({ message: 'server error' });
+  }
+}
+export const getTrendingPost = async (req: Request, res: Response) => {
+  try {
+    const page = Number(req.query.page);
+    const size = Number(req.query.size);
+    if (!page || !size) {
+      return res.status(400).json({ message: 'Invalid or missing query parameters' });
+    }
+    const { limit, skip } = pagination(page, size);
+    const trendposts = await Post.find()
+      .skip(skip)
+      .populate({
+        path: 'author',
+        select: 'username avatar',
+      })
+      .limit(limit)
+      .sort({ 'comments.length': -1 }); 
+
+    res.status(201).json({ message: 'posts:', trendposts });
+  } catch (error) {
+    res.status(500).json({ message: 'server error' });
+  }
+};
+export const getUnansweredPost = async (req: Request, res: Response) => {
+  try {
+    const page = Number(req.query.page);
+    const size = Number(req.query.size);
+    if (!page || !size) {
+      return res.status(400).json({ message: 'Invalid or missing query parameters' });
+    }
+
+    const { limit, skip } = pagination(page, size);
+
+    const UnansweredPosts = await Post.find({ comments: { $size: 0 } })
+      .skip(skip)
+      .populate({
+        path: 'author',
+        select: 'username avatar',
+      })
+      .limit(limit);
+
+    res.status(201).json({ message: 'posts:', UnansweredPosts });
+  } catch (error) {
+    res.status(500).json({ message: 'server error' });
+  }
+};
+export const getMyPosts = async (req: Request, res: Response) => {
+  try {
+    const page = Number(req.query.page);
+    const size = Number(req.query.size);
+    const userId = req.user?.id; 
+    if (!page || !size || !userId) {
+      return res.status(400).json({ message: 'Invalid or missing query parameters' });
+    }
+    const { limit, skip } = pagination(page, size);
+    const myPosts = await Post.find({ author: userId })
+      .skip(skip)
+      .populate({
+        path: 'author',
+        select: 'username avatar',
+      })
+      .limit(limit);
+
+    res.status(201).json({ message: 'My posts:', myPosts });
+  } catch (error) {
+    res.status(500).json({ message: 'server error' });
+  }
+};
+export const searchPosts = async (req: Request, res: Response) => {
+  try {
+    const { querysearch } = req.query;
+    if (!querysearch || typeof querysearch !== 'string') {
+      return res.status(400).json({ message: 'Invalid or missing query parameters' });
+    }
+    const searchResults = await Post.find({ title: { $regex: new RegExp(querysearch as string, 'i') } }).
+    populate({path: 'author',
+    select: 'username avatar',});
+    if (searchResults.length === 0) {
+      return res.status(404).json({ message: 'No posts found with the specified query' });
+    }
+    return res.json({ message: 'Posts found successfully', posts: searchResults });
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal Server Error', error });
+  }
+};

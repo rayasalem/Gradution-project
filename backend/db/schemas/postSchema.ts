@@ -3,14 +3,12 @@ import { Schema, model, Types, Document, ObjectId } from 'mongoose';
 export interface IPost extends Document {
   title: string;
   content: string;
-  tags: ObjectId[]; 
+  tags: string[]; 
   author: ObjectId;
-  timestamp: Date;
   likes: ObjectId[];
   comments: ObjectId[];
   created_at: Date;
 }
-
 
 const postSchema = new Schema<IPost>({
     title: {
@@ -21,20 +19,13 @@ const postSchema = new Schema<IPost>({
       type: String,
       required: true,
     },
-    tags: [
-      {
-        type: Types.ObjectId,
-        ref: 'Tag',
-        required: true,
-      }],
+    tags:{
+        type:[String]
+      },
     author: {
       type: Types.ObjectId,
       ref: 'User',
       required: true,
-    },
-    timestamp: {
-      type: Date,
-      default: Date.now,
     },
     likes: [
       {
@@ -53,7 +44,7 @@ const postSchema = new Schema<IPost>({
       type: Date,
       default: Date.now,
     },
-  });
+  }, { timestamps: true });
   
 
 const Post = model<IPost>('Post', postSchema);

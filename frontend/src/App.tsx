@@ -102,6 +102,7 @@ import CreateQustionInQuiz from './components/admin/question/CreateQustionInQuiz
 import QuizJava from './components/courses/Java/quizJava/QuizJava';
 import Discuss from './components/discuss/indexDiscuss';
 import NewPost from './components/discuss/newPost/NewPost';
+import PostComponent from './components/discuss/post/PostComponent';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -122,6 +123,7 @@ function App() {
           <Route path='/profile' element={<ProfilePage/>} />
           <Route path='/discuss' element={<Discuss/>} />
           <Route path='/discuss/New' element={<NewPost/>} />
+          <Route path='/discuss/:postId' element={<PostComponent/>} />
           <Route path="/learn" element={<IndexCourse/>} />
           <Route path='/learn/Java/:courseId' element={<JavaCourse/>} />
           <Route path='/learn/Java/lesson/:LessonId' element={<LessonOneInJava/>} />

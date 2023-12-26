@@ -25,3 +25,14 @@ export const coursesState = atom<Course[]>({
   key: 'coursesState',
   default: [] 
 });
+export const postsState = atom({
+  key: 'postsState',
+  default: [],
+});
+export const hotpostsState = atom({
+  key: 'hotpostsState',
+  default: [],
+});
+
+
+
