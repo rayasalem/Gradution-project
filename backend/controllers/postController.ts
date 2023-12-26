@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import Post, { IPost } from '../db/schemas/postSchema';
-import TagModel from '../db/schemas/tagSchema';
 import { pagination } from '../services/pagination';
 
 export const createPost = async (req: Request, res: Response) => {
@@ -22,10 +21,6 @@ export const updatePost = async (req: Request, res: Response) => {
     try {
       const postId = req.params.postId;
       const { title, content, tags } = req.body;
-      const existingTags = await TagModel.find({ _id: { $in: tags } });
-      if (existingTags.length !== tags.length) {
-        return res.status(400).json({ message: 'One or more tags do not exist' });
-      }
       const updatedPost = await Post.findByIdAndUpdate(
         postId,
         { title, content, tags },

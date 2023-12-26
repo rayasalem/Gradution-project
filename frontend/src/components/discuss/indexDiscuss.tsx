@@ -146,7 +146,7 @@ const Discuss = () => {
             >
     <Box sx={{marginBottom:'10px'}}>      
         <Link
-            to={`/learn}`}   
+           to={`/discuss/${post._id}`}  
        style={{ textDecoration: 'none', width: '100%'}}
         > 
         <Typography
@@ -164,7 +164,7 @@ const Discuss = () => {
                 {post?.tags.map((tag) => (
               <Link
                 key={tag}
-                to={`/`} 
+                to={`/discuss/${post._id}`}
                 style={{
                   backgroundColor: '#eaf0f3',
                   borderRadius: '4px',
@@ -187,7 +187,7 @@ const Discuss = () => {
                 <span style={{fontSize:'12px',color:'#6b7f99'}}>{post.likes.length} Vote</span>
             </Box>  
             <Box sx={{marginLeft:'8px'}}>
-                <Link to={'/'} style={{fontSize:'12px',color:'#6b7f99',textDecoration: 'none'}}>
+                <Link to={`/discuss/${post._id}`} style={{fontSize:'12px',color:'#6b7f99',textDecoration: 'none'}}>
                 <ChatBubbleIcon sx={{fontSize:'18px',color:'#000'}}></ChatBubbleIcon>{post.comments.length} Answer
                 </Link>
             </Box>
