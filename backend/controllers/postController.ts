@@ -234,9 +234,6 @@ export const searchPosts = async (req: Request, res: Response) => {
     const searchResults = await Post.find({ title: { $regex: new RegExp(querysearch as string, 'i') } }).
     populate({path: 'author',
     select: 'username avatar',});
-    if (searchResults.length === 0) {
-      return res.status(404).json({ message: 'No posts found with the specified query' });
-    }
     return res.json({ message: 'Posts found successfully', posts: searchResults });
   } catch (error) {
     return res.status(500).json({ message: 'Internal Server Error', error });

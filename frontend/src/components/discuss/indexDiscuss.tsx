@@ -132,6 +132,12 @@ const Discuss = () => {
       <Button variant="contained" onClick={CreatePost} sx={{height:'54px',backgroundColor:'#2493df',fontFamily:'Fira Sans",sans-serif'}}>
         Ask a question</Button>
         </Box>
+        {posts.length === 0 && (
+  <Typography variant="body1" sx={{ fontSize: '24px', color: '#2d3846'
+  ,fontWeight:600, marginTop: '15px',display:'flex',justifyContent:'center' }}>
+    Nothing to show
+  </Typography>
+)}
         {posts && posts.map((post) => (
         <Paper
               elevation={3}
@@ -208,14 +214,17 @@ const Discuss = () => {
                   </Box>
             </Paper>
         ))}
-            <Stack spacing={2} sx={{margin:'20px',display:'flex',alignItems:'center'}}>
-            <Pagination 
-            count={totalPages}
-            page={currentPage}
-            variant="outlined"
-            shape="rounded" 
-            onChange={handlePageChange}/>
-           </Stack>
+        {posts.length !== 0 && (
+    <Stack spacing={2} sx={{margin:'20px',display:'flex',alignItems:'center'}}>
+           <Pagination 
+                  count={totalPages}
+                  page={currentPage}
+                variant="outlined"
+                 shape="rounded" 
+                   onChange={handlePageChange}/>
+                 </Stack>
+                 )}
+          
         </Box>
         <Box className="discussPart2"
         sx={{padding:'15px'}}>
@@ -237,7 +246,7 @@ const Discuss = () => {
             >
                 <Box sx={{marginBottom:'5px'}}>      
         <Link
-            to={`/learn}`}   
+            to={`/discuss/${hotPost._id}`} 
        style={{ textDecoration: 'none', width: '100%'}}
         > 
         <Typography
