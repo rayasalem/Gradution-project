@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/createPost', authorizeUser([roles.admin,roles.user]), postController.createPost);
 router.put('/updatePost', authorizeUser([roles.admin,roles.user]), postController.updatePost);
 router.delete('/deletePost', authorizeUser([roles.admin,roles.user]), postController.deletePost);
-router.get('/getPost', authorizeUser([roles.admin,roles.user]), postController.getPostById);
+router.get('/getPost/:postId', authorizeUser([roles.admin,roles.user]), postController.getPostById);
 router.post('/likePost', authorizeUser([roles.admin,roles.user]), postController.likePost);
 router.get('/getPosts', authorizeUser([roles.admin,roles.user]),postController.gitAllPost);
 router.get('/gethotPosts', authorizeUser([roles.admin,roles.user]),postController.getHotPostsForToday);

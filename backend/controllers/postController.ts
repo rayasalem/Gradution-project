@@ -41,7 +41,6 @@ export const deletePost = async (req: Request, res: Response) => {
           if (!deletedPost) {
             return res.status(404).json({ message: 'Post not found' });
           }
-      
           return res.json({ message: 'Post deleted successfully', post: deletedPost });
         } catch (error) {
           return res.status(400).json({ message: 'Failed to delete post', error });
@@ -50,13 +49,12 @@ export const deletePost = async (req: Request, res: Response) => {
 export const getPostById = async (req: Request, res: Response) => {
         try {
           const postId = req.params.postId; 
-          const post = await Post.findById(postId);
-      
+          const post = await Post.findById(postId).populate({path: 'author',
+          select: 'username avatar',});
           if (!post) {
             return res.status(404).json({ message: 'Post not found' });
           }
-      
-          return res.json({ post });
+          return res.status(201).json({ message: 'Post found successfully', post: post });
         } catch (error) {
           return res.status(400).json({ message: 'Failed to retrieve post', error });
         }
