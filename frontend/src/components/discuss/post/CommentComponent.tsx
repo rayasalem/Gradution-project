@@ -8,17 +8,18 @@ import {
   MenuItem,
   Button,
 } from '@mui/material';
-import { Favorite, FavoriteBorder, Edit, Delete } from '@mui/icons-material';
+import { Favorite, FavoriteBorder, Edit, Delete, Sync } from '@mui/icons-material';
+import { deleteCommentById, updateComment } from '../../../api/userAction';
 
 export interface CommentData {
-  id: number;
+  _id: any;
   text: string;
-  likes: number;
-  user: {
-    name: string;
+  author: {
+    username: string;
     avatar: string;
   };
-  date: Date;
+  createdAt: Date;
+  likes:[string];
 }
 
 const LikesTypography: React.FC<{ commentLikes: number }> = ({ commentLikes }) => (
@@ -39,37 +40,41 @@ const CommentComponent: React.FC<{
   onUpdateComment: (commentId: number, newText: string) => void;
   onDeleteComment: (commentId: number) => void;
 }> = ({ comment, onLikeComment, onUpdateComment, onDeleteComment }) => {
-  const formattedDate = comment.date.toLocaleString();
+  const formattedDate = comment?.createdAt?.toLocaleString();
   const [liked, setLiked] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editedText, setEditedText] = useState<string>(comment.text);
 
   const handleLike = () => {
     setLiked(!liked);
-    onLikeComment(comment.id, !liked);
+    onLikeComment(comment._id, !liked);
   };
 
-  const handleUpdate = () => {
-    onUpdateComment(comment.id, editedText);
+  const handleUpdate = async(commentId:any) => {
+    onUpdateComment(comment._id, editedText);
     setEditMode(false);
+    const update = await updateComment(commentId, editedText);
+
   };
 
   const handleCancelUpdate = () => {
     setEditMode(false);
     setEditedText(comment.text);
+  
   };
 
-  const handleDelete = () => {
-    onDeleteComment(comment.id);
+  const handleDelete = async () => {
+    onDeleteComment(comment._id);
+     await deleteCommentById(comment._id)
   };
 
   return (
     <div>
       <Divider style={{ margin: '10px 0' }} />
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar src={comment.user.avatar} alt={comment.user.name} />
+        <Avatar src={comment.author.avatar} alt={comment.author.username} />
         <div style={{ marginLeft: '10px' }}>
-          <Typography variant="body2">{comment.user.name}</Typography>
+          <Typography variant="body2">{comment.author.username}</Typography>
           {editMode ? (
             <div>
               <textarea
@@ -77,7 +82,7 @@ const CommentComponent: React.FC<{
                 onChange={(e) => setEditedText(e.target.value)}
                 style={{ width: '100%', minHeight: '50px', marginTop: '5px' }}
               />
-              <Button onClick={handleUpdate}>Update</Button>
+              <Button onClick={() =>handleUpdate(comment._id)}>Update</Button>
               <Button onClick={handleCancelUpdate}>Cancel</Button>
             </div>
           ) : (
@@ -90,7 +95,7 @@ const CommentComponent: React.FC<{
           </Typography>
           <IconButton onClick={handleLike}>
             {!liked ? <FavoriteBorder /> : <Favorite sx={{ color: 'red' }} />}
-            <LikesTypography commentLikes={comment.likes} />
+            <LikesTypography commentLikes={comment.likes?.length} />
           </IconButton>
           <IconButton onClick={() => setEditMode(true)}>
             <Edit />

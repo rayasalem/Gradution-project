@@ -1,11 +1,11 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model, Document, Types ,ObjectId} from 'mongoose';
 
 export interface IComment extends Document {
   text: string;
   author: Types.ObjectId; 
   PostId: Types.ObjectId; 
   createdAt: Date;
-  updatedAt: Date;
+  likes: ObjectId[];
 }
 const commentSchema = new Schema<IComment>(
   {
@@ -27,10 +27,12 @@ const commentSchema = new Schema<IComment>(
       type: Date,
       default: Date.now,
     },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
+    likes: [
+      {
+        type: Types.ObjectId,
+        ref: 'User',
+      },
+    ]
   },
   { timestamps: true }
 );

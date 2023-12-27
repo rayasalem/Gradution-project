@@ -37,7 +37,9 @@ export const getCommentById = async (req: Request, res: Response) => {
 export const getCommentsByPostId = async (req: Request, res: Response) => {
   try {
     const postId = req.params.postId;
-    const comments = await CommentModel.find({ PostId: postId });
+    const comments = await CommentModel.find({ PostId: postId }).
+    populate({path: 'author',
+    select: 'username avatar',});;
     res.status(200).json({ comments });
   } catch (error) {
     console.error(error);

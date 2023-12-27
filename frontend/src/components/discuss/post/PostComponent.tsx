@@ -12,6 +12,11 @@ import {
   Button,
   Menu,
   MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@mui/material';
 import {
     Delete as DeleteIcon,
@@ -24,7 +29,7 @@ import {
   MoreVert as MoreVertIcon,
 } from '@mui/icons-material';
 import CommentComponent, { CommentData } from './CommentComponent'; 
-import { GetPostById, updatePost } from '../../../api/userAction';
+import { CreateComment, GetCommentByPostId, GetPostById, deletePostById, updatePost } from '../../../api/userAction';
 const LikesTypography = ({ children }: { children: React.ReactNode }) => (
   <Typography
     style={{
@@ -93,7 +98,7 @@ const EditPostPage: React.FC<{
     );
   };
 const PostComponent: React.FC = () => {
-  const [postLikes, setPostLikes] = useState<number>(15);
+  const [postLikes, setPostLikes] = useState<number>(0);
   const [editPageOpen, setEditPageOpen] = useState<boolean>(false);
   const [postLiked, setPostLiked] = useState<boolean>(false);
   const [updatedText, setUpdatedText] = useState<string>('');
@@ -105,34 +110,15 @@ const PostComponent: React.FC = () => {
   const [postText, setPostText] = useState<string>('');
   const [postDate, setpostDate] = useState<Date | undefined>();
   const [postTags, setpostTags] = useState<string[]>();
-  
   const { postId } = useParams<{ postId: string }>();
-
   const [postComments, setPostComments] = useState<CommentData[]>([
-    {
-      id: 1,
-      text: 'This is a comment!',
-      likes: 3,
-      user: {
-        name: 'John Doe',
-        avatar: 'https://via.placeholder.com/50',
-      },
-      date: new Date(),
-    },
-    {
-      id: 2,
-      text: 'Another comment here!',
-      likes: 1,
-      user: {
-        name: 'Jane Smith',
-        avatar: 'https://via.placeholder.com/50',
-      },
-      date: new Date(),
-    },
+    
   ]);
   const [newComment, setNewComment] = useState<string>('');
   const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState<boolean>(false);
+
   const handleGetPost = async () => {
     try {
       if(postId){
@@ -143,7 +129,9 @@ const PostComponent: React.FC = () => {
         setavatar(specificpost?.post?.author?.avatar)
         setpostDate(specificpost?.post?.created_at)
         setpostTags(specificpost?.post?.tags)
-
+        setPostLikes(specificpost?.likes?.length)
+       const CommentPost =await GetCommentByPostId(postId)
+       setPostComments(CommentPost?.comments)
       }
     } catch (error) {
       console.error('Error results:', error);
@@ -151,14 +139,26 @@ const PostComponent: React.FC = () => {
   };
   useEffect(() => {
     handleGetPost()
-  }, []);
-  const handleDeletePost = () => {
-    const confirmed = window.confirm('Are you sure you want to delete this post and its comments?');
-    if (confirmed) {
+  }, [newComment]);
+  const handleOpenDeleteConfirmation = () => {
+    setDeleteConfirmationOpen(true);
+  };
+
+  const handleCloseDeleteConfirmation = () => {
+    setDeleteConfirmationOpen(false);
+  };
+
+  const handleDeletePost = async () => {
+    handleOpenDeleteConfirmation();
+  };
+  const handleConfirmDelete = async() => {
+    handleCloseDeleteConfirmation();
+      await deletePostById(postId);
       setPostTitle('');
       setPostText('');
       setPostComments([]);
-    }
+      setpostTags([]);
+    
   };
 
   const handleUpdatePost = async () => {
@@ -180,22 +180,11 @@ const PostComponent: React.FC = () => {
     return '';
   };
 
-  const handleAddComment = () => {
-    if (newComment.trim() !== '') {
-      const newCommentData: CommentData = {
-        id: postComments.length + 1,
-        text: newComment,
-        likes: 0,
-        user: {
-          name: 'New User',
-          avatar: 'https://via.placeholder.com/50',
-        },
-        date: new Date(),
-      };
-      setPostComments([...postComments, newCommentData]);
+  const handleAddComment = async() => {
+       const newCommentData = await CreateComment(postId,newComment)
       setNewComment('');
     }
-  };
+
   const handleDoneUpdate = () => {
     setPostText(updatedText); 
     setPostTitle(updatedTitle); 
@@ -225,10 +214,10 @@ const PostComponent: React.FC = () => {
   const handleLikeComment = (commentId: number, isLiked: boolean) => {
     setPostComments((prevComments) =>
       prevComments.map((comment) =>
-        comment.id === commentId
+        comment._id === commentId
           ? {
               ...comment,
-              likes: isLiked ? comment.likes + 1 : comment.likes - 1,
+              // likes: isLiked ? comment.likes + 1 : comment.likes - 1,
             }
           : comment
       )
@@ -246,7 +235,7 @@ const PostComponent: React.FC = () => {
   const handleUpdateComment = (commentId: number, newText: string) => {
     setPostComments((prevComments) =>
       prevComments.map((comment) =>
-        comment.id === commentId
+        comment._id === commentId
           ? { ...comment, text: newText || comment.text } 
           : comment
       )
@@ -256,7 +245,7 @@ const PostComponent: React.FC = () => {
   
   const handleDeleteComment = (commentId: number) => {
     setPostComments((prevComments) =>
-      prevComments.filter((comment) => comment.id !== commentId)
+      prevComments.filter((comment) => comment._id !== commentId)
     );
   };
  
@@ -265,13 +254,30 @@ const PostComponent: React.FC = () => {
   };
   const isSmallScreen = useMediaQuery('(max-width:600px)');
 
-  const postAuthor = {
-    name: 'Post Author',
-    avatar: 'https://via.placeholder.com/50',
-  };
 
   return (
     <Paper elevation={3} sx={{ padding: '20px', marginTop: '50px', marginLeft: '20px', maxWidth: isSmallScreen ? '100%' : '70%' }}>
+   <Dialog
+          open={deleteConfirmationOpen}
+          onClose={handleCloseDeleteConfirmation}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this post and its comments?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDeleteConfirmation} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
      <Typography variant="h4">{postTitle}</Typography>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
   <Avatar src={avatar} alt={PostAuther} />
@@ -351,9 +357,9 @@ const PostComponent: React.FC = () => {
         </div>
       </div>
       {postComments.map((comment, index) => (
-        <div key={comment.id}>
+        <div key={comment._id}>
         <CommentComponent
-            key={comment.id}
+            key={comment._id}
             comment={comment}
             onLikeComment={handleLikeComment}
             onUpdateComment={handleUpdateComment}

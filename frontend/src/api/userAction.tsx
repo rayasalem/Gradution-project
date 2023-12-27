@@ -662,3 +662,62 @@ export const GetPostById = async (postId:any) => {
     throw error;
   }
 };
+export const CreateComment = async (postId:any,text:string) => {
+  try {
+    const response= await axiosInstance.post(`/api/v1/Discuss/createComment/${postId}`,
+    {text});
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error to create comment:', error);
+    throw error;
+  }
+};
+export const GetCommentByPostId = async (postId:any) => {
+  try {
+    const response= await axiosInstance.get(`/api/v1/Discuss/Comments/${postId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Error to create comment:', error);
+    throw error;
+  }
+};
+export const deleteCommentById = async (commentId: string) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/Discuss/deleteComment/${commentId}`);
+    if (response.status === 200) {
+      console.log('Success, Comment deleted ');
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to Comment deleted', error);
+    throw error;
+  }
+};
+export const updateComment = async (commentId: string, text:string) => {
+  try {
+    const response = await axiosInstance.patch(`/api/v1/Discuss/updateComment/${commentId}`, {text});
+    if (response.status === 200) {
+      return response.data.post;
+    } else {
+      throw new Error('Failed to update commment');
+    }
+  } catch (error) {
+    throw new Error(`Failed to update commment`);
+  }
+};
+export const deletePostById = async (postId: any) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/Discuss/deletePost/${postId}`);
+    if (response.status === 200) {
+      console.log('Success, Post deleted ');
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to Post deleted', error);
+    throw error;
+  }
+};
