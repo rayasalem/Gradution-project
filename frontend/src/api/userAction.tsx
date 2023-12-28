@@ -721,3 +721,76 @@ export const deletePostById = async (postId: any) => {
     throw error;
   }
 };
+export const LikePost = async (postId: any) => {
+  try {
+    const response = await axiosInstance.post(`/api/v1/Discuss/likePost/${postId}`);
+    if (response.status === 201) {
+      console.log('Post liked successfully ');
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to like post', error);
+    throw error;
+  }
+};
+export const hasUserLikedPost = async (postId: any) => {
+  try {
+    const response = await axiosInstance.post(`/api/v1/Discuss/hasUserLikedPost/${postId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to check if user has liked post', error);
+    throw error;
+  }
+};
+
+export const removelike = async (postId: any) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/Discuss/removelike/${postId}`);
+    if (response.status === 201) {
+      console.log('Post liked successfully ');
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to like post', error);
+    throw error;
+  }
+};
+export const LikeComment = async (commentId: any) => {
+  try {
+    const response = await axiosInstance.post(`/api/v1/Discuss/comments/${commentId}/like`);
+
+    if (response.status === 201) {
+      console.log('like in Comment successfully ');
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to like Comment', error);
+    throw error;
+  }
+};
+export const removelikeinComment = async (commentId: any) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/Discuss/comments/${commentId}/unlike`);
+    if (response.status === 201) {
+      console.log(' liked removed successfully ');
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to remove like comment', error);
+    throw error;
+  }
+};
+export const hasUserLikedComment = async (commentId: any) => {
+  try {
+    const response = await axiosInstance.post(`/api/v1/Discuss/hasUserLikedcomment/${commentId}`);
+   console.log(response)
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to check if user has liked comment', error);
+    throw error;
+  }
+};

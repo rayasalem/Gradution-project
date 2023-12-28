@@ -61,29 +61,26 @@ export const getPostById = async (req: Request, res: Response) => {
       }
 export const likePost = async (req: Request, res: Response) => {
         try {
-          const postId = req.query.postId; 
+          const postId = req.params.postId; 
+          
           const updatedPost = await Post.findByIdAndUpdate(
             postId,
             { $push: { likes: req.user?._id } }, 
             { new: true }
           );
-
           if (!updatedPost) {
             return res.status(404).json({ message: 'Post not found' });
           }
-      
-          return res.json({ message: 'Post liked successfully', post: updatedPost });
+          return res.status(201).json({ message: 'Post liked successfully', post: updatedPost });
         } catch (error) {
           return res.status(400).json({ message: 'Failed to like post', error });
         }
       };
 export const removeLike = async (req: Request, res: Response) => {
     try {
-      const postId = req.query.postId;
+      const postId = req.params.postId;
       const userId = req.user?._id; 
-  
       const post = await Post.findById(postId);
-  
       if (!post) {
         return res.status(404).json({ message: 'Post not found' });
       }
@@ -98,9 +95,27 @@ export const removeLike = async (req: Request, res: Response) => {
   
       const updatedPost = await post.save();
   
-      return res.json({ message: 'Like removed successfully', post: updatedPost });
+      return res.status(201).json({ message: 'Like removed successfully', post: updatedPost });
     } catch (error) {
-      return res.status(400).json({ message: 'Failed to remove like', error });
+      return res.status(500).json({ message: 'Failed to remove like', error });
+    }
+  };
+  export const hasUserLikedPost = async (req: Request, res: Response) => {
+    try {
+      const postId = req.params.postId;
+    const userId = req.user?._id;
+    if (!userId) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+    const post = await Post.findOne({ _id: postId });
+
+    if (post && post.likes.includes(userId)) {
+      return res.status(200).json({ hasLiked: true });
+    } else {
+      return res.status(200).json({ hasLiked: false });
+    }
+    } catch (error:any) {
+      throw new Error(`Failed to check if user has liked post: ${error.message}`);
     }
   };
 export const gitAllPost = async (req: Request, res: Response) =>{

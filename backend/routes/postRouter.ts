@@ -9,7 +9,9 @@ router.post('/createPost', authorizeUser([roles.admin,roles.user]), postControll
 router.put('/updatePost', authorizeUser([roles.admin,roles.user]), postController.updatePost);
 router.delete('/deletePost/:postId', authorizeUser([roles.admin,roles.user]), postController.deletePost);
 router.get('/getPost/:postId', authorizeUser([roles.admin,roles.user]), postController.getPostById);
-router.post('/likePost', authorizeUser([roles.admin,roles.user]), postController.likePost);
+router.post('/likePost/:postId', authorizeUser([roles.admin,roles.user]), postController.likePost);
+router.post('/hasUserLikedPost/:postId', authorizeUser([roles.admin,roles.user]), postController.hasUserLikedPost);
+router.delete('/removelike/:postId', authorizeUser([roles.admin,roles.user]), postController.removeLike);
 router.get('/getPosts', authorizeUser([roles.admin,roles.user]),postController.gitAllPost);
 router.get('/gethotPosts', authorizeUser([roles.admin,roles.user]),postController.getHotPostsForToday);
 router.get('/getTrendingPost', authorizeUser([roles.admin,roles.user]),postController.getTrendingPost);

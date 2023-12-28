@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Typography,
   IconButton,
@@ -9,7 +9,7 @@ import {
   Button,
 } from '@mui/material';
 import { Favorite, FavoriteBorder, Edit, Delete, Sync } from '@mui/icons-material';
-import { deleteCommentById, updateComment } from '../../../api/userAction';
+import { LikeComment, deleteCommentById, hasUserLikedComment, removelikeinComment, updateComment } from '../../../api/userAction';
 
 export interface CommentData {
   _id: any;
@@ -44,10 +44,25 @@ const CommentComponent: React.FC<{
   const [liked, setLiked] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editedText, setEditedText] = useState<string>(comment.text);
-
-  const handleLike = () => {
-    setLiked(!liked);
-    onLikeComment(comment._id, !liked);
+  useEffect(() => {
+    const checkUserLiked = async ()=>{
+     const userLike= await hasUserLikedComment(comment._id)  
+     console.log(userLike)
+     setLiked(userLike?.hasLikedComment)
+     onLikeComment(comment._id,userLike?.hasLikedComment)
+    }
+    checkUserLiked();
+  }, [comment._id,liked]);
+  const handleLike = async(commentId:any) => {
+    if(!liked){
+      await LikeComment(commentId)
+    setLiked(true);
+     onLikeComment(commentId, true);
+    }else{
+      await removelikeinComment(commentId)
+      setLiked(false);
+      onLikeComment(commentId, false);
+    }
   };
 
   const handleUpdate = async(commentId:any) => {
@@ -93,7 +108,7 @@ const CommentComponent: React.FC<{
           <Typography variant="body2" color="textSecondary">
             {formattedDate}
           </Typography>
-          <IconButton onClick={handleLike}>
+          <IconButton onClick={() =>handleLike(comment._id)}>
             {!liked ? <FavoriteBorder /> : <Favorite sx={{ color: 'red' }} />}
             <LikesTypography commentLikes={comment.likes?.length} />
           </IconButton>

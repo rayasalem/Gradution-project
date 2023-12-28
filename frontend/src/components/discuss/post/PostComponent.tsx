@@ -29,7 +29,7 @@ import {
   MoreVert as MoreVertIcon,
 } from '@mui/icons-material';
 import CommentComponent, { CommentData } from './CommentComponent'; 
-import { CreateComment, GetCommentByPostId, GetPostById, deletePostById, updatePost } from '../../../api/userAction';
+import { CreateComment, GetCommentByPostId, GetPostById, LikePost, deletePostById, hasUserLikedPost, removelike, updatePost } from '../../../api/userAction';
 const LikesTypography = ({ children }: { children: React.ReactNode }) => (
   <Typography
     style={{
@@ -98,7 +98,7 @@ const EditPostPage: React.FC<{
     );
   };
 const PostComponent: React.FC = () => {
-  const [postLikes, setPostLikes] = useState<number>(0);
+  const [postLikes, setPostLikes] = useState<string[]>();
   const [editPageOpen, setEditPageOpen] = useState<boolean>(false);
   const [postLiked, setPostLiked] = useState<boolean>(false);
   const [updatedText, setUpdatedText] = useState<string>('');
@@ -129,7 +129,7 @@ const PostComponent: React.FC = () => {
         setavatar(specificpost?.post?.author?.avatar)
         setpostDate(specificpost?.post?.created_at)
         setpostTags(specificpost?.post?.tags)
-        setPostLikes(specificpost?.likes?.length)
+        setPostLikes(specificpost?.post?.likes)
        const CommentPost =await GetCommentByPostId(postId)
        setPostComments(CommentPost?.comments)
       }
@@ -139,7 +139,15 @@ const PostComponent: React.FC = () => {
   };
   useEffect(() => {
     handleGetPost()
-  }, [newComment]);
+  }, [newComment,postLikes,postComments]);
+  
+  useEffect(() => {
+    const UserLike = async ()=>{
+    const userLike= await hasUserLikedPost(postId)  
+    setPostLiked(userLike?.hasLiked);
+    }
+    UserLike();
+  }, [postLiked]);
   const handleOpenDeleteConfirmation = () => {
     setDeleteConfirmationOpen(true);
   };
@@ -201,12 +209,12 @@ const PostComponent: React.FC = () => {
   const handleCloseEditPage = () => {
     setEditPageOpen(false);
   };
-  const handleLikePost = () => {
+  const handleLikePost = async() => {
     if (!postLiked) {
-      setPostLikes((prevLikes) => prevLikes + 1);
+      await LikePost(postId)
       setPostLiked(true);
     } else {
-      setPostLikes((prevLikes) => prevLikes - 1);
+      await removelike(postId)
       setPostLiked(false);
     }
   };
@@ -349,7 +357,7 @@ const PostComponent: React.FC = () => {
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
         <IconButton onClick={handleLikePost} sx={{ color: postLiked ? 'red' : '' }}>
           <Favorite />
-          <LikesTypography>{postLikes} Likes</LikesTypography>
+          <LikesTypography>{postLikes?.length} Likes</LikesTypography>
         </IconButton>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <CommentIcon />

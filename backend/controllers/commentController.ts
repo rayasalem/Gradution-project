@@ -103,4 +103,64 @@ export const getUserAnswers = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'server error' });
   }
 };
+export const likeComment = async (req: Request, res: Response) => {
+  try {
+    const commentId = req.params.commentId;
+    const comment = await CommentModel.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+    const hasLiked = comment.likes.includes(req.user?._id);
+    if (hasLiked) {
+      return res.status(400).json({ message: 'You have already liked this comment' });
+    }
+    const updatedcomment = await CommentModel.findByIdAndUpdate(
+      commentId,
+      { $push: { likes: req.user?._id } }, 
+      { new: true }
+    );
+    if (!updatedcomment) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+    return res.status(201).json({ message: 'Comment liked successfully', comment: updatedcomment });
+  } catch (error) {
+    return res.status(400).json({ message: 'Failed to like comment', error });
+  }
+};
+export const removeLike = async (req: Request, res: Response) => {
+  try {
+    const commentId = req.params.commentId;
+    const userId = req.user?._id; 
+    const comment = await CommentModel.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: 'comment not found' });
+    }
+    const likedIndex = comment.likes.indexOf(userId);
+    if (likedIndex === -1) {
+      return res.status(400).json({ message: 'You have not liked this comment' });
+    }
+    comment.likes.splice(likedIndex, 1);
+    const updatedPost = await comment.save();
+    return res.status(201).json({ message: 'Like removed successfully', post: updatedPost });
+  } catch (error) {
+    return res.status(400).json({ message: 'Failed to remove like', error });
+  }
+};
+export const hasUserLikedComment = async (req: Request, res: Response) => {
+  try {
+    const commentId = req.params.commentId;
+  const userId = req.user?._id;
+  if (!userId) {
+    return res.status(401).json({ message: 'User not authenticated' });
+  }
+  const Comment = await CommentModel.findOne({ _id: commentId });
+  if (Comment && Comment.likes.includes(userId)) {
+    return res.status(200).json({ hasLikedComment: true });
+  } else {
+    return res.status(200).json({ hasLikedComment: false });
+  }
+  } catch (error:any) {
+    throw new Error(`Failed to check if user has liked Comment: ${error.message}`);
+  }
+};
 
