@@ -65,6 +65,7 @@ interface Ipost{
 interface updatedPostData  {
   title: string;
   content: string;
+  tags:string[];
 };
 export const createCourse = async (course: ICourse): Promise<ICourse | undefined> => {
   try {
@@ -638,9 +639,10 @@ export const SearchInPost = async (querysearch:String) => {
     throw error;
   }
 };
-export const updatePost = async (postId: string, updatedPostData: updatedPostData) => {
+export const updatePost = async (postId: string, title: string, content: string, tags: string[]) => {
   try {
-    const response = await axiosInstance.put(`/api/v1/posts/${postId}`, updatedPostData);
+    const updatedPostData = { title, content, tags };
+    const response = await axiosInstance.put(`/api/v1/Discuss/updatePost/${postId}`, updatedPostData);
 
     if (response.status === 200) {
       return response.data.post;
@@ -648,7 +650,7 @@ export const updatePost = async (postId: string, updatedPostData: updatedPostDat
       throw new Error('Failed to update post');
     }
   } catch (error) {
-    throw new Error(`Failed to update post`);
+    throw new Error('Failed to update post');
   }
 };
 export const GetPostById = async (postId:any) => {

@@ -30,6 +30,7 @@ import {
 } from '@mui/icons-material';
 import CommentComponent, { CommentData } from './CommentComponent'; 
 import { CreateComment, GetCommentByPostId, GetPostById, LikePost, deletePostById, hasUserLikedPost, removelike, updatePost } from '../../../api/userAction';
+import PostNotAvailable from './PostNotAvaliable';
 const LikesTypography = ({ children }: { children: React.ReactNode }) => (
   <Typography
     style={{
@@ -54,24 +55,40 @@ const CommentsTypography = ({ children }: { children: React.ReactNode }) => (
 );
 
 const EditPostPage: React.FC<{
-    updatedTitle: string;
-    updatedText: string;
-    setUpdatedTitle: React.Dispatch<React.SetStateAction<string>>;
-    setUpdatedText: React.Dispatch<React.SetStateAction<string>>;
-    handleDoneUpdate: () => void;
-    handleCancelUpdate: () => void;
+  postId:any ;
+  updatedTitle: string;
+  updatedText: string;
+  setUpdatedTitle: React.Dispatch<React.SetStateAction<string>>;
+  setUpdatedText: React.Dispatch<React.SetStateAction<string>>;
+  handleDoneUpdate: () => void;
+  handleCancelUpdate: () => void;
+  handleUpdatePost: (updatedTitle: string, updatedText: string) => void;
+  updatedTags: string[] | undefined;
+  setUpdatedTags: React.Dispatch<React.SetStateAction<string[]>>;
   }> = ({
+    postId,
     updatedTitle,
     updatedText,
     setUpdatedTitle,
     setUpdatedText,
     handleDoneUpdate,
     handleCancelUpdate,
+    handleUpdatePost,
+    updatedTags,
+    setUpdatedTags,
   }) => {
     const handleDone = () => {
-      handleDoneUpdate();
+      if (postId && updatedTags) {
+        updatePost(postId, updatedTitle, updatedText, updatedTags)
+          .then(() => {
+            handleUpdatePost(updatedTitle, updatedText);
+            handleDoneUpdate();
+          })
+          .catch((error) => {
+            console.error('Error updating post:', error);
+          });
+      }
     };
-  
     return (
       <div>
         <TextField
@@ -90,6 +107,15 @@ const EditPostPage: React.FC<{
           onChange={(e) => setUpdatedText(e.target.value)}
           sx={{ marginBottom: '20px' }}
         />
+        <TextField
+    variant="outlined"
+    fullWidth
+    placeholder="Update tags..."
+    defaultValue={updatedTags?.join(' ')}
+    onChange={(e) => {
+      setUpdatedTags(e.target.value.split(' '))}}
+    sx={{ marginBottom: '20px' }}
+  />
         <Button onClick={handleCancelUpdate} sx={{ marginRight: '10px' }}>
           Cancel
         </Button>
@@ -109,7 +135,7 @@ const PostComponent: React.FC = () => {
   const [avatar, setavatar] = useState<string>('');
   const [postText, setPostText] = useState<string>('');
   const [postDate, setpostDate] = useState<Date | undefined>();
-  const [postTags, setpostTags] = useState<string[]>();
+  const [postTags, setpostTags] = useState<string[] | undefined>();
   const { postId } = useParams<{ postId: string }>();
   const [postComments, setPostComments] = useState<CommentData[]>([
     
@@ -118,6 +144,8 @@ const PostComponent: React.FC = () => {
   const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState<boolean>(false);
+  const [updatedTags, setUpdatedTags] = useState<string[]>([]);
+  const [isPostAvailable, setIsPostAvailable] = useState<boolean>(true);
 
   const handleGetPost = async () => {
     try {
@@ -166,20 +194,15 @@ const PostComponent: React.FC = () => {
       setPostText('');
       setPostComments([]);
       setpostTags([]);
+      setIsPostAvailable(false);
+
     
   };
 
-  const handleUpdatePost = async () => {
-    try {
-      const postId: string = selectedPostId ? String(selectedPostId) : '';
-      const updatedPost = await updatePost(postId, {
-        title: updatedTitle,
-        content: updatedText,
-      });
-  
-    } catch (error) {
-      console.error('Failed to update post:', error);
-    }
+  const handleUpdatePost = (newTitle: string, newText: string) => {
+    
+    setPostTitle(newTitle);
+    setPostText(newText);
   };
   
   const getTimeElapsed = (postDate: Date): string => {
@@ -187,6 +210,7 @@ const PostComponent: React.FC = () => {
     const timeDifference = currentDate.getTime() - postDate.getTime();
     return '';
   };
+ 
 
   const handleAddComment = async() => {
        const newCommentData = await CreateComment(postId,newComment)
@@ -199,7 +223,19 @@ const PostComponent: React.FC = () => {
     setEditPageOpen(false);
   };
 
-
+  const handleDone = () => {
+    if(postId){
+      updatePost(postId, updatedTitle, updatedText, updatedTags)
+      .then((updatedPostId) => {
+        handleDoneUpdate(); 
+      })
+    
+    
+      .catch((error) => {
+        console.error('Failed to update post:', error);
+      });
+    }
+  };
   const handleOpenEditPage = () => {
     setUpdatedTitle(postTitle); 
     setUpdatedText(postText); 
@@ -225,7 +261,6 @@ const PostComponent: React.FC = () => {
         comment._id === commentId
           ? {
               ...comment,
-              // likes: isLiked ? comment.likes + 1 : comment.likes - 1,
             }
           : comment
       )
@@ -265,6 +300,8 @@ const PostComponent: React.FC = () => {
 
   return (
     <Paper elevation={3} sx={{ padding: '20px', marginTop: '50px', marginLeft: '20px', maxWidth: isSmallScreen ? '100%' : '70%' }}>
+  {isPostAvailable ? (
+    <>
    <Dialog
           open={deleteConfirmationOpen}
           onClose={handleCloseDeleteConfirmation}
@@ -321,12 +358,16 @@ const PostComponent: React.FC = () => {
 
       {editPageOpen && (
         <EditPostPage
-          updatedTitle={updatedTitle}
-          updatedText={updatedText}
-          setUpdatedTitle={setUpdatedTitle}
-          setUpdatedText={setUpdatedText}
-          handleDoneUpdate={handleUpdatePost}
-          handleCancelUpdate={handleCloseEditPage}
+        postId={postId} 
+        updatedTitle={updatedTitle}
+        updatedText={updatedText}
+        setUpdatedTitle={setUpdatedTitle}
+        setUpdatedText={setUpdatedText}
+        updatedTags={postTags}
+        setUpdatedTags={setUpdatedTags}
+        handleDoneUpdate={handleDone}
+        handleCancelUpdate={handleCloseEditPage}
+        handleUpdatePost={handleUpdatePost}
         />
       )}
       
@@ -387,6 +428,10 @@ const PostComponent: React.FC = () => {
       <Button onClick={handleAddComment} variant="contained" sx={{ marginTop: '10px' }}>
         Comment
       </Button>
+      </>
+       ) : (
+        <Typography variant="h4"><PostNotAvailable/></Typography>
+      )}
     </Paper>
   );
 };

@@ -6,7 +6,7 @@ import { roles } from '../services/roles';
 const router = express.Router();
 
 router.post('/createPost', authorizeUser([roles.admin,roles.user]), postController.createPost);
-router.put('/updatePost', authorizeUser([roles.admin,roles.user]), postController.updatePost);
+router.put('/updatePost/:postId', authorizeUser([roles.admin,roles.user]), postController.updatePost);
 router.delete('/deletePost/:postId', authorizeUser([roles.admin,roles.user]), postController.deletePost);
 router.get('/getPost/:postId', authorizeUser([roles.admin,roles.user]), postController.getPostById);
 router.post('/likePost/:postId', authorizeUser([roles.admin,roles.user]), postController.likePost);
