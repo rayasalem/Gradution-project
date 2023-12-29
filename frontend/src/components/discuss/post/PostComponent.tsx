@@ -1,6 +1,7 @@
 import React, { useState  , useEffect} from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
+import { ErrorOutline } from '@mui/icons-material';
 import {
   Typography,
   IconButton,
@@ -17,6 +18,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Icon
 } from '@mui/material';
 import {
     Delete as DeleteIcon,
@@ -311,6 +313,7 @@ const PostComponent: React.FC = () => {
           <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
+            <Icon component={ErrorOutline} fontSize="large" color="error"></Icon>
               Are you sure you want to delete this post and its comments?
             </DialogContentText>
           </DialogContent>
