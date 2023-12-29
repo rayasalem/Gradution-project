@@ -1,17 +1,93 @@
 import { Request, Response } from 'express';
 import BlogModel, { IBlog } from './../db/schemas/blogSchema';
 import { pagination } from '../services/pagination';
+import cloudinary from '../services/cloudinary';
 
 export const createBlog = async (req: Request, res: Response) => {
   try {
-    const { title, content, topic, timeToRead } = req.body;
+    const { title, content, topic, timeToRead} = req.body;
     const author = req.user?._id;
+    
     const newBlog: IBlog = new BlogModel({ title, content, author, topic, timeToRead });
     const savedBlog = await newBlog.save();
     res.status(201).json({ message: 'Blog created successfully', blog: savedBlog });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: ' server error' });
+  }
+};
+export const uploadImageBlog =async (req: Request, res: Response) => {
+  const BlogId =req.params.blogId;
+  if (!req.user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }else {
+    if (!req.file) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+    const { secure_url } = await cloudinary.uploader.upload(req.file.path, {
+      folder: `blog/${BlogId}`,
+    });
+  const blog = await BlogModel.findByIdAndUpdate(BlogId, { blogImages:secure_url });
+    res.status(200).json({ message: "Success",blog });
+  }
+}
+export const createSection =async (req: Request, res: Response) => {
+  if (!req.user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }else {
+    const BlogId =req.params.blogId;
+    const blog = await BlogModel.findById(BlogId);
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+    const { sectionId, subtitle, content, order } = req.body;
+    const newSection = {
+      sectionId,
+      subtitle,
+      content,
+      order,
+    };
+    blog.sections.push(newSection);
+    await blog.save();
+    res.status(200).json({ message: "Section created successfully", blog });
+  }
+}
+export const updateBlog = async (req: Request, res: Response) => {
+  try {
+    const blogId = req.params.blogId;
+    const updatedBlog = await BlogModel.findByIdAndUpdate(
+      blogId,
+      req.body,
+      { new: true }
+    );
+    if (!updatedBlog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+    res.json({ message: 'Blog updated successfully', blog: updatedBlog });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'server error' });
+  }
+};
+export const updateSection = async (req: Request, res: Response) => {
+  if (!req.user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  } else {
+    const blogId = req.params.blogId;
+    const blog = await BlogModel.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+    const {sectionNumber, subtitle, content ,order} = req.body;
+    const sectionIndex = blog.sections.findIndex((section) => section.sectionId === sectionNumber);
+    if (sectionIndex === -1) {
+      return res.status(404).json({ message: 'Section not found' });
+    }
+    blog.sections[sectionIndex].subtitle = subtitle;
+    blog.sections[sectionIndex].content = content;
+    blog.sections[sectionIndex].order = order;
+    await blog.save();
+    res.status(200).json({ message: 'Section updated successfully', blog });
   }
 };
 export const getAllBlogs = async (req: Request, res: Response) => { 
@@ -32,23 +108,7 @@ export const getAllBlogs = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'server error' });
   }
 };
-export const updateBlog = async (req: Request, res: Response) => {
-  try {
-    const blogId = req.params.blogId;
-    const updatedBlog = await BlogModel.findByIdAndUpdate(
-      blogId,
-      req.body,
-      { new: true }
-    );
-    if (!updatedBlog) {
-      return res.status(404).json({ message: 'Blog not found' });
-    }
-    res.json({ message: 'Blog updated successfully', blog: updatedBlog });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'server error' });
-  }
-};
+
 export const getBlogById = async (req: Request, res: Response) => {
   try {
     const blogId = req.params.blogId;

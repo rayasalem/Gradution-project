@@ -6,7 +6,14 @@ export interface IBlog extends Document {
   author: Types.ObjectId;
   topic: string;
   timeToRead: number;
-  views:number
+  views:number;
+  blogImages: string;
+  sections:[{
+    sectionId: String,
+    subtitle: String,
+    content: String,
+    order: Number,
+  }];
 }
 
 const blogSchema = new Schema<IBlog>({
@@ -32,7 +39,14 @@ const blogSchema = new Schema<IBlog>({
   }, views: {
     type: Number,
     default: 0, 
-  }
+  },
+  sections: [{
+    sectionId:String,
+    subtitle: String,
+    content: String,
+    order: Number,
+  }],
+  blogImages:String
 }, { timestamps: true });
 
 const BlogModel = model<IBlog>('Blog', blogSchema);
