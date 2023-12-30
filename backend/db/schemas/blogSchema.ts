@@ -9,7 +9,6 @@ export interface IBlog extends Document {
   views:number;
   blogImages: string;
   sections:[{
-    sectionId: String,
     subtitle: String,
     content: String,
     order: Number,
@@ -41,7 +40,6 @@ const blogSchema = new Schema<IBlog>({
     default: 0, 
   },
   sections: [{
-    sectionId:String,
     subtitle: String,
     content: String,
     order: Number,

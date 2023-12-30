@@ -40,9 +40,8 @@ export const createSection =async (req: Request, res: Response) => {
     if (!blog) {
       return res.status(404).json({ message: 'Blog not found' });
     }
-    const { sectionId, subtitle, content, order } = req.body;
+    const { subtitle, content, order } = req.body;
     const newSection = {
-      sectionId,
       subtitle,
       content,
       order,
@@ -79,7 +78,7 @@ export const updateSection = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Blog not found' });
     }
     const {sectionNumber, subtitle, content ,order} = req.body;
-    const sectionIndex = blog.sections.findIndex((section) => section.sectionId === sectionNumber);
+    const sectionIndex = blog.sections.findIndex((section) => section.order === +sectionNumber);
     if (sectionIndex === -1) {
       return res.status(404).json({ message: 'Section not found' });
     }

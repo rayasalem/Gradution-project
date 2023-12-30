@@ -796,3 +796,133 @@ export const hasUserLikedComment = async (commentId: any) => {
     throw error;
   }
 };
+export const createBlog = async (title:string, content:string, topic:string, timeToRead:Number) => {
+  try {
+    const response = await axiosInstance.post(`/api/v1/blog/createblog`,{
+      title,content,topic,timeToRead
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to create Blog', error);
+    throw error;
+  }
+};
+export const createSection = async (blogId:string,subtitle:string, content:string,order:Number) => {
+  try {
+    const response = await axiosInstance.post(`/api/v1/blog/createSectioninBlog/${blogId}`,{
+      subtitle,content,order
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to create Section', error);
+    throw error;
+  }
+};
+export const uploadImageBlog = async (blogId:string,file: any) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await axiosInstance.patch(`/api/v1/blog/imageBlog/${blogId}`, formData
+    ,
+     {
+      headers: {
+        'Content-Type': 'multipart/form-data', 
+      }
+    }
+    );
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Image upload error:', error);
+    throw new Error('Image upload failed');
+  }
+};
+export const updateSection = async (blogId:string,sectionNumber:number,subtitle:string, content:string,order:Number) => {
+  try {
+    const response = await axiosInstance.put(`/api/v1/blog/updateSectionInBlog/${blogId}`,{
+      sectionNumber, subtitle,content,order
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to update Section', error);
+    throw error;
+  }
+};
+export const updateBlog = async (blogId:string,title:string, content:string, topic:string, timeToRead:Number) => {
+  try {
+    const response = await axiosInstance.put(`/api/v1/blog/updateBlog/${blogId}`,{
+      title,content,topic,timeToRead
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to update Blog', error);
+    throw error;
+  }
+};
+export const getBlogs = async (page: number,size: number) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/blog/getblogs?page=${page}&size=${size}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to get Blogs', error);
+    throw error;
+  }
+};
+export const getBlogById = async (blogId:string) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/blog/getBlogById/${blogId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to get Blog By Id', error);
+    throw error;
+  }
+};
+export const getrelatedBlog = async (blogId:string) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/blog/relatedBlog/${blogId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to get related Blog', error);
+    throw error;
+  }
+};
+export const getpopularBlogs = async () => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/blog/popularBlogs`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to get popular Blogs', error);
+    throw error;
+  }
+};
+export const deleteBlog = async (blogId:string) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/blog/deleteBlog/${blogId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to delete Blog', error);
+    throw error;
+  }
+};
+
+
