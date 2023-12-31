@@ -162,4 +162,16 @@ export const popularBlogs =async (req: Request, res: Response) =>{
     return res.status(500).json({ message: 'server error' });
   }
 }
-
+export const searchBlog = async (req: Request, res: Response) => {
+  try {
+    const { querysearch } = req.query;
+    if (!querysearch || typeof querysearch !== 'string') {
+      return res.status(400).json({ message: 'Invalid or missing query parameters' });
+    }
+    const searchResults = await BlogModel.find({ title: { $regex: new RegExp(querysearch as string, 'i') } })
+    
+    return res.status(200).json({ message: 'blog found successfully', searchResults });
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal Server Error', error });
+  }
+};

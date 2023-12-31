@@ -33,6 +33,15 @@ export const hotpostsState = atom({
   key: 'hotpostsState',
   default: [],
 });
+export const blogsState = atom({
+  key: 'blogsState',
+  default: [],
+});
+export const popularBlogState = atom({
+  key: 'popularBlogState',
+  default: [],
+});
+
 
 
 

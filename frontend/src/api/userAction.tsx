@@ -626,7 +626,6 @@ export const GetMyPost = async (page: number,size: number) => {
 export const SearchInPost = async (querysearch:String) => {
   try {
     const response= await axiosInstance.get(`/api/v1/Discuss/search/searchInPost?querysearch=${querysearch}`);
-    // console.log('SearchInPost Response:', response);
 
     if (response && response.status === 200 && response.data) {
       return response.data;
@@ -872,7 +871,7 @@ export const updateBlog = async (blogId:string,title:string, content:string, top
 export const getBlogs = async (page: number,size: number) => {
   try {
     const response = await axiosInstance.get(`/api/v1/blog/getblogs?page=${page}&size=${size}`);
-    if (response.status === 200) {
+    if (response.status === 201) {
       return response.data;
     }
   } catch (error) {
@@ -924,5 +923,19 @@ export const deleteBlog = async (blogId:string) => {
     throw error;
   }
 };
+export const SearchInBlog = async (querysearch:String) => {
+  try {
+    const response= await axiosInstance.get(`/api/v1/blog/search/searchInBlog?querysearch=${querysearch}`);
 
+    if (response && response.status === 200 && response.data) {
+      return response.data;
+    } else {
+      console.error('Invalid search response:', response);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error search in Blog:', error);
+    throw error;
+  }
+};
 

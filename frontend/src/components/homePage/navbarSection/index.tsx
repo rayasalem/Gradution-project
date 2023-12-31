@@ -40,6 +40,7 @@ const Navbar: React.FC = () =>{
   const handleMainpage= (event: React.MouseEvent<HTMLElement>) =>{ history('/'); }
   const handleCoursepage= (event: React.MouseEvent<HTMLElement>) =>{ history('/learn'); }
   const handleDiscuss= (event: React.MouseEvent<HTMLElement>) =>{ history('/discuss'); }
+  const handleBlog= (event: React.MouseEvent<HTMLElement>) =>{ history('/Blogs'); }
   const handlecompilerOpen  = (event: React.MouseEvent<HTMLElement>) => { setCompilerCategoryAnchorEl(event.currentTarget); };
   const handleSignUp = (event: React.MouseEvent<HTMLElement>) => {
     history('/signup');
@@ -125,7 +126,7 @@ const Navbar: React.FC = () =>{
             </MenuItem>))}
               </Menu>
               <Button className="item" onClick={handleDiscuss}>Discuss</Button>
-              <Button className="item">Blog</Button>
+              <Button className="item" onClick={handleBlog}>Blog</Button>
       {authenticated ?( <>
               <Tooltip title="Account settings">
               <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
@@ -191,10 +192,10 @@ const Navbar: React.FC = () =>{
               </Button>
     </ListItem>
     <ListItem button onClick={() => toggleDrawer(false)}>
-      <Button className="item">Discuss</Button>
+      <Button className="item" onClick={handleDiscuss}>Discuss</Button>
     </ListItem>
     <ListItem button onClick={() => toggleDrawer(false)}>
-      <Button className="item">Blog</Button>
+      <Button className="item" onClick={handleBlog}>Blog</Button>
     </ListItem>
     {authenticated ? (
     <> 

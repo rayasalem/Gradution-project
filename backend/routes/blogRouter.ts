@@ -20,6 +20,7 @@ router.get('/getBlogById/:blogId', authorizeUser([roles.admin,roles.user]),blogC
 router.delete('/deleteBlog/:blogId', authorizeUser([roles.admin]),blogController.deleteBlog);
 router.get('/relatedBlog/:blogId', authorizeUser([roles.admin,roles.user]),blogController.getRelatedBlogByTopic);
 router.get('/popularBlogs', authorizeUser([roles.admin,roles.user]),blogController.popularBlogs);
+router.get('/search/searchInBlog', authorizeUser([roles.admin,roles.user]),blogController.searchBlog);
 
 
 
