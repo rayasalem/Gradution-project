@@ -41,6 +41,10 @@ export const popularBlogState = atom({
   key: 'popularBlogState',
   default: [],
 });
+export const relatedBlogState = atom({
+  key: 'relatedBlogState',
+  default: [],
+});
 
 
 

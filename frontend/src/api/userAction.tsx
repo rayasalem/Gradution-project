@@ -800,7 +800,7 @@ export const createBlog = async (title:string, content:string, topic:string, tim
     const response = await axiosInstance.post(`/api/v1/blog/createblog`,{
       title,content,topic,timeToRead
     });
-    if (response.status === 200) {
+    if (response.status === 201) {
       return response.data;
     }
   } catch (error) {
@@ -852,6 +852,28 @@ export const updateSection = async (blogId:string,sectionNumber:number,subtitle:
     }
   } catch (error) {
     console.error('Failed to update Section', error);
+    throw error;
+  }
+};
+export const getSectionByOrder = async (blogId:string,sectionNumber:number) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/blog/updateSectionInBlog/${blogId}/${sectionNumber}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to get Section', error);
+    throw error;
+  }
+};
+export const deleteSectionByOrder = async (blogId:string,sectionNumber:number) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/blog/deleteSectionInBlog/${blogId}/${sectionNumber}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to delete Section', error);
     throw error;
   }
 };
@@ -912,7 +934,7 @@ export const getpopularBlogs = async () => {
     throw error;
   }
 };
-export const deleteBlog = async (blogId:string) => {
+export const deleteBlog = async (blogId:any) => {
   try {
     const response = await axiosInstance.delete(`/api/v1/blog/deleteBlog/${blogId}`);
     if (response.status === 200) {

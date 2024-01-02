@@ -5,11 +5,13 @@ import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import { SearchInBlog, getBlogs, getpopularBlogs } from '../../api/userAction';
+import { SearchInBlog, getBlogs, getpopularBlogs, getprofileInfo } from '../../api/userAction';
 import { useRecoilState } from 'recoil';
 import { blogsState, popularBlogState } from '../recoilState';
 import MediaSection from '../homePage/footer/media/MediaSection';
 import StaticFooter from '../homePage/footer/staticFooter/StaticFooter';
+import AddIcon from '@mui/icons-material/Add';
+import { useNavigate, Navigate } from 'react-router-dom';
 import './blog.css'
 interface blog {
   _id: any;
@@ -23,7 +25,22 @@ const Blog = () => {
   const [blogs, setBlogs] = useRecoilState<blog[]>(blogsState as any);
   const [popularBlogs, setpopularBlogs] = useRecoilState<blog[]>(popularBlogState as any);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isAdmin, setIsAdmin] = useState(true);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchProfileInfo = async () => {
+      try {
+        const profileInfo = await getprofileInfo();
+        if (profileInfo?.user?.role === 'admin') {
+          setIsAdmin(true);
+        }
+      } catch (error) {
+        console.error('Error fetching profile info:', error);
+      }
+    };
+    fetchProfileInfo();
+  }, []);
   
   const fetchPosts = async () => {
     try{
@@ -52,6 +69,10 @@ const Blog = () => {
       console.error('Error fetching search results:', error);
     }
   };
+  const handleClick = async () => {
+  
+      navigate(`/Title`);
+    }
   const colors = [ '#388e3c', '#039be5', '#8e24aa', '#009688'];
   const colorsTopic = [ '#2e7d32', '#01579b', '#ce93d8', '#00e5ff'];
   return (
@@ -62,6 +83,20 @@ const Blog = () => {
         justifyContent:'center',alignItems:'center', paddingTop:'80px',}}>
         Blog</Typography>
         </Box>
+        {isAdmin && (
+        <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <Button
+            size="small"
+            aria-label="add"
+            onClick={handleClick}
+            sx={{ zIndex: '1',  }}
+          >
+            <AddIcon />
+            create new Blog
+          </Button>
+          
+        </Box>
+      )}
     <Box
     className="BlogPart"
     sx={{
@@ -115,7 +150,7 @@ const Blog = () => {
     
     <Box sx={{paddingTop:'30px'}}>
               <Link
-                to={`Blogs/${blog._id}`}
+                to={`/Blog/${blog._id}`}
                 style={{
                   backgroundColor: index % 10 === 2 || index % 10 === 7 ? colorsTopic[index % 3] : colorsTopic[0],
                   borderRadius: '4px',
@@ -134,7 +169,7 @@ const Blog = () => {
               </Link>
                  
         <Link
-           to={`Blogs/${blog._id}`}  
+           to={`/Blog/${blog._id}`}  
        style={{ textDecoration: 'none', width: '100%'}}
         > 
         <Typography
@@ -152,7 +187,7 @@ const Blog = () => {
                 </Typography></Link>
                  </Box>
                  <Link
-           to={`Blogs/${blog._id}`}  
+           to={`/Blog/${blog._id}`}  
        style={{ textDecoration: 'none', width: '100%'}}
         > 
                 <Typography
@@ -208,7 +243,7 @@ const Blog = () => {
             >
                 <Box sx={{marginBottom:'5px'}}>      
         <Link 
-            to={`Blogs/${blog._id}`} 
+            to={`/Blog/${blog._id}`} 
        style={{ textDecoration: 'none', width: '100%'}}
         > 
         <Typography
@@ -223,7 +258,7 @@ const Blog = () => {
                   {blog.title}
                 </Typography></Link> </Box>
                 <Link 
-            to={`Blogs/${blog._id}`} 
+            to={`/Blog/${blog._id}`} 
                style={{ textDecoration: 'none', width: '100%'}}
                  > 
                 <span style={{fontSize:'14px',color:'#6b7f99'}}>{blog.timeToRead}min read</span>

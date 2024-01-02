@@ -104,6 +104,11 @@ import Discuss from './components/discuss/indexDiscuss';
 import NewPost from './components/discuss/newPost/NewPost';
 import PostComponent from './components/discuss/post/PostComponent';
 import Blog from './components/blog/indexBlog';
+import BlogTopic from './components/blog/Blog';
+import CreateBlog from './components/admin/blog/createBlog';
+import AddSectionPage from './components/admin/blog/createSection';
+import UpdateBlog from './components/admin/blog/updateBlog';
+import UpdateSection from './components/admin/blog/updateSection';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -126,12 +131,16 @@ function App() {
           <Route path='/discuss/New' element={<NewPost/>} />
           <Route path='/discuss/:postId' element={<PostComponent/>} />
           <Route path='/Blogs' element={<Blog/>} />
-
+          <Route path='/Blog/:blogId' element={<BlogTopic/>} /> 
+          <Route path="/Title" element={<CreateBlog />} />
+          <Route path="/DevLoom/admin/addSection/:blogId" element={<AddSectionPage />} />
+          <Route path="/DevLoom/admin/updateBlog/:blogId"element={<UpdateBlog/>} />
+          <Route path="/DevLoom/admin/updateSectionInBlog/:blogId/:sectionNumber"element={<UpdateSection/>} />
           <Route path="/learn" element={<IndexCourse/>} />
           <Route path='/learn/Java/:courseId' element={<JavaCourse/>} />
           <Route path='/learn/Java/lesson/:LessonId' element={<LessonOneInJava/>} />
           <Route path='/learn/Java/quiz/:quizId' element={<QuizJava/>} />
-
+          
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
           <Route path="/learn/html/:LessonId/lesson1"element={<LessonOne/>}/>
           <Route path="/learn/html/:LessonId/lesson2"element={<LessonTwo/>}/>

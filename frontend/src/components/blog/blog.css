@@ -3,6 +3,15 @@
 }
 
 @media (max-width: 1100px) {
+    .sectionsBlog{
+        width: auto;
+    }
+    .BlogbeforeImage{
+        width:430px !important;
+    }
+    .BlogImage{
+        width:430px !important;
+    }
     .BlogPart{
         flex-direction: column !important; 
     }
@@ -20,6 +29,15 @@
     }
 }
 @media (max-width: 440px) {
+    .sectionsBlog{
+        width: auto;
+    }
+    .BlogbeforeImage{
+        width:300px !important;
+    }
+    .BlogImage{
+        width:300px !important;
+    }
     .BlogPart{
         flex-direction: column ; 
     }
@@ -31,18 +49,26 @@
     }
     .BlogPaper1{
         min-width:  60% !important;
-        margin-left: 80px !important;
+        margin-left: 80px 
     }
     
     
 }
 @media (max-width: 350px) {
+    .BlogImage{
+        width:90% !important;
+    }
     .BlogPaper1{
         min-width:50% !important;
         margin-left: 50px !important;
     }
     .BlogPaper2{
-        width: 70% !important;
+    
+        margin-left:0 !important;
+        width: 60% !important;
+    }
+    .blogPart2{
+        width:80% !important;
     }
     
 }

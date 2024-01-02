@@ -8,13 +8,15 @@ import { fileValidation, handleErrorMiddleware, myMulter } from '../services/mul
 
 
 const router =Router();
-router.post('/createblog', authorizeUser([roles.admin]),validation(validators.createBlog),blogController.createBlog);
+router.post('/createblog', authorizeUser([roles.admin]),blogController.createBlog);
 router.patch('/imageBlog/:blogId', authorizeUser([roles.admin]),
 myMulter(fileValidation.image).single('image'),
 handleErrorMiddleware,blogController.uploadImageBlog);
 router.post('/createSectioninBlog/:blogId', authorizeUser([roles.admin]),blogController.createSection);
 router.get('/getblogs', authorizeUser([roles.admin,roles.user]),blogController.getAllBlogs);
 router.put('/updateSectionInBlog/:blogId', authorizeUser([roles.admin]),blogController.updateSection);
+router.get('/updateSectionInBlog/:blogId/:order', authorizeUser([roles.admin]),blogController.getSectionByOrder);
+router.delete('/deleteSectionInBlog/:blogId/:order', authorizeUser([roles.admin]),blogController.deleteSectionByOrder);
 router.put('/updateBlog/:blogId', authorizeUser([roles.admin]),blogController.updateBlog);
 router.get('/getBlogById/:blogId', authorizeUser([roles.admin,roles.user]),blogController.getBlogById);
 router.delete('/deleteBlog/:blogId', authorizeUser([roles.admin]),blogController.deleteBlog);
