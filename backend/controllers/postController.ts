@@ -179,20 +179,55 @@ export const getTrendingPost = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Invalid or missing query parameters' });
     }
     const { limit, skip } = pagination(page, size);
-    const trendposts = await Post.find()
-      .skip(skip)
-      .populate({
-        path: 'author',
-        select: 'username avatar',
-      })
-      .limit(limit)
-      .sort({ 'comments.length': -1 }); 
+
+    const trendposts = await Post.aggregate([
+      {
+        $addFields: {
+          commentCount: { $size: '$comments' },
+        },
+      },{
+        $sort: { commentCount: -1, created_at: 1 },
+      },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $lookup: {
+          from: 'users', 
+          localField: 'author',
+          foreignField: '_id',
+          as: 'author',
+        },
+      },
+      {
+        $unwind: '$author',
+      },
+      {
+        $project: {
+          title: 1,
+          content: 1,
+          tags: 1,
+          author: {
+            username: '$author.username',
+            avatar: '$author.avatar',
+          },
+          likes: 1,
+          comments: 1,
+          commentCount: 1,
+          created_at: 1,
+        },
+      },
+    ]);
 
     res.status(201).json({ message: 'posts:', trendposts });
   } catch (error) {
     res.status(500).json({ message: 'server error' });
   }
 };
+
 export const getUnansweredPost = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page);

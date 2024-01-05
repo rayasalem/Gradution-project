@@ -268,7 +268,7 @@ const Blog: React.FC = () => {
          className="BlogImage"
          alt="Blog Image"
          src={imageUrl}
-         style={{ margin: '4px', width: '760px', height: '200px' }}
+         style={{ margin: '4px', width: '760px', height: '250px' }}
        />
       )}
       </Box>

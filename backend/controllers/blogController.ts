@@ -97,7 +97,7 @@ export const getAllBlogs = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Invalid or missing query parameters' });
     }
     const {limit,skip}=pagination(page,size);
-    const blogs = await BlogModel.find().sort({ 'sections.order': 1 })
+    const blogs = await BlogModel.find()
       .skip(skip)
       .limit(limit);
       res.status(201).json({ message: 'Blogs:', blogs});

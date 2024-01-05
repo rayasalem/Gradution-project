@@ -48,7 +48,7 @@ const Discuss = () => {
         const trendPost = await GetTrendingPost(currentPage, 5);
         setPosts(trendPost?.trendposts);
       } else if (Sort === 'Unanswered') {
-        const unansweredPost = await GetUnansweredPost(currentPage, 5);
+        const unansweredPost = await GetUnansweredPost(1, 5);
         setPosts(unansweredPost?.UnansweredPosts);
       } else if (Sort === 'My Qustions') {
         const myPost = await GetMyPost(currentPage, 5);

@@ -52,7 +52,7 @@ const CreateBlog: React.FC = () => {
           setContent('');
           setTopic('');
           setTimeToRead(null);
-          navigate(`/addSection/${response?.blog?._id}`);
+          navigate(`/DevLoom/admin/addSection/${response?.blog?._id}`);
         }
       } catch (error) {
         console.error('Failed to create a blog post:', error);
@@ -68,6 +68,8 @@ const CreateBlog: React.FC = () => {
         value={newTitle}
         onChange={handleTitleChange}
         variant="outlined"
+        multiline
+        rows={2}
         sx={{ marginBottom: 2, width: 300 }}
       />
       <TextField
@@ -76,6 +78,8 @@ const CreateBlog: React.FC = () => {
         value={content}
         onChange={handleContentChange}
         variant="outlined"
+        multiline
+        rows={4}
         sx={{ marginBottom: 2, width: 300 }}
       />
       <TextField
@@ -92,6 +96,7 @@ const CreateBlog: React.FC = () => {
         value={timeToRead || ''}
         onChange={handleTimeToReadChange}
         variant="outlined"
+        
         sx={{ marginBottom: 2, width: 300 }}
       />
       {isAdmin && (
