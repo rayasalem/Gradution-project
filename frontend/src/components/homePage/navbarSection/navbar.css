@@ -1,0 +1,85 @@
+.item{
+font-size: 15px !important;
+color: #2d3846 !important;
+text-transform: capitalize !important;
+}
+.title{
+text-transform:uppercase !important;
+letter-spacing: 3px !important;
+color: #2d3846 !important;
+}
+.groupItem{
+    padding-bottom: 2px !important;
+    
+}
+.groupItem:hover{
+    background-color: #3498db !important;
+}
+.test:before{
+    bottom: 0%;
+    left: 10%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-bottom-color: #ffffff;
+    border-width: 10px;
+    font-size: 14px;
+    z-index: 1 !important;
+}
+.link{
+    font-weight: bold !important;
+    font-size: small !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top:5px;
+}
+.MuiPaper-root {
+    overflow: visible;
+    filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.32));
+    margin-top: 1.5px;
+    
+  }
+  
+  .MuiAvatar-root {
+    width: 32px;
+    height: 32px;
+    margin-left: -0.5px;
+    margin-right: 1px;
+  }
+  
+  .MuiPaper-root:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 14px;
+    width: 10px;
+    height: 10px;
+    background-color: 'background.paper';
+    transform: translateY(-50%) rotate(45deg);
+    z-index: 0;
+  }
+  .Link{
+    text-decoration: none !important;
+    color: #6b7f99 !important;
+    display: flex;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    font-size: 16px;
+    line-height: 120%;
+  }
+  .userName{
+    color: #2d3846;
+    font-weight: bold;
+    font-size:16px;
+    padding: 15px;
+
+  }
+  .impo{
+    width:200px;
+    height: 140px;
+  }
