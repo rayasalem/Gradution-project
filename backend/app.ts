@@ -26,6 +26,7 @@ app.use(`${baseurl}Discuss`,indexRouter.postRouter)
 app.use(`${baseurl}userpost`,indexRouter.postRouter)
 app.use(`${baseurl}textSlide`,indexRouter.textSlideRouter)
 
+
 app.use('*',(req:Request,res:Response,)=>{
     res.status(404).json({message:"page not found"})
 })

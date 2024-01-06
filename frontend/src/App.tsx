@@ -109,6 +109,8 @@ import CreateBlog from './components/admin/blog/createBlog';
 import AddSectionPage from './components/admin/blog/createSection';
 import UpdateBlog from './components/admin/blog/updateBlog';
 import UpdateSection from './components/admin/blog/updateSection';
+import Compiler from './components/compiler/Test';
+import CompilerPage from './components/compiler/Compiler';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -136,6 +138,7 @@ function App() {
           <Route path="/DevLoom/admin/addSection/:blogId" element={<AddSectionPage />} />
           <Route path="/DevLoom/admin/updateBlog/:blogId"element={<UpdateBlog/>} />
           <Route path="/DevLoom/admin/updateSectionInBlog/:blogId/:sectionNumber"element={<UpdateSection/>} />
+          <Route path="/Compiler" element={<CompilerPage/>} />
           <Route path="/learn" element={<IndexCourse/>} />
           <Route path='/learn/Java/:courseId' element={<JavaCourse/>} />
           <Route path='/learn/Java/lesson/:LessonId' element={<LessonOneInJava/>} />
@@ -226,6 +229,7 @@ function App() {
           <Route path="/DevLoom/admin/createTextSlide/:lessonId" element={<CreateTextSlide/>} />
           <Route path="/DevLoom/admin/updateQustion/:questionId" element={<UpdateQustion/>} />
           <Route path="/DevLoom/admin/updateTextSlide/:textSlideId" element={<UpdateTextSlide/>} />
+          <Route path="/DevLoom/Compiler" element={<Compiler/>} />
 
 
         </Routes>
