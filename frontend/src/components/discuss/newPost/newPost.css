@@ -1,0 +1,47 @@
+.discussNewField{
+    width:700px !important ;
+}
+@media (max-width: 730px) {
+   .discussNewField{
+      width: 100% !important;
+   }
+}
+@media (max-width: 465px) {
+    .discussNewField{
+       width: 70% !important;
+       margin-left: 50px !important;
+
+    }
+    .discussNewLabel{
+        width: 70%; 
+        margin-left: 50px !important;
+    }
+ }
+ @media (max-width: 465px) {
+    .discussNewField{
+        width: 70% !important;
+        margin-left: 70px !important;
+ 
+     }
+    .discussNewLabel{
+        width: 70%; 
+        margin-left: 70px !important;
+    }
+    .discussNewButton{
+        width: 100px !important;
+    }
+ }
+ @media (max-width: 390px) {
+    .discussNewField{
+        width: 55% !important;
+        margin-left: 130px !important;
+ 
+     }
+    .discussNewLabel{
+        width: 55%; 
+        margin-left: 130px !important;
+    }
+    .discussNewButton{
+        width: 100px !important;
+    }
+ }

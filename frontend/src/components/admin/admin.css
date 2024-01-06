@@ -1,0 +1,23 @@
+
+.admin-container {
+    display: flex;
+    justify-content: center;
+    height: 400;
+    width: '80vw';
+    padding: 16px;
+    padding-top: 120px;
+}
+
+
+@media (max-width: 1160px) {
+    .admin-container {
+        padding: 8px;
+        width: '30vw';
+        padding-top: 120px;
+
+    }
+    .datagrid-container {
+        width: 100%;
+    }
+
+}
