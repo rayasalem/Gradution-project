@@ -156,7 +156,7 @@ const IndexCourse: React.FC = () => {
               description="React, a JavaScript library for building user interfaces, revolutionizes web development by enabling the creation of dynamic, efficient, and interactive applications with a component-based architecture."
             />
         <CourseContent
-              link={`/learn/sql/:`} imageUrl="/images/sql.png" title="SQL Intermediate"
+              link={`/learn/SQLIntermediate/:`} imageUrl="/images/sql.png" title="SQL Intermediate"
               description="Advance your SQL skills by delving into multi-table databases, learning essential techniques for data manipulation, and ensuring data integrity. Building upon the fundamentals covered in our Introduction to SQL course, this Intermediate SQL course equips you to handle more complex, interrelated tables and extract powerful insights from your data."
             />
         <CourseContent

@@ -26,7 +26,7 @@ const userBitsAndHeartsSchema: Schema = new Schema<IUserBitsAndHearts>({
   action_type: {
     type: String,
     required: true,
-    enum: ['lesson', 'codeProject', 'codeCoach','codeRepo','codeChallenge'],
+    enum: ['lesson', 'elementaryLevel','proficientLevel','advancedLevel'],
   },
   timestamp: {
     type: Date,

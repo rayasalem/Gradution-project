@@ -111,6 +111,9 @@ import UpdateBlog from './components/admin/blog/updateBlog';
 import UpdateSection from './components/admin/blog/updateSection';
 import Compiler from './components/compiler/Test';
 import CompilerPage from './components/compiler/Compiler';
+import SQlCourse from './components/courses/sql';
+import LessonSQL from './components/courses/sql/lessonSql/LessonSQL';
+import QuizSQL from './components/courses/sql/quizSql/QuizSQL';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -143,7 +146,9 @@ function App() {
           <Route path='/learn/Java/:courseId' element={<JavaCourse/>} />
           <Route path='/learn/Java/lesson/:LessonId' element={<LessonOneInJava/>} />
           <Route path='/learn/Java/quiz/:quizId' element={<QuizJava/>} />
-          
+          <Route path='/learn/SQLIntermediate/:courseId' element={<SQlCourse/>} />
+          <Route path='/learn/SQLIntermediate/lesson/:LessonId' element={<LessonSQL/>} />
+          <Route path='/learn/SQLIntermediate/quiz/:quizId' element={<QuizSQL/>} />          
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
           <Route path="/learn/html/:LessonId/lesson1"element={<LessonOne/>}/>
           <Route path="/learn/html/:LessonId/lesson2"element={<LessonTwo/>}/>
