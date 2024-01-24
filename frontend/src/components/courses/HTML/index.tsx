@@ -11,7 +11,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import { getUserById } from '../../../api/user';
+import LessonQuizCompletionButton from '../LessonQuizCompletionButton';
 interface ICourse {
   title: string;
   description: string;
@@ -31,11 +32,15 @@ interface ILessonQuiz {
 const HTMLCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
   const [hasEffectRun, setHasEffectRun] = useState(false);
+  const [username, setUsername] = useState("");
+
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [heartsCount, setheartsCount] = useState<number>(0);
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [courseCreated, setCourseCreated] = useState<boolean>(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [title,setTitle]=useState<number | null>(null);
+  const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
     { id: 1, OriginalID: 1, type: 'lesson', contentTitle:''},
     { id: 2, OriginalID: 2, type: 'lesson', contentTitle:'' },
@@ -62,6 +67,7 @@ const HTMLCourse: React.FC = () => {
       setLessonsAndQuizzes(JSON.parse(storedStatus));
     }
   }; 
+
   useEffect(() => {
     initializeLessonsAndQuizzes();
     const fetchData = async () => {
@@ -106,6 +112,19 @@ const HTMLCourse: React.FC = () => {
   
     fetchData();
   }, []);
+  useEffect(() => {
+    const checkQuizCompletion = () => {
+      const allQuizzes = lessonsAndQuizzes.filter((item) => item.type === 'quiz');
+      const allQuizzesCompleted = allQuizzes.every((quiz) => quiz.is_completed);
+
+      setIsQuizCompleted(allQuizzesCompleted);
+    };
+
+    checkQuizCompletion();
+  }, [lessonsAndQuizzes]);
+
+  
+
   
   useEffect(() => {
     const fetchData = async () => {
@@ -168,7 +187,9 @@ const HTMLCourse: React.FC = () => {
   useEffect(() => {
     const fetchDataForQuizzes = async () => {
         try {
-          const profileInfo = await getprofileInfo(); 
+          const profileInfo = await getprofileInfo();
+
+          setUsername(profileInfo?.user?.username); 
           if (profileInfo?.user?.role === 'admin') {
             setuserIsAddict(true);
           }
@@ -220,6 +241,9 @@ const HTMLCourse: React.FC = () => {
      };
    return (
   <Box>
+       
+        
+ 
       <Box
         sx={{
           display: 'flex',
@@ -233,6 +257,7 @@ const HTMLCourse: React.FC = () => {
           paddingTop:'80px'
         }}
       >
+     
        <Paper
           elevation={3}
           sx={{
@@ -247,6 +272,7 @@ const HTMLCourse: React.FC = () => {
 
           }}
         >
+          
           <Box>
             <img
               src='/images/HTML.png'
@@ -305,54 +331,61 @@ const HTMLCourse: React.FC = () => {
             onMouseLeave={() => setHoveredItem(null)}
             disabled={userIsAddict ? false :index !== 0 && !(lessonsAndQuizzes[index - 1].is_completed)}   
        >
-            <Paper
-              elevation={3}
-              sx={{
-                position: 'relative',
-                padding: 3,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%',
-                maxWidth: '500px',
-                transition: 'transform 0.3s ease-in-out',
-                transform: hoveredItem === item.id ? 'scale(1.1)' : 'scale(1)',
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                {item.type === 'lesson' && <BookIcon sx={{ fontSize: 40, color: 'blue' }} />} 
-                {item.type === 'quiz' && <QuizIcon sx={{ fontSize: 40, color: '#835088' }} />} 
-                
-                <Typography
-          variant='body2'
-          sx={{
-            display: 'inline',
-            color: '#999',
-            fontSize: '12px',
-            marginTop: '1px',
-          }}
-        >
-          {item.type}
-        </Typography>
-        <Link
-            to={`/learn/html/${item.type === 'lesson' ? item.lessonId : item.quizId}/${item.type}${item.OriginalID}`}   
-       style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
-        > 
-        <Typography
-          variant='body1'
-          sx={{
-            fontSize: '18px',
-            color: 'black',
-            marginBottom: '1px',
-            marginTop:'30px',
-            marginLeft: '1px',
-            textAlign: 'center',
-            fontFamily: 'Tahoma, sans-serif',          }}
-        >
-                  {item.contentTitle}
-                </Typography></Link>
-                
-              </Box>
+         <Paper
+  elevation={3}
+  sx={{
+    position: 'relative',
+    padding: 3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    maxWidth: '500px',
+    transition: 'transform 0.3s ease-in-out',
+    transform: hoveredItem === item.id ? 'scale(1.1)' : 'scale(1)',
+  }}
+>
+
+  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    {item.type === 'lesson' && (
+      <BookIcon sx={{ fontSize: 40, color: 'blue' }} />
+    )}
+    {item.type === 'quiz' && (
+      <QuizIcon sx={{ fontSize: 40, color: '#835088' }} />
+    )}
+
+    <Typography
+      variant="body2"
+      sx={{
+        display: 'inline',
+        color: '#999',
+        fontSize: '12px',
+        marginTop: '1px',
+      }}
+    >
+      {item.type}
+    </Typography>
+    <Link
+      to={`/learn/html/${item.type === 'lesson' ? item.lessonId : item.quizId}/${item.type}${item.OriginalID}`}
+      style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
+    >
+      <Typography
+        variant="body1"
+        sx={{
+          fontSize: '18px',
+          color: 'black',
+          marginBottom: '1px',
+          marginTop: '30px',
+          marginLeft: '1px',
+          textAlign: 'center',
+          fontFamily: 'Tahoma, sans-serif',
+        }}
+      >
+        {item.contentTitle}
+      </Typography>
+    </Link>
+  </Box>
+
 
                {!userIsAddict &&( 
                    index !== 0 && !(lessonsAndQuizzes[index]?.is_completed) &&
@@ -413,6 +446,13 @@ const HTMLCourse: React.FC = () => {
           
         ))}
       </Box>
+     
+         <LessonQuizCompletionButton
+        isCompleted={isQuizCompleted}
+        projectName="HTML"
+        recipientName={username}
+        issuedDate={new Date().toLocaleDateString()}
+      />
     </Box>
    );
 

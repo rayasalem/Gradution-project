@@ -110,7 +110,7 @@ import CreateBlog from './components/admin/blog/createBlog';
 import AddSectionPage from './components/admin/blog/createSection';
 import UpdateBlog from './components/admin/blog/updateBlog';
 import UpdateSection from './components/admin/blog/updateSection';
-
+import CertificatePage from './components/courses/certifcate/CertificatePage';
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
   
@@ -142,7 +142,8 @@ function App() {
           <Route path='/learn/Java/:courseId' element={<JavaCourse/>} />
           <Route path='/learn/Java/lesson/:LessonId' element={<LessonOneInJava/>} />
           <Route path='/learn/Java/quiz/:quizId' element={<QuizJava/>} />
-          
+          <Route path="/certificate/:projectName/:recipientName/:day/:month/:year" element={<CertificatePage/>} />
+
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
           <Route path="/learn/html/:LessonId/lesson1"element={<LessonOne/>}/>
           <Route path="/learn/html/:LessonId/lesson2"element={<LessonTwo/>}/>

@@ -10,7 +10,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import Certificate from '../certifcate/certifcate';
+import LessonQuizCompletionButton from '../LessonQuizCompletionButton';
 interface ICourse {
   title: string;
   description: string;
@@ -29,12 +30,14 @@ interface ILessonQuiz {
 }
 const CSSCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
+  const [username, setUsername] = useState("");
   const [hasEffectRun, setHasEffectRun] = useState(false);
   const [heartsCount, setheartsCount] = useState<number>(0);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [courseCreated, setCourseCreated] = useState<boolean>(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
     { id: 1, OriginalID: 1, type: 'lesson', contentTitle: ''  },
     { id: 2, OriginalID: 2, type: 'lesson', contentTitle: ''  },
@@ -61,12 +64,26 @@ const CSSCourse: React.FC = () => {
     }
   };
   useEffect(() => {
+    const checkQuizCompletion = () => {
+      const allQuizzesCompleted = lessonsAndQuizzes.filter(item => item.type === 'quiz').every(quiz => quiz.is_completed);
+      setIsQuizCompleted(allQuizzesCompleted);
+    };
+
+    checkQuizCompletion();
+  }, [lessonsAndQuizzes]);
+
+  const handleQuizCompletion = () => {
+    setIsQuizCompleted(true);
+  };
+
+  useEffect(() => {
     initializeLessonsAndQuizzes();
     const fetchData = async () => {
       try {
         const Course = await getCourseDetails('CSS');
         if (Course && Course.course) {
           setCourseId(Course.course._id)
+        
           localStorage.setItem('createdCourseIdJavacss', Course.course._id);
           navigate(`/learn/css/${Course.course._id}`);
         }
@@ -156,6 +173,8 @@ const CSSCourse: React.FC = () => {
     const fetchDataForQuizzes = async () => {
         try {
           const profileInfo = await getprofileInfo(); 
+
+          setUsername(profileInfo?.user?.username); 
           if (profileInfo?.user?.role === 'admin') {
             setuserIsAddict(true);
           }
@@ -176,6 +195,16 @@ const CSSCourse: React.FC = () => {
     };
     fetchenrolledCourses ();
   }, []);  
+  useEffect(() => {
+    const checkQuizCompletion = () => {
+      const allQuizzes = lessonsAndQuizzes.filter((item) => item.type === 'quiz');
+      const allQuizzesCompleted = allQuizzes.every((quiz) => quiz.is_completed);
+
+      setIsQuizCompleted(allQuizzesCompleted);
+    };
+
+    checkQuizCompletion();
+  }, [lessonsAndQuizzes]);
   const handleClick = async () => {
     const createdCourseIdCss = localStorage.getItem('createdCourseIdJavacss');
 
@@ -348,7 +377,13 @@ try {
                 </Typography></Link>
                 
               </Box>
-
+              {isQuizCompleted && getprofileInfo && (
+          <Certificate
+            projectName="CSS Course"
+            recipientName={getprofileInfo.name} // Assuming the API returns a 'name' field
+            issuedDate={new Date().toLocaleDateString()} // Use the current date dynamically
+          />
+        )}
                {!userIsAddict &&( 
                    index !== 0 && !(lessonsAndQuizzes[index]?.is_completed) &&
                     !(lessonsAndQuizzes[index - 1]?.is_completed)) ? (
@@ -405,9 +440,15 @@ try {
   )}
             </Paper>
           </Button>
-          
+
         ))}
       </Box>
+      <LessonQuizCompletionButton
+        isCompleted={isQuizCompleted}
+        projectName="CSS"
+        recipientName={username}
+        issuedDate={new Date().toLocaleDateString()}
+      />
     </Box>
    );
 

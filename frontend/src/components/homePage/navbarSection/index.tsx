@@ -28,6 +28,7 @@ import ModelSetting from './../../profilePage/setting/ModelSetting';
 const Navbar: React.FC = () =>{
   const isSmallScreen = useMediaQuery('(max-width:900px)');
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [uploadedImage, setUploadedImage] = useState('/images/user.png');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [userName, setUserName] = useState('');
   const history =useNavigate();
@@ -70,7 +71,8 @@ const Navbar: React.FC = () =>{
           const profileInfo = await getprofileInfo(); 
           if (profileInfo) {
             setUserName(profileInfo?.user?.username);
-           console.log(profileInfo)
+            setUploadedImage(profileInfo?.user?.avatar || '')
+                       console.log(profileInfo)
           }
       } catch (error) {
         console.error('Error fetching profile info:', error);
@@ -130,8 +132,9 @@ const Navbar: React.FC = () =>{
       {authenticated ?( <>
               <Tooltip title="Account settings">
               <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-              <Avatar sx={{ width: 32, height: 32 }}></Avatar>
-              </IconButton>
+              <Avatar sx={{ width: 32, height: 32 }} alt={userName} src={uploadedImage}></Avatar>
+            
+  </IconButton>
                </Tooltip>
               <Menu
                 className='MuiPaper-root'
@@ -201,7 +204,8 @@ const Navbar: React.FC = () =>{
     <> 
     <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+          <Avatar sx={{ width: 32, height: 32 }} alt={userName} src={uploadedImage}></Avatar>
+
           </IconButton>
         </Tooltip>
               <Menu

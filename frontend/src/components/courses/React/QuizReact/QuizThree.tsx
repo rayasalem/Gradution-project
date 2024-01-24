@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Quiz from '../../quizes/Quiz';
+import Certificate from '../../certifcate/certifcate';
 
 const QuizThreeReact: React.FC = () => {
+    const [quizCompleted, setQuizCompleted] = useState(false);
 
     const quizQuestions = [
         {
@@ -79,6 +81,7 @@ const QuizThreeReact: React.FC = () => {
     return (
         <div>
             <Quiz  quizQuestions={quizQuestions} />
+          
         </div>
     );
 };

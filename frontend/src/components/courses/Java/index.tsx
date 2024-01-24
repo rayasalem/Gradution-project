@@ -13,7 +13,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { deleteQuizById } from './../../../api/userAction';
 import { getlistQuizsInCourse } from './../../../api/userAction';
 import { useParams } from 'react-router-dom';
-
+import LessonQuizCompletionButton from '../LessonQuizCompletionButton';
 interface ICourse {
   title: string;
   description: string;
@@ -37,7 +37,9 @@ const JavaCourse: React.FC = () => {
   const [heartsCount, setheartsCount] = useState<number>(0);
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [username, setUsername] = useState("");
   const [userIsAddict, setuserIsAddict] = React.useState(false);
+  const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
     { id: 1, OriginalID: 1, type: 'lesson', contentTitle: ''},
     { id: 2, OriginalID: 2, type: 'lesson', contentTitle: '' },
@@ -63,6 +65,16 @@ const JavaCourse: React.FC = () => {
       setLessonsAndQuizzes(JSON.parse(storedStatus));
     }
   }; 
+  useEffect(() => {
+    const checkQuizCompletion = () => {
+      const allQuizzes = lessonsAndQuizzes.filter((item) => item.type === 'quiz');
+      const allQuizzesCompleted = allQuizzes.every((quiz) => quiz.is_completed);
+
+      setIsQuizCompleted(allQuizzesCompleted);
+    };
+
+    checkQuizCompletion();
+  }, [lessonsAndQuizzes]);
   useEffect(() => {
     initializeLessonsAndQuizzes();
     const fetchData = async () => {
@@ -163,6 +175,7 @@ const JavaCourse: React.FC = () => {
     const fetchDataForQuizzes = async () => {
         try {
           const profileInfo = await getprofileInfo(); 
+          setUsername(profileInfo?.user?.username);
           if (profileInfo?.user?.role === 'admin') {
             setuserIsAddict(true);
           }
@@ -417,6 +430,12 @@ const JavaCourse: React.FC = () => {
             </Button>
         ))}
       </Box>
+      <LessonQuizCompletionButton
+        isCompleted={isQuizCompleted}
+        projectName="java"
+        recipientName={username}
+        issuedDate={new Date().toLocaleDateString()}
+      />
     </Box>
    );
 

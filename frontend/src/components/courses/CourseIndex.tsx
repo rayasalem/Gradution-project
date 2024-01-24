@@ -119,6 +119,8 @@ const IndexCourse: React.FC = () => {
           <Tab label="Games for mobile and web" value="4" />
           <Tab label="Backend System" value="5"/>
           <Tab label="Data Science" value="6"/>
+          <Tab label="Certificate" value="7"/>
+
     </TabList>
   </Box>
         <TabPanel value="1">
