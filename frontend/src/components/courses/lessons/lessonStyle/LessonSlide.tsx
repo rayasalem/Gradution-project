@@ -19,7 +19,7 @@ import MultipleChoiceQuestion from '../../quizes/MultipleChoiceQuestion';
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-
+import ChatApp from '../../Chat';
 interface DragDropSlide {
   type: 'dragDrop';
   questionId: string;
@@ -352,6 +352,7 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
           )}
         </Box>
       </Box>
+      <ChatApp/>
     </Box>
   );
 };
