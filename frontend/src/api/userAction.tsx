@@ -67,6 +67,74 @@ interface updatedPostData  {
   content: string;
   tags:string[];
 };
+
+
+
+interface IChat {
+  lessonId: string;
+}
+
+export const getCommentCount = async (lessonId: string): Promise<number | undefined> => {
+  try {
+    const response: AxiosResponse<{ count: number }> = await axiosInstance.get('/api/v1/chat/getCommentCount', { params: { lessonId } });
+
+    if (response.status === 200) {
+      return response.data.count;
+    }
+  } catch (error) {
+    console.error("Get comment count error:", error);
+    throw error;
+  }
+};
+
+export const createChat = async (lessonId: string): Promise<IChat | undefined> => {
+  try {
+    const response: AxiosResponse<IChat> = await axiosInstance.post(`/api/v1/chat/createChat/${lessonId}`);
+    
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Create chat error:", error);
+    throw error;
+  }
+};
+
+interface IComment {
+  lessonId: string;
+  text?: string;
+}
+
+export const addComment = async (comment: IComment): Promise<IComment | undefined> => {
+  try {
+    const response: AxiosResponse<IComment> = await axiosInstance.post('/api/v1/chat/addComment', comment);
+
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Add comment error:", error);
+    throw error;
+  }
+};
+
+export const getAllComments = async (lessonId: string): Promise<IComment[] | undefined> => {
+  try {
+    const response: AxiosResponse<IComment[]> = await axiosInstance.get('/api/v1/chat/getAllComments', { params: { lessonId } });
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Get all comments error:", error);
+    throw error;
+  }
+};
+
+
+
+
+
 export const createCourse = async (course: ICourse): Promise<ICourse | undefined> => {
   try {
     const response: AxiosResponse<ICourse> = await axiosInstance.post('/api/v1/course/createCourse', course);
@@ -79,6 +147,7 @@ export const createCourse = async (course: ICourse): Promise<ICourse | undefined
     throw error;
   }
 };
+
 export const getlistOfUserCoures = async () => {
   try {
     const response= await axiosInstance.get(`/api/v1/user/profile/UserCoures`);

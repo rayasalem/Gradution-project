@@ -1,4 +1,3 @@
-// src/components/Certificate.tsx
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import html2canvas from 'html2canvas';
@@ -11,21 +10,21 @@ interface CertificateProps {
 
 const CertificateContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
   height: 100vh;
   background-color: #c4e17f; /* Light Green */
   font-family: 'Pacifico', cursive;
 `;
 
 const CertificateContent = styled.div`
+  flex: 1;
   padding: 20px;
   border: 4px solid #4caf50; /* Dark Green */
   border-radius: 20px;
   text-align: center;
   background-color: #fff;
-  width: 60%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 `;
 
@@ -44,7 +43,7 @@ const DevLOOM = styled.div`
   font-size: 28px;
   font-weight: bold;
   margin-top: 16px;
-  color: #c4e17f
+  color: #c4e17f;
 `;
 
 const CertificateButton = styled.button`
@@ -55,6 +54,20 @@ const CertificateButton = styled.button`
   color: black;
   border: none;
   cursor: pointer;
+`;
+
+const ChatContainer = styled.div`
+  width: 40vw;
+  height: 40vh;
+  background-color: #f0f0f0;
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+`;
+
+const ChatContent = styled.div`
+  padding: 20px;
 `;
 
 const Certificate: React.FC<CertificateProps> = ({ projectName, recipientName, issuedDate }) => {
@@ -72,21 +85,26 @@ const Certificate: React.FC<CertificateProps> = ({ projectName, recipientName, i
   };
 
   return (
-    <CertificateContainer>
-      <CertificateContent ref={certificateRef}>
-        <DevLOOM>DevLOOM</DevLOOM>
-        <div>{projectName} Certificate</div>
-        <CertificateText>This is to certify that</CertificateText>
-        <CertificateText>
-          <strong>{recipientName}</strong>
-        </CertificateText>
-        <CertificateText>
-          has successfully completed the {projectName} course on {issuedDate}.
-        </CertificateText>
-        <CertificateText>From DevLOOM</CertificateText>
-      </CertificateContent>
-      <CertificateButton onClick={downloadCertificate}>Download Certificate</CertificateButton>
-    </CertificateContainer>
+    <>
+      <CertificateContainer>
+        <CertificateContent ref={certificateRef}>
+          <DevLOOM>DevLOOM</DevLOOM>
+          <div>{projectName} Certificate</div>
+          <CertificateText>This is to certify that</CertificateText>
+          <CertificateText>
+            <strong>{recipientName}</strong>
+          </CertificateText>
+          <CertificateText>
+            has successfully completed the {projectName} course on {issuedDate}.
+          </CertificateText>
+          <CertificateText>From DevLOOM</CertificateText>
+        </CertificateContent>
+        <CertificateButton onClick={downloadCertificate}>Download Certificate</CertificateButton>
+      </CertificateContainer>
+      <ChatContainer>
+
+      </ChatContainer>
+    </>
   );
 };
 

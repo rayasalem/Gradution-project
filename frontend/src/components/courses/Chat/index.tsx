@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Container, TextField, Button, Box } from '@mui/material';
 import ChatMessage from './ChatMessage';
-import { getprofileInfo } from '../../../api/userAction';
+import { getprofileInfo, addComment, getAllComments } from '../../../api/userAction';
 
-const ChatApp: React.FC = () => {
+interface ChatAppProps {
+  lessonId: string;
+}
+
+const ChatApp: React.FC<ChatAppProps> = ({ lessonId }) => {
   const [messages, setMessages] = useState<string[]>([]);
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState<string>('');
   const [uploadedImage, setUploadedImage] = useState('/images/user.png');
   const [username, setUserName] = useState('');
 
@@ -23,12 +27,34 @@ const ChatApp: React.FC = () => {
       }
     };
 
-    fetchData(); // Corrected function name here
-  }, []); // Empty dependency array ensures the effect runs only once on mount
+    fetchData();
+  }, []);
 
-  const handleSendMessage = () => {
-    setMessages([...messages, newMessage]);
-    setNewMessage('');
+  const handleSendMessage = async () => {
+    try {
+      if (!lessonId) {
+        console.error('LessonId not found');
+        return;
+      }
+
+      if (!newMessage.trim()) {
+        console.error('Cannot send an empty message');
+        return;
+      }
+
+      await addComment({ lessonId, text: newMessage });
+
+      const comments = await getAllComments(lessonId);
+
+      if (comments) {
+        const updatedMessages = comments.map(comment => comment.text || '');
+        setMessages(updatedMessages);
+      }
+
+      setNewMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
   };
 
   return (
@@ -46,7 +72,13 @@ const ChatApp: React.FC = () => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
         />
-        <Button variant="contained" color="primary" onClick={handleSendMessage} style={{ marginTop: '10px' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSendMessage}
+          style={{ marginTop: '10px' }}
+          disabled={!newMessage.trim()}
+        >
           Send
         </Button>
       </Box>
