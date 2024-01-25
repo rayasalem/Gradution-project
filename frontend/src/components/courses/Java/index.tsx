@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { deleteLessonById, enrollInCourse, getCourseDetails, getlistLessonsInCourse, getprofileInfo, trackCourseProgress } from './../../../api/userAction';
 import { useNavigate } from 'react-router-dom';
-import { Box, Paper, Typography, Button } from '@mui/material';
+import { Box, Paper, Typography, Button ,TextField} from '@mui/material';
 import { Link } from 'react-router-dom';
 import BookIcon from '@mui/icons-material/Book';
 import QuizIcon from '@mui/icons-material/Quiz';
@@ -13,7 +13,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import { deleteQuizById } from './../../../api/userAction';
 import { getlistQuizsInCourse } from './../../../api/userAction';
 import { useParams } from 'react-router-dom';
-
 interface ICourse {
   title: string;
   description: string;
@@ -38,6 +37,7 @@ const JavaCourse: React.FC = () => {
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
     { id: 1, OriginalID: 1, type: 'lesson', contentTitle: ''},
     { id: 2, OriginalID: 2, type: 'lesson', contentTitle: '' },
@@ -225,7 +225,13 @@ const JavaCourse: React.FC = () => {
         console.error('Error deleting quiz:', error);
       }
      };
+     const handleDrawerOpen = () => {
+      setIsDrawerOpen(true);
+    };
     
+    const handleDrawerClose = () => {
+      setIsDrawerOpen(false);
+    };
    return (
   <Box>
       <Box

@@ -960,4 +960,60 @@ export const SearchInBlog = async (querysearch:String) => {
     throw error;
   }
 };
-
+export const SetFeedBackTrue = async (feedbackId:string) => {
+  try {
+    const response = await axiosInstance.put(`/api/v1/Feed/SetFeedBackTrue/${feedbackId}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to set Feed Back true', error);
+    throw error;
+  }
+};
+export const getAllFeedBack = async () => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/Feed/getAllFeedBack`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to get FeedBack', error);
+    throw error;
+  }
+};
+export const getFeedbackRead = async () => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/Feed/getFeedbackRead`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to get FeedBack', error);
+    throw error;
+  }
+};
+export const getFeedbackUnRead = async () => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/Feed/feedback/unread`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to get FeedBack', error);
+    throw error;
+  }
+};
+export const createFeedBack = async (text:string) => {
+  try {
+    const response = await axiosInstance.post(`/api/v1/Feed/createFeedBack`,{
+      text
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to create FeedBack', error);
+    throw error;
+  }
+};

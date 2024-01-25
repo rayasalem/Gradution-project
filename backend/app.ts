@@ -25,6 +25,10 @@ app.use(`${baseurl}Discuss`,indexRouter.commentRouter)
 app.use(`${baseurl}Discuss`,indexRouter.postRouter)
 app.use(`${baseurl}userpost`,indexRouter.postRouter)
 app.use(`${baseurl}textSlide`,indexRouter.textSlideRouter)
+app.use(`${baseurl}Feed`,indexRouter.FeedBackRouter)
+app.use(`${baseurl}ChatLesson`,indexRouter.chatRouter)
+
+
 
 
 app.use('*',(req:Request,res:Response,)=>{

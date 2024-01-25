@@ -45,6 +45,16 @@ export const relatedBlogState = atom({
   key: 'relatedBlogState',
   default: [],
 });
+export const AllFeedBackState = atom({
+  key: 'AllFeedBackState',
+  default: [],
+});export const FeedBackReadState = atom({
+  key: 'FeedBackReadState',
+  default: [],
+});export const FeedBackUNReadState = atom({
+  key: 'FeedBackUNReadState',
+  default: [],
+});
 
 
 

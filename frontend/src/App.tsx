@@ -114,6 +114,9 @@ import CompilerPage from './components/compiler/Compiler';
 import SQlCourse from './components/courses/sql';
 import LessonSQL from './components/courses/sql/lessonSql/LessonSQL';
 import QuizSQL from './components/courses/sql/quizSql/QuizSQL';
+import SendFeedBack from './components/feedBack/SendFeedBack';
+import DisplayFeedBack from './components/admin/feedBack/displayFeedBack';
+import ChatApp from './components/courses/Chat';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -129,6 +132,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/VerifyEmailPage" element={<VerifyEmailPage />} /> 
+          <Route path="/feedBack" element={<SendFeedBack />} /> 
           <Route path="*" element={<PageNotFound />} /> 
           <Route path='/DoneLesson' element={<DoneLessonPage/>} />
           <Route path='/profile' element={<ProfilePage/>} />
@@ -222,6 +226,7 @@ function App() {
           <Route path='/profile/settings' element={<ModelSetting/>} />
 
           <Route path="/DevLoom/admin" element={<Admin/>} /> 
+          <Route path="/DevLoom/admin/AllFeedBack" element={<DisplayFeedBack/>} /> 
           <Route path="/DevLoom/admin/changePassword/:userId" element={<Update/>} /> 
           <Route path="/DevLoom/admin/updateUser/:userId" element={<UpdateUser/>} /> 
           <Route path="/DevLoom/admin/createCourse" element={<CreateCourse/>} /> 
@@ -235,7 +240,9 @@ function App() {
           <Route path="/DevLoom/admin/updateQustion/:questionId" element={<UpdateQustion/>} />
           <Route path="/DevLoom/admin/updateTextSlide/:textSlideId" element={<UpdateTextSlide/>} />
           <Route path="/DevLoom/Compiler" element={<Compiler/>} />
+          <Route path="/DevLoom/Chat" element={<ChatApp/>} />
 
+          
 
         </Routes>
       </AuthProvider>

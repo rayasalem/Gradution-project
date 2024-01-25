@@ -12,9 +12,11 @@ import blogRouter from './blogRouter';
 import commentRouter from './commentRouter';
 import postRouter from './postRouter';
 import textSlideRouter from './TextSlideRoute';
+import FeedBackRouter from './feedBackRouter';
+import chatRouter from './chatRouter';
 export {
   courseRouter,lessonRouter,
   userRouter,authRouter,bitsAndHeartsRouter,
   progressRouter,quizRouter,questionRouter,quizTakerRouter,
-  categoryRouter,blogRouter,commentRouter,postRouter,textSlideRouter
+  categoryRouter,blogRouter,commentRouter,postRouter,textSlideRouter,FeedBackRouter,chatRouter
 }

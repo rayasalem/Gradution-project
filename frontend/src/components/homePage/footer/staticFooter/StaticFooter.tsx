@@ -15,8 +15,8 @@ const StaticFooter = (props: Props) => {
                 <Link href="/" color="#6c757d" className='static' sx={{ textDecoration: 'none' }}>
                   Home
                 </Link>
-                <Link href="/contact" color="#6c757d" className='static' sx={{ textDecoration: 'none' }}>
-                  Contact
+                <Link href="/feedBack" color="#6c757d" className='static' sx={{ textDecoration: 'none' }}>
+                  Send FeedBack
                 </Link>
                 <Link href="/privacy-policy" color="#6c757d" className='static' sx={{ textDecoration: 'none' }}>
                   Privacy Policy
