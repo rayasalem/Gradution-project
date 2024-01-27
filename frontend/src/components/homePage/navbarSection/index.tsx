@@ -128,7 +128,6 @@ const Navbar: React.FC = () =>{
               <Link href={lang.link}>{lang.language} Compiler</Link>
             </MenuItem>))}
               </Menu>
-              <Button className="item" >Discuss</Button>
               <Button className="item" onClick={handleBlog}>Blog</Button>
       {authenticated ?( <>
         <Button className="item" onClick={handleDiscuss}>Discuss</Button>
@@ -169,6 +168,10 @@ const Navbar: React.FC = () =>{
              </div>
           </Menu>
       </>):( <>
+        <Button className="item" >Discuss</Button>
+        <Button className="item">
+              Courses
+              </Button>
               <Button className="item" onClick={handleSignUp}>Sign Up</Button>
               <Button className="item" onClick={handleSignIn}>Sign In</Button>
               </>
@@ -196,9 +199,7 @@ const Navbar: React.FC = () =>{
              </Menu>
             
               <ListItem button onClick={() => toggleDrawer(false)}>
-              <Button className="item">
-              Courses
-              </Button>
+            
     </ListItem>
     <ListItem button onClick={() => toggleDrawer(false)}>
       <Button className="item" >Discuss</Button>
@@ -242,6 +243,11 @@ const Navbar: React.FC = () =>{
       </Menu>
     </>
     ):(<>
+      <Button className="item">
+              Courses
+              </Button>
+              <Button className="item" >Discuss</Button>
+
         <ListItem button onClick={() => toggleDrawer(false)}>
           <Button className="item" onClick={handleSignUp}>Sign Up</Button>
         </ListItem>
