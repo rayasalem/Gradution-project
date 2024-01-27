@@ -399,7 +399,7 @@ const closeChat = () => {
         </Box>
         <Drawer anchor="right" open={isChatOpen} onClose={closeChat}>
 
-        <ChatApp lessonId={LessonID ? LessonID : ""} />
+        <ChatApp />
       </Drawer>
     </Box>
   );

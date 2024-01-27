@@ -102,13 +102,14 @@ const Navbar: React.FC = () =>{
       ) : (
         <AppBar position="fixed"  sx={{ marginTop:0,background: '#f9f9fa',height:'10vh',width: '100vw',padding:'5px',top: 0, left: 0, right: 0 }}>
           <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography variant="h5" component="div" className='title' sx={{ left: 0 }}>
-           Devloom </Typography>
-            <div style={{ display: 'flex', gap: '10px' }}>
-            <Button onClick={handleMainpage} className="item">
-              HomePage
+          <Typography variant="h3" component="div" >
+          <Button onClick={handleMainpage} className='title' sx={{ left: 0,color:'black' ,fontSize:"25px"}}>
+          Devloom 
               </Button>
-              <Button onClick={handleCoursepage} className="item">
+          </Typography>
+            <div style={{ display: 'flex', gap: '10px' }}>
+           
+              <Button  className="item">
               Courses
               </Button>
               <ListItem button onClick={handlecompilerOpen} className="item"sx={{width:'auto'}}>
@@ -127,9 +128,14 @@ const Navbar: React.FC = () =>{
               <Link href={lang.link}>{lang.language} Compiler</Link>
             </MenuItem>))}
               </Menu>
-              <Button className="item" onClick={handleDiscuss}>Discuss</Button>
+              <Button className="item" >Discuss</Button>
               <Button className="item" onClick={handleBlog}>Blog</Button>
       {authenticated ?( <>
+        <Button className="item" onClick={handleDiscuss}>Discuss</Button>
+
+        <Button onClick={handleCoursepage} className="item">
+              Courses
+              </Button>
               <Tooltip title="Account settings">
               <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
               <Avatar sx={{ width: 32, height: 32 }} alt={userName} src={uploadedImage}></Avatar>
@@ -190,12 +196,12 @@ const Navbar: React.FC = () =>{
              </Menu>
             
               <ListItem button onClick={() => toggleDrawer(false)}>
-              <Button onClick={handleCoursepage} className="item">
+              <Button className="item">
               Courses
               </Button>
     </ListItem>
     <ListItem button onClick={() => toggleDrawer(false)}>
-      <Button className="item" onClick={handleDiscuss}>Discuss</Button>
+      <Button className="item" >Discuss</Button>
     </ListItem>
     <ListItem button onClick={() => toggleDrawer(false)}>
       <Button className="item" onClick={handleBlog}>Blog</Button>

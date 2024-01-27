@@ -11,7 +11,7 @@ const CertificatePage: React.FC<CertificatePageProps> = () => {
   // Get the current date
   const currentDate = new Date();
   const day = currentDate.getDate();
-  const month = currentDate.getMonth() + 1; // Months are zero-based
+  const month = currentDate.getMonth() + 1; 
   const year = currentDate.getFullYear();
 
   const certificateProps = {

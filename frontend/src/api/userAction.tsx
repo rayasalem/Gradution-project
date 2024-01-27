@@ -1,6 +1,6 @@
 import axiosInstance from "../utils/axiosUtils";
 import { AxiosResponse } from "axios";
-
+import axios from "axios";
 interface IUserBitsAndHearts {
   actionType: 'lesson' | 'elementaryLevel' | 'proficientLevel' | 'advancedLevel';
 }
@@ -70,70 +70,71 @@ interface updatedPostData  {
 
 
 
+
+
+interface IChatMessage {
+  text: string;
+  author: string;
+}
+
 interface IChat {
   lessonId: string;
+  messages: IChatMessage[];
+  count: number;
 }
+
+// Get chat messages for a specific lesson
+export const getChat = async (lessonId: string): Promise<IChat | undefined> => {
+  try {
+    const response: AxiosResponse<IChat> = await axios.get(`/api/v1/chat/getChat?lessonId=${lessonId}`);
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      console.error("Unexpected status code:", response.status);
+    }
+  } catch (error) {
+    console.error("Get chat error:", error);
+    throw error;
+  }
+};
+
+// Post a message to the chat for a specific lesson
+export const postMessage = async (lessonId: string, text: string, author: string): Promise<{ message: string; count: number } | undefined> => {
+  try {
+    const response: AxiosResponse<{ message: string; count: number }> = await axios.post('/api/v1/chat/postMessage', {
+      lessonId,
+      text,
+      author,
+    });
+
+    if (response.status === 201) {
+      return response.data;
+    } else {
+      console.error("Unexpected status code:", response.status);
+    }
+  } catch (error) {
+    console.error("Post message error:", error);
+    throw error;
+  }
+};
 
 export const getCommentCount = async (lessonId: string): Promise<number | undefined> => {
   try {
-    const response: AxiosResponse<{ count: number }> = await axiosInstance.get('/api/v1/chat/getCommentCount', { params: { lessonId } });
+    const response: AxiosResponse<{ count: number }> = await axios.get(`/api/v1/chat/getCommentCount/${lessonId}`);
 
     if (response.status === 200) {
       return response.data.count;
+    } else if (response.status === 404) {
+      console.error("Chat not found for the given lesson ID:", response.data);
+    } else {
+      console.error("Unexpected status code:", response.status);
     }
   } catch (error) {
     console.error("Get comment count error:", error);
     throw error;
   }
 };
-
-export const createChat = async (lessonId: string): Promise<IChat | undefined> => {
-  try {
-    const response: AxiosResponse<IChat> = await axiosInstance.post(`/api/v1/chat/createChat/${lessonId}`);
-    
-    if (response.status === 201) {
-      return response.data;
-    }
-  } catch (error) {
-    console.error("Create chat error:", error);
-    throw error;
-  }
-};
-
-interface IComment {
-  lessonId: string;
-  text?: string;
-}
-
-export const addComment = async (comment: IComment): Promise<IComment | undefined> => {
-  try {
-    const response: AxiosResponse<IComment> = await axiosInstance.post('/api/v1/chat/addComment', comment);
-
-    if (response.status === 201) {
-      return response.data;
-    }
-  } catch (error) {
-    console.error("Add comment error:", error);
-    throw error;
-  }
-};
-
-export const getAllComments = async (lessonId: string): Promise<IComment[] | undefined> => {
-  try {
-    const response: AxiosResponse<IComment[]> = await axiosInstance.get('/api/v1/chat/getAllComments', { params: { lessonId } });
-
-    if (response.status === 200) {
-      return response.data;
-    }
-  } catch (error) {
-    console.error("Get all comments error:", error);
-    throw error;
-  }
-};
-
-
-
-
 
 export const createCourse = async (course: ICourse): Promise<ICourse | undefined> => {
   try {

@@ -9,66 +9,58 @@ interface CertificateProps {
 }
 
 const CertificateContainer = styled.div`
+  margin-top: 90px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #c4e17f; /* Light Green */
+  height: 50vh; 
+  background-color: #ffffff; /* White background for formality */
   font-family: 'Pacifico', cursive;
 `;
 
+
 const CertificateContent = styled.div`
+margin-top: 120px;
   flex: 1;
   padding: 20px;
-  border: 4px solid #4caf50; /* Dark Green */
-  border-radius: 20px;
+  border: 4px solid #005a8d; /* Dark Blue for formality */
   text-align: center;
-  background-color: #fff;
+  background-color: #f2f2f2; /* Light Gray for formality */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 `;
 
 const CertificateText = styled.div`
   font-size: 24px;
   margin-bottom: 16px;
+  color: #333; /* Dark Gray for formality */
 `;
-
 const Signature = styled.div`
   font-size: 18px;
-  font-family: 'Pacifico', cursive;
-  margin-top: 24px;
+  font-family: 'Typography';  
+  margin-left: 0px;
 `;
+
 
 const DevLOOM = styled.div`
   font-size: 28px;
   font-weight: bold;
   margin-top: 16px;
-  color: #c4e17f;
+  color: #005a8d; /* Dark Blue for formality */
 `;
 
 const CertificateButton = styled.button`
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
-  background-color: white; /* DevLOOM Orange */
   color: black;
-  border: none;
+  border: 4px solid #005a8d; 
   cursor: pointer;
+  display:block;
 `;
 
-const ChatContainer = styled.div`
-  width: 40vw;
-  height: 40vh;
-  background-color: #f0f0f0;
-  position: fixed;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-`;
 
-const ChatContent = styled.div`
-  padding: 20px;
-`;
+
 
 const Certificate: React.FC<CertificateProps> = ({ projectName, recipientName, issuedDate }) => {
   const certificateRef = useRef(null);
@@ -101,9 +93,7 @@ const Certificate: React.FC<CertificateProps> = ({ projectName, recipientName, i
         </CertificateContent>
         <CertificateButton onClick={downloadCertificate}>Download Certificate</CertificateButton>
       </CertificateContainer>
-      <ChatContainer>
-
-      </ChatContainer>
+   
     </>
   );
 };

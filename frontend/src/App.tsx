@@ -10,7 +10,6 @@ import VerifyEmailPage from './components/homePage/signUp/VerifyEmailPage';
 import SigninSection from './components/signIn';
 import ForgotPasswordPage from './components/signIn/forgetPassword';
 import ResetPasswordPage from './components/signIn/resetPassword';
-import { AuthProvider } from './components/AuthContext';
 import DoneLessonPage from './components/courses/lessons/LessonDone';
 import LessonOne from './components/courses/HTML/lessonHtml/LessonOne';
 import HTMLCourse from './components/courses/HTML';
@@ -111,23 +110,24 @@ import AddSectionPage from './components/admin/blog/createSection';
 import UpdateBlog from './components/admin/blog/updateBlog';
 import UpdateSection from './components/admin/blog/updateSection';
 import CertificatePage from './components/courses/certifcate/CertificatePage';
-import ChatApp from './components/courses/Chat';
+import { useAuth } from './components/AuthContext';
 function App() {
-  const [authenticated, setAuthenticated] = useState<boolean>(false); 
+  const { authenticated } = useAuth();
   
   return (
     <Router>
-      <AuthProvider>
         <Navbar />
         <Routes>
+        {!authenticated ?( <>
           <Route path="/" element={<HomePage />} /> 
           <Route path="/signin" element={<SigninSection />} /> 
           <Route path="/compilers" element={<CompilerPage />} /> 
           <Route path="SignUp" element={<SignupSection />} /> 
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/VerifyEmailPage" element={<VerifyEmailPage />} /> 
           <Route path="*" element={<PageNotFound />} /> 
+          </>):(<>
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path='/DoneLesson' element={<DoneLessonPage/>} />
           <Route path='/profile' element={<ProfilePage/>} />
           <Route path='/discuss' element={<Discuss/>} />
@@ -232,9 +232,8 @@ function App() {
           <Route path="/DevLoom/admin/updateQustion/:questionId" element={<UpdateQustion/>} />
           <Route path="/DevLoom/admin/updateTextSlide/:textSlideId" element={<UpdateTextSlide/>} />
 
-
+          </>)}
         </Routes>
-      </AuthProvider>
     </Router>
   );
 }

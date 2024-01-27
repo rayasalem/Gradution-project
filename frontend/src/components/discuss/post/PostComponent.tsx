@@ -24,6 +24,7 @@ import {
     Delete as DeleteIcon,
     Edit as EditIcon,
   } from '@mui/icons-material';
+  import Discuss from '../indexDiscuss';
 import {
   Favorite,
   FavoriteBorder,
@@ -433,7 +434,7 @@ const PostComponent: React.FC = () => {
       </Button>
       </>
        ) : (
-        <Typography variant="h4"><PostNotAvailable/></Typography>
+        <Typography variant="h4"><Discuss/></Typography>
       )}
     </Paper>
   );
