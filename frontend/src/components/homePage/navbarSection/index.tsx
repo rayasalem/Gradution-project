@@ -109,9 +109,7 @@ const Navbar: React.FC = () =>{
           </Typography>
             <div style={{ display: 'flex', gap: '10px' }}>
            
-              <Button  className="item">
-              Courses
-              </Button>
+           
               <ListItem button onClick={handlecompilerOpen} className="item"sx={{width:'auto'}}>
                 Compilers <ArrowDropDownIcon />
             </ListItem>
