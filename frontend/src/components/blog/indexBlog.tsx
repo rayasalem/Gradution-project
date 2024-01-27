@@ -25,7 +25,7 @@ const Blog = () => {
   const [blogs, setBlogs] = useRecoilState<blog[]>(blogsState as any);
   const [popularBlogs, setpopularBlogs] = useRecoilState<blog[]>(popularBlogState as any);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {

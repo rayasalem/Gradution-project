@@ -1,12 +1,16 @@
 import React, {  useState } from 'react';
-import { Box, Button, TextField, Typography,Paper,InputLabel} from '@mui/material'
+import { Box, Button, TextField, Typography, InputLabel, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { Link } from 'react-router-dom';
 import './newPost.css';
 import { CreatePost } from '../../../api/userAction';
+import { useNavigate, useParams } from 'react-router';
 const NewPost = () => {
   const [title, settitle] = useState<string>('');
   const [content, setcontent] = useState<string>('');
   const [tags, setTag] = useState<string[]>([]);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     try {
@@ -14,11 +18,20 @@ const NewPost = () => {
         title,content,tags
       };
      const post = await CreatePost(postData);
-  
+     settitle('');
+      setcontent('');
+      setTag([]);
+      setSuccess(true);
+      setOpenDialog(true);
     
     } catch (err) {
         console.log('Error Create Post:', err);
     }
+};
+const handleCloseDialog = () => {
+  setOpenDialog(false);
+  setSuccess(false);
+  navigate(`/discuss`);
 };
   return (
     <Box>
@@ -34,6 +47,21 @@ const NewPost = () => {
         flexDirection: 'column',
       }}
     >
+      {success && (
+          <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <DialogTitle>
+              <Typography variant="h6">Post Created Successfully</Typography>
+            </DialogTitle>
+            <DialogContent>
+              <Typography variant="body1">Here is a gentle confirmation that your action was successful.</Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
         <Typography sx={{padding:'15px',color:'#2d3846',fontFamily:'Fira Sans,sans-seri',fontSize:'24px',fontWeight:'600',marginBottom:'20px'}}>
         Ask the community a question
         </Typography>

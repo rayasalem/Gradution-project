@@ -40,6 +40,20 @@ export const createUser = async (userData: UserData): Promise<string | undefined
       }
   }
 };
+export const createUserByAdmin = async (username:string,email:string,password:string) => {
+  try {
+    const response = await axiosInstance.post('/api/v1/user/cerateUser', {username,email,password});
+
+    if (response.status === 200) {      
+    }
+  } catch (error: any) {
+    if (error.response?.status === 409) {
+      throw new Error("User with this email already exists.");
+      } else {
+        console.error("create user error:", error);
+      }
+  }
+};
 export const signIn = async (email: string, password: string): Promise<LoginResponse1 | undefined> => {
   try {
     const response: AxiosResponse<{ token: string }> = await axiosInstance.post("/api/v1/auth/signIn", {

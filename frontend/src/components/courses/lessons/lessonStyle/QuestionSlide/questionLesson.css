@@ -16,7 +16,7 @@
 .qLesson{
     background-color: #f2f5f7;
     padding: 10px;
-    min-width: 650px;
+    width: 650px;
     min-height: 100px;
 }
 .answersLesson{
@@ -43,4 +43,9 @@
     border: 2px solid #c8d2db;
     box-shadow: 0 2px 0 1px #c8d2db;
     background-color: white;
+  }
+  @media (max-width: 768px) {
+    .qLesson{
+      width: 80%;
+    }
   }

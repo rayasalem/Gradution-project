@@ -117,6 +117,7 @@ import QuizSQL from './components/courses/sql/quizSql/QuizSQL';
 import SendFeedBack from './components/feedBack/SendFeedBack';
 import DisplayFeedBack from './components/admin/feedBack/displayFeedBack';
 import ChatApp from './components/courses/Chat';
+import CreateUser from './components/admin/createUser/CreateUser';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false); 
@@ -150,7 +151,7 @@ function App() {
           <Route path='/learn/Java/:courseId' element={<JavaCourse/>} />
           <Route path='/learn/Java/lesson/:LessonId' element={<LessonOneInJava/>} />
           <Route path='/learn/Java/quiz/:quizId' element={<QuizJava/>} />
-          <Route path='/learn/SQLIntermediate/:courseId' element={<SQlCourse/>} />
+          <Route path='/learn/SQL/:courseId' element={<SQlCourse/>} />
           <Route path='/learn/SQLIntermediate/lesson/:LessonId' element={<LessonSQL/>} />
           <Route path='/learn/SQLIntermediate/quiz/:quizId' element={<QuizSQL/>} />          
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
@@ -226,6 +227,7 @@ function App() {
           <Route path='/profile/settings' element={<ModelSetting/>} />
 
           <Route path="/DevLoom/admin" element={<Admin/>} /> 
+          <Route path="/DevLoom/admin/createUser" element={<CreateUser/>} /> 
           <Route path="/DevLoom/admin/AllFeedBack" element={<DisplayFeedBack/>} /> 
           <Route path="/DevLoom/admin/changePassword/:userId" element={<Update/>} /> 
           <Route path="/DevLoom/admin/updateUser/:userId" element={<UpdateUser/>} /> 
@@ -240,7 +242,6 @@ function App() {
           <Route path="/DevLoom/admin/updateQustion/:questionId" element={<UpdateQustion/>} />
           <Route path="/DevLoom/admin/updateTextSlide/:textSlideId" element={<UpdateTextSlide/>} />
           <Route path="/DevLoom/Compiler" element={<Compiler/>} />
-          <Route path="/DevLoom/Chat" element={<ChatApp/>} />
 
           
 

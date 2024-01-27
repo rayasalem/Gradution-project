@@ -31,7 +31,7 @@ const Admin = () => {
     const handleUpdatePassword = (params: GridCellParams) => {
         navigate(`/DevLoom/admin/changePassword/${params.id}`);
     };
-
+   
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -88,7 +88,10 @@ const Admin = () => {
     }));
 
     return (
+        <div className="admin-">
+           
         <div className="admin-container">
+            
         <div className="datagrid-container">
             <DataGrid
                 rows={rows}
@@ -103,6 +106,7 @@ const Admin = () => {
                 checkboxSelection
             />
                </div>
+        </div>
         </div>
     )
 }

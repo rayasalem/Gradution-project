@@ -33,6 +33,7 @@ import {
 import CommentComponent, { CommentData } from './CommentComponent'; 
 import { CreateComment, GetCommentByPostId, GetPostById, LikePost, deletePostById, hasUserLikedPost, removelike, updatePost } from '../../../api/userAction';
 import PostNotAvailable from './PostNotAvaliable';
+import { Box } from '@mui/system';
 const LikesTypography = ({ children }: { children: React.ReactNode }) => (
   <Typography
     style={{
@@ -126,6 +127,7 @@ const EditPostPage: React.FC<{
     );
   };
 const PostComponent: React.FC = () => {
+  const navigate = useNavigate();
   const [postLikes, setPostLikes] = useState<string[]>();
   const [editPageOpen, setEditPageOpen] = useState<boolean>(false);
   const [postLiked, setPostLiked] = useState<boolean>(false);
@@ -197,7 +199,7 @@ const PostComponent: React.FC = () => {
       setPostComments([]);
       setpostTags([]);
       setIsPostAvailable(false);
-
+      navigate(`/discuss`);
     
   };
 
@@ -301,7 +303,8 @@ const PostComponent: React.FC = () => {
 
 
   return (
-    <Paper elevation={3} sx={{ padding: '20px', marginTop: '50px', marginLeft: '20px', maxWidth: isSmallScreen ? '100%' : '70%' }}>
+    <Box sx={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+    <Paper elevation={3} sx={{ padding: '20px', marginTop: '100px', marginLeft: '20px', maxWidth: isSmallScreen ? '100%' : '70%'  }}>
   {isPostAvailable ? (
     <>
    <Dialog
@@ -436,6 +439,7 @@ const PostComponent: React.FC = () => {
         <Typography variant="h4"><PostNotAvailable/></Typography>
       )}
     </Paper>
+    </Box>
   );
 };
 

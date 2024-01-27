@@ -6,12 +6,11 @@ import { Link } from 'react-router-dom';
 import BookIcon from '@mui/icons-material/Book';
 import QuizIcon from '@mui/icons-material/Quiz';
 import HttpsIcon from '@mui/icons-material/Https';
-import { useAuth } from '../../AuthContext';
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import LessonQuizCompletionButton from '../LessonQuizCompletionButton';
 interface ICourse {
   title: string;
   description: string;
@@ -36,6 +35,8 @@ const HTMLCourse: React.FC = () => {
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [courseCreated, setCourseCreated] = useState<boolean>(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
+  const [username, setUsername] = useState("");
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
     { id: 1, OriginalID: 1, type: 'lesson', contentTitle:''},
     { id: 2, OriginalID: 2, type: 'lesson', contentTitle:'' },
@@ -106,7 +107,16 @@ const HTMLCourse: React.FC = () => {
   
     fetchData();
   }, []);
-  
+  useEffect(() => {
+    const checkQuizCompletion = () => {
+      const allQuizzes = lessonsAndQuizzes.filter((item) => item.type === 'quiz');
+      const allQuizzesCompleted = allQuizzes.every((quiz) => quiz.is_completed);
+
+      setIsQuizCompleted(allQuizzesCompleted);
+    };
+
+    checkQuizCompletion();
+  }, [lessonsAndQuizzes]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -169,6 +179,7 @@ const HTMLCourse: React.FC = () => {
     const fetchDataForQuizzes = async () => {
         try {
           const profileInfo = await getprofileInfo(); 
+          setUsername(profileInfo?.user?.username);
           if (profileInfo?.user?.role === 'admin') {
             setuserIsAddict(true);
           }
@@ -413,6 +424,12 @@ const HTMLCourse: React.FC = () => {
           
         ))}
       </Box>
+      <LessonQuizCompletionButton
+        isCompleted={isQuizCompleted}
+        projectName="HTML"
+        recipientName={username}
+        issuedDate={new Date().toLocaleDateString()}
+      />
     </Box>
    );
 

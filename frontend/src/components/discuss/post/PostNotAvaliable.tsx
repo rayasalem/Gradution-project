@@ -9,7 +9,7 @@ const PostNotAvailable = () => {
       justifyContent="center"
       alignItems="center"
       spacing={2}
-      style={{ minHeight: '80vh' }} 
+      style={{ minHeight: '80vh',minWidth:'180vh' }} 
     >
       <Grid item>
         <Box display="flex" alignItems="center" justifyContent="center">

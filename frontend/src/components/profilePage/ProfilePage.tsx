@@ -7,11 +7,19 @@ import { Link } from 'react-router-dom';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import { useRecoilState } from 'recoil';
 import { coursesState } from '../recoilState';
+import Admin from '../admin/Admin';
+import { useNavigate, useParams } from 'react-router';
+
 interface Course {
+  
+courseId:{
   _id: any;
   title: string;
 }
+  
+}
 const ProfilePage:React.FC = () => {
+  const navigate = useNavigate();
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [courses, setCourses] = useRecoilState<Course[]>(coursesState as any);
   const [bitsCount, setBitsCount] = useState<number>();
@@ -36,9 +44,10 @@ const ProfilePage:React.FC = () => {
     const fetchDataCourse = async () => {
       try {
         const response = await getlistOfUserCoures();
-        const uniqueCourses = Array.from(new Set(response.Course.map((course: Course) => course._id)))
-        .map((_id: any) => response.Course.find((course: Course) => course._id === _id) as Course);
-
+        console.log(response);
+        const uniqueCourses = Array.from(new Set(response.userEnrollments.map((course: Course) => course.courseId._id)))
+        .map((_id: any) => response.userEnrollments.find((course: Course) => course.courseId._id === _id) as Course);
+console.log(uniqueCourses)
       setCourses(uniqueCourses);
       } catch (error) {
         console.error('Error to Get List of User Course:', error);
@@ -67,7 +76,13 @@ const ProfilePage:React.FC = () => {
 
     fetchData();
   }, []);
-  
+  const handlecreateUser =()=>{
+    navigate(`/DevLoom/admin/createUser`);
+}
+const handlemangeUser=()=>{
+  navigate(`/DevLoom/admin`);
+
+}
   return (
     <Box>
       <Box
@@ -102,10 +117,11 @@ const ProfilePage:React.FC = () => {
         <Typography variant="subtitle1" sx={{color:'#c8d2db',fontSize:'12px',fontWeight:'300'}}>
           {Bio}
         </Typography>
+        {!userIsAddict && 
         <Typography variant="subtitle1" sx={{color:'#fff',fontSize:'15px',fontWeight:'500'}}>
         <ViewInArIcon style={{ fontSize: 18, color: '#ecaa00' ,paddingRight:'6px'}} />
           {bitsCount} Bit 
-        </Typography>
+        </Typography> }
         <Typography variant="subtitle1" sx={{color:'#fff',fontSize:'18px',fontWeight:'300'}}>
           {Country}
         </Typography>
@@ -114,7 +130,7 @@ const ProfilePage:React.FC = () => {
          
 
         </Box>
-        {!userIsAddict && (
+        {!userIsAddict ? (
         <Box
       sx={{
         display: 'flex',
@@ -126,21 +142,20 @@ const ProfilePage:React.FC = () => {
        
         justifyContent: 'center',
       }}
-    >
-      
+    > 
       <Paper elevation={3} sx={{ maxHeight: '300px', 
         overflow: 'auto',}}>
         <Typography sx={{color:'#2d3846',fontSize:'20px',fontWeight:'600',padding:'8px',marginBottom:'20px'}}> Courses Progress</Typography>
         {courses  && Array.isArray(courses) && courses.map((course) => (<Button
-        key={course._id}
+        key={course.courseId._id}
     component={Link}
-    to={`/learn/${course.title}/:`} 
+    to={`/learn/${course.courseId.title}/:`} 
     sx={{width:'300px',padding:'10px'}}>
         <Box sx={{ display: 'flex'}}>
         <Box >
         <img
-        src={`./images/${course.title}.png`}
-          alt={course.title}
+        src={`./images/${course.courseId.title}.png`}
+          alt={course.courseId.title}
           style={{
             width: '40px',
             maxWidth: '40px',
@@ -151,7 +166,7 @@ const ProfilePage:React.FC = () => {
         />
         </Box>
         <Box sx={{ paddingLeft:'10px',width:'150px'}}>
-        <Typography sx={{color:'#6b7f99'}}>{course.title}</Typography>
+        <Typography sx={{color:'#6b7f99'}}>{course.courseId.title}</Typography>
         <Typography sx={{color:'#6b7f99'}}>In Progress</Typography>
         </Box>
         <Box sx={{ paddingLeft:'10px'}}>
@@ -162,7 +177,15 @@ const ProfilePage:React.FC = () => {
         </Button> ))}
       </Paper>
     </Box>
+  ):(
+    <Box sx={{display: 'flex',justifyContent:'center',alignItems:'center',paddingTop:'20px',flexDirection:'column'}}>
+      <Button variant="outlined" color="primary" sx={{width:'300px',alignItems:"center"}}
+            onClick={handlemangeUser}> Manage user </Button>
+            <Button variant="outlined" color="primary" sx={{width:'300px',alignItems:"center",marginTop:'10px'}}
+            onClick={handlecreateUser}> Create new User </Button>
+    </Box>
   )}
+  
         </Box>
         <Footer/>
         </Box>

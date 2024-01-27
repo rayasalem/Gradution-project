@@ -13,6 +13,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { deleteQuizById } from './../../../api/userAction';
 import { getlistQuizsInCourse } from './../../../api/userAction';
 import { useParams } from 'react-router-dom';
+import LessonQuizCompletionButton from '../LessonQuizCompletionButton';
 
 interface ICourse {
   title: string;
@@ -38,6 +39,8 @@ const SQlCourse: React.FC = () => {
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
+  const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
+  const [username, setUsername] = useState("");
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
     { id: 1, OriginalID: 1, type: 'lesson', contentTitle: ''},
     { id: 2, OriginalID: 2, type: 'lesson', contentTitle: '' },
@@ -67,11 +70,11 @@ const SQlCourse: React.FC = () => {
     initializeLessonsAndQuizzes();
     const fetchData = async () => {
       try {
-        const Course = await getCourseDetails('SQL Intermediate');
+        const Course = await getCourseDetails('SQL');
         if (Course && Course.course) {
           setCourseId(Course.course._id)
           localStorage.setItem('createdCourseIdSQL', Course.course._id);
-          navigate(`/learn/SQLIntermediate/${Course.course._id}`);
+          navigate(`/learn/SQL/${Course.course._id}`);
         }
       } catch (error) {
         console.error('An unexpected error occurred:', error);
@@ -110,7 +113,14 @@ const SQlCourse: React.FC = () => {
   
     fetchData();
   }, []);
-  
+  useEffect(() => {
+    const checkQuizCompletion = () => {
+      const allQuizzesCompleted = lessonsAndQuizzes.filter(item => item.type === 'quiz').every(quiz => quiz.is_completed);
+      setIsQuizCompleted(allQuizzesCompleted);
+    };
+
+    checkQuizCompletion();
+  }, [lessonsAndQuizzes]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -163,6 +173,7 @@ const SQlCourse: React.FC = () => {
     const fetchDataForQuizzes = async () => {
         try {
           const profileInfo = await getprofileInfo(); 
+          setUsername(profileInfo?.user?.username);
           if (profileInfo?.user?.role === 'admin') {
             setuserIsAddict(true);
           }
@@ -416,6 +427,12 @@ const SQlCourse: React.FC = () => {
             </Button>
         ))}
       </Box>
+      <LessonQuizCompletionButton
+        isCompleted={isQuizCompleted}
+        projectName="SQL"
+        recipientName={username}
+        issuedDate={new Date().toLocaleDateString()}
+      />
     </Box>
    );
 

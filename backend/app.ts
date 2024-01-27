@@ -27,9 +27,7 @@ app.use(`${baseurl}userpost`,indexRouter.postRouter)
 app.use(`${baseurl}textSlide`,indexRouter.textSlideRouter)
 app.use(`${baseurl}Feed`,indexRouter.FeedBackRouter)
 app.use(`${baseurl}ChatLesson`,indexRouter.chatRouter)
-
-
-
+app.use(`${baseurl}Course`,indexRouter.EnrollmentRouter)
 
 app.use('*',(req:Request,res:Response,)=>{
     res.status(404).json({message:"page not found"})

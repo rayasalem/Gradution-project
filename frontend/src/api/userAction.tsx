@@ -62,11 +62,7 @@ interface Ipost{
   content:string;
   tags:string[];
 }
-interface updatedPostData  {
-  title: string;
-  content: string;
-  tags:string[];
-};
+
 export const createCourse = async (course: ICourse): Promise<ICourse | undefined> => {
   try {
     const response: AxiosResponse<ICourse> = await axiosInstance.post('/api/v1/course/createCourse', course);
@@ -81,7 +77,7 @@ export const createCourse = async (course: ICourse): Promise<ICourse | undefined
 };
 export const getlistOfUserCoures = async () => {
   try {
-    const response= await axiosInstance.get(`/api/v1/user/profile/UserCoures`);
+    const response= await axiosInstance.get(`/api/v1/Course/coursesForUser`);
 
     if (response.status === 200) {
       return response.data;
@@ -118,7 +114,7 @@ export const createQuiz = async (userQuiz: IUserQuiz): Promise<IUserQuiz | undef
 };
 export const enrollInCourse = async (courseId: any) => {
   try {
-    const response= await axiosInstance.post(`/api/v1/course/enrollInCourse/${courseId}`);
+    const response= await axiosInstance.post(`/api/v1/Course/enrollInCourse/${courseId}`);
 
     if (response && response.status === 200) {
       return response.data;
@@ -1014,6 +1010,48 @@ export const createFeedBack = async (text:string) => {
     }
   } catch (error) {
     console.error('Failed to create FeedBack', error);
+    throw error;
+  }
+};
+export const addComment = async (lessonId: string,text: string) => {
+  try {
+    const response = await axiosInstance.post(`/api/v1/ChatLesson/addCommintInChat/${lessonId}`, text);
+    console.log(response.status);
+
+    if (response.status === 200) {
+      return response.data;
+    }else {
+      console.error("Unexpected response status:", response.status);
+    }
+  } catch (error) {
+    console.error("Add comment error:", error);
+    console.log(error);
+    
+    throw error;
+  }
+};
+export const getAllComments = async (lessonId: string) => {
+  try {
+    console.log(lessonId)
+    const response = await axiosInstance.get(`/api/v1/ChatLesson/getAllCommentInChat/${lessonId}`);
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Get all comments error:", error);
+    throw error;
+  }
+};
+export const getCommentCount = async (lessonId: string): Promise<number | undefined> => {
+  try {
+    const response: AxiosResponse<{ count: number }> = await axiosInstance.get('/api/v1/chat/getCommentCount', { params: { lessonId } });
+
+    if (response.status === 200) {
+      return response.data.count;
+    }
+  } catch (error) {
+    console.error("Get comment count error:", error);
     throw error;
   }
 };

@@ -16,10 +16,8 @@ export const addComment = async (req: Request, res: Response) => {
     try {
         const author=req.user?._id
         const { lessonId } = req.params;
-      const { text} = req.body;
-  
+        const {text} = req.body;
       const chat: Ichat | null = await ChatModel.findOne({ lessonId });
-  
       if (chat) {
         chat.messages.push({ text, author });
         await chat.save();
@@ -28,6 +26,7 @@ export const addComment = async (req: Request, res: Response) => {
         res.status(404).json({ error: 'Chat not found for the given lesson ID' });
       }
     } catch (error) {
+      console.error("Server-side error:", error);
       res.status(500).json({ error: 'Failed to add comment' });
     }
   };
@@ -36,7 +35,7 @@ export const addComment = async (req: Request, res: Response) => {
       const { lessonId } = req.params;
   
       const chat: Ichat | null = await ChatModel.findOne({ lessonId }).populate({
-        path: 'messages.author',
+        path: 'messages.author', 
         model: 'User', 
         select: 'username avatar', 
       });;

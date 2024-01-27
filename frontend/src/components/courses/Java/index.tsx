@@ -13,6 +13,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { deleteQuizById } from './../../../api/userAction';
 import { getlistQuizsInCourse } from './../../../api/userAction';
 import { useParams } from 'react-router-dom';
+import LessonQuizCompletionButton from '../LessonQuizCompletionButton';
 interface ICourse {
   title: string;
   description: string;
@@ -38,6 +39,8 @@ const JavaCourse: React.FC = () => {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [username, setUsername] = useState("");
+  const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
     { id: 1, OriginalID: 1, type: 'lesson', contentTitle: ''},
     { id: 2, OriginalID: 2, type: 'lesson', contentTitle: '' },
@@ -158,11 +161,19 @@ const JavaCourse: React.FC = () => {
     };
     fetchProgressData();
   }, []);
+  useEffect(() => {
+    const checkQuizCompletion = () => {
+      const allQuizzesCompleted = lessonsAndQuizzes.filter(item => item.type === 'quiz').every(quiz => quiz.is_completed);
+      setIsQuizCompleted(allQuizzesCompleted);
+    };
 
+    checkQuizCompletion();
+  }, [lessonsAndQuizzes]);
   useEffect(() => {
     const fetchDataForQuizzes = async () => {
         try {
           const profileInfo = await getprofileInfo(); 
+          setUsername(profileInfo?.user?.username);
           if (profileInfo?.user?.role === 'admin') {
             setuserIsAddict(true);
           }
@@ -423,6 +434,12 @@ const JavaCourse: React.FC = () => {
             </Button>
         ))}
       </Box>
+      <LessonQuizCompletionButton
+        isCompleted={isQuizCompleted}
+        projectName="Java"
+        recipientName={username}
+        issuedDate={new Date().toLocaleDateString()}
+      />
     </Box>
    );
 

@@ -30,10 +30,12 @@ const Navbar: React.FC = () =>{
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [userName, setUserName] = useState('');
+  const [uploadedImage, setUploadedImage] = useState('/images/user.png');
   const history =useNavigate();
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { authenticated } = useAuth();
+  const [userIsAddict, setuserIsAddict] = React.useState(false);
   const toggleDrawer = (open: boolean) => { setDrawerOpen(open);  };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => { setAnchorEl(event.currentTarget); };
   const handleSignIn= (event: React.MouseEvent<HTMLElement>) =>{ history('/signin'); }
@@ -41,7 +43,9 @@ const Navbar: React.FC = () =>{
   const handleCoursepage= (event: React.MouseEvent<HTMLElement>) =>{ history('/learn'); }
   const handleDiscuss= (event: React.MouseEvent<HTMLElement>) =>{ history('/discuss'); }
   const handleBlog= (event: React.MouseEvent<HTMLElement>) =>{ history('/Blogs'); }
-  const handlecompilerOpen  = (event: React.MouseEvent<HTMLElement>) => { setCompilerCategoryAnchorEl(event.currentTarget); };
+  const handleAdminPage= (event: React.MouseEvent<HTMLElement>) =>{ history('/DevLoom/admin'); }
+
+  
   const handleSignUp = (event: React.MouseEvent<HTMLElement>) => {
     history('/signup');
   };  
@@ -70,7 +74,10 @@ const Navbar: React.FC = () =>{
           const profileInfo = await getprofileInfo(); 
           if (profileInfo) {
             setUserName(profileInfo?.user?.username);
-           console.log(profileInfo)
+            setUploadedImage(profileInfo?.user?.avatar || '')
+            if (profileInfo?.user?.role === 'admin') {
+              setuserIsAddict(true);
+            }
           }
       } catch (error) {
         console.error('Error fetching profile info:', error);
@@ -109,28 +116,15 @@ const Navbar: React.FC = () =>{
               <Button onClick={handleCoursepage} className="item">
               Courses
               </Button>
-              <ListItem button onClick={handlecompilerOpen} className="item"sx={{width:'auto'}}>
-                Compilers <ArrowDropDownIcon />
+              <ListItem button  className="item"sx={{width:'auto'}}>
+                Compilers 
             </ListItem>
-            
-              <Menu
-              anchorEl={compilerCategoryAnchorEl}
-              open={Boolean(compilerCategoryAnchorEl)}
-                onClose={handleMenuClose}
-                TransitionComponent={Fade}
-                style={{ position: 'absolute'}}
-              >
-              {COMPILER_LANGUAGES.map((lang) => (
-            <MenuItem key={lang.language} onClick={() => handleMenuClose}>
-              <Link href={lang.link}>{lang.language} Compiler</Link>
-            </MenuItem>))}
-              </Menu>
               <Button className="item" onClick={handleDiscuss}>Discuss</Button>
               <Button className="item" onClick={handleBlog}>Blog</Button>
       {authenticated ?( <>
               <Tooltip title="Account settings">
               <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-              <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+              <Avatar sx={{ width: 32, height: 32 }} alt={userName} src={uploadedImage}></Avatar>
               </IconButton>
                </Tooltip>
               <Menu
@@ -170,22 +164,9 @@ const Navbar: React.FC = () =>{
       )}     
 <Drawer open={drawerOpen} onClose={() => toggleDrawer(false)}>
   <List>
-    <ListItem button onClick={handlecompilerOpen} className="item"sx={{width:'auto'}}>
-                Compilers <ArrowDropDownIcon />
+    <ListItem button  className="item"sx={{width:'auto'}}>
+                Compilers 
             </ListItem>
-              <Menu
-             anchorEl={compilerCategoryAnchorEl}
-             open={Boolean(compilerCategoryAnchorEl)}
-               onClose={handleMenuClose}
-               TransitionComponent={Fade}
-               style={{ position: 'absolute'}}
-             >
-             {COMPILER_LANGUAGES.map((lang) => (
-           <MenuItem key={lang.language} onClick={() => handleMenuClose}>
-             <Link href={lang.link}>{lang.language} Compiler</Link>
-           </MenuItem>))}
-             </Menu>
-            
               <ListItem button onClick={() => toggleDrawer(false)}>
               <Button onClick={handleCoursepage} className="item">
               Courses
@@ -197,11 +178,12 @@ const Navbar: React.FC = () =>{
     <ListItem button onClick={() => toggleDrawer(false)}>
       <Button className="item" onClick={handleBlog}>Blog</Button>
     </ListItem>
+    
     {authenticated ? (
     <> 
     <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}alt={userName} src={uploadedImage}></Avatar>
           </IconButton>
         </Tooltip>
               <Menu

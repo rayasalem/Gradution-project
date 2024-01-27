@@ -11,7 +11,6 @@ const SigninSection: React.FC = () => {
         justifyContent: 'center',
         alignItems: 'center',
         color:'white',
-        // backgroundColor:'black',
         width:'100%',
       }}
     >

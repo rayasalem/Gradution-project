@@ -11,7 +11,7 @@ courseRouter.patch('/editCourse', authorizeUser([roles.admin]), validation(valid
 courseRouter.delete('/deleteCourse',authorizeUser([roles.admin]),CourseController.deleteCourse);
 courseRouter.get('/CourseDetails/:title', CourseController.viewCourseDetails);
 courseRouter.get('/Courses',CourseController.listAllCourses);
-courseRouter.post('/enrollInCourse/:courseId',authorizeUser([roles.user]), CourseController.enrollInCourse);
+// courseRouter.post('/enrollInCourse/:courseId',authorizeUser([roles.user]), CourseController.enrollInCourse);
 courseRouter.post('/unenrollCourse/:courseId',authorizeUser([roles.user]), CourseController.unenrollFromCourse);
 courseRouter.post('/rateCourse',authorizeUser([roles.user,roles.admin]), validation(validators.rateCourseSchema), CourseController.rateCourse);
 

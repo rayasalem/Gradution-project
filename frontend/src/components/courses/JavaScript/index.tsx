@@ -10,6 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import LessonQuizCompletionButton from '../LessonQuizCompletionButton';
 interface ICourse {
   title: string;
   description: string;
@@ -34,6 +35,8 @@ const JSCourse: React.FC = () => {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [hasEffectRun, setHasEffectRun] = useState(false);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
+  const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
+  const [username, setUsername] = useState("");
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
     { id: 1, OriginalID: 1, type: 'lesson', contentTitle: ''},
     { id: 2, OriginalID: 2, type: 'lesson', contentTitle: ''},
@@ -99,6 +102,7 @@ const JSCourse: React.FC = () => {
     const fetchDataForQuizzes = async () => {
         try {
           const profileInfo = await getprofileInfo(); 
+          setUsername(profileInfo?.user?.username);
           if (profileInfo?.user?.role === 'admin') {
             setuserIsAddict(true);
           }
@@ -122,6 +126,14 @@ const JSCourse: React.FC = () => {
  
   useEffect(() => {
    
+  }, [lessonsAndQuizzes]);
+  useEffect(() => {
+    const checkQuizCompletion = () => {
+      const allQuizzesCompleted = lessonsAndQuizzes.filter(item => item.type === 'quiz').every(quiz => quiz.is_completed);
+      setIsQuizCompleted(allQuizzesCompleted);
+    };
+
+    checkQuizCompletion();
   }, [lessonsAndQuizzes]);
   useEffect(() => {
     const fetchData = async () => {
@@ -413,6 +425,13 @@ console.error('Error deleting quiz:', error);
           </Paper>
         </Button>
       ))}
+
+<LessonQuizCompletionButton
+        isCompleted={isQuizCompleted}
+        projectName="javaScript"
+        recipientName={username}
+        issuedDate={new Date().toLocaleDateString()}
+      />
     </Box>
   );
 };

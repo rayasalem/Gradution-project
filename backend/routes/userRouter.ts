@@ -16,7 +16,7 @@ router.get('/allUsers',authorizeUser([roles.admin]),userController.getAllUsers)
 router.delete('/delete',authorizeUser([roles.admin,roles.user]),userController.deleteUser)
 router.get('/:id',authorizeUser([roles.admin,roles.user]),validation(validators.getUserById), userController.getUserById);
 router.put("/updateUser",authorizeUser([roles.user,roles.admin]), userController.updateUser);
-router.post('/cerateUser',validation(validators.createUser), userController.createUser)
+router.post('/cerateUser',authorizeUser([roles.admin]), userController.createUser)
 router.delete('/deleteUser/:id',authorizeUser([roles.admin]),userController.deleteUserById)
 router.put("/updateUserPassword/:id",authorizeUser([roles.admin]), userController.updateUserPassword);
 router.put("/updateUserbyAdmin/:id",authorizeUser([roles.admin]), userController.updateUserByAdmin);

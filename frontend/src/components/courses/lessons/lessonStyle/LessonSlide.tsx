@@ -19,7 +19,10 @@ import MultipleChoiceQuestion from '../../quizes/MultipleChoiceQuestion';
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-
+import ChatApp from '../../Chat';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import Drawer from '@mui/material/Drawer';
+import { getCommentCount } from '../../../../api/userAction';
 interface DragDropSlide {
   type: 'dragDrop';
   questionId: string;
@@ -50,7 +53,7 @@ interface LessonSlideProps {
   setSelectedAnswer?: Dispatch<SetStateAction<string | null>>;
 }
 
-const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
+const LessonSlide: React.FC<LessonSlideProps> = ({ slides  }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -65,6 +68,36 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
   const [LessonID, setLessonID] = useState<string | undefined>(undefined); 
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const navigate = useNavigate();
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatCount, setChatCount] = useState<number>(0);
+
+    useEffect(() => {
+      const fetchChatCount = async () => {
+        try {
+          const response = await getCommentCount(LessonID ? LessonID : "");
+  
+          if (typeof response === 'number') {
+            setChatCount(response);
+          } else {
+            console.error('Invalid response format or missing count property');
+          }
+        } catch (error) {
+          console.error('Error fetching chat count:', error);
+        }
+      };
+  
+      fetchChatCount();
+    }, [LessonID]);
+
+
+const openChat = () => {
+  setIsChatOpen(true);
+};
+
+const closeChat = () => {
+  setIsChatOpen(false);
+};
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,6 +176,7 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
     } else if (isAnswerCorrect) {
       return (
         <Box sx={{ paddingTop: '30px', display: 'flex', justifyContent: 'center' }}>
+
           <Box sx={{ paddingTop: '15px', display: 'flex', justifyContent: 'center', border: '1px solid #c8d2db', width: '400px', height: '50px', borderRadius: '8px' }}>
             <CheckCircleOutlineIcon sx={{ color: 'green', padding: '2px 5px' }}></CheckCircleOutlineIcon>
             <Typography sx={{ color: 'green' }} variant='h6'>Correct answer!</Typography>
@@ -231,10 +265,21 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
   }
   return (
     <Box>
-      <Box sx={{ position: 'absolute', top: '90px', right: '50px', display: 'flex', alignItems: 'center' }}>
-        <FavoriteIcon color="error" fontSize="large" />
-        <Typography variant="h6" sx={{ marginLeft: '5px' }}>{heartCount}</Typography>
-      </Box>
+   <Box sx={{ position: 'fixed', top: '90px', right: '50px', display: 'flex', alignItems: 'center', zIndex: 1000 }}>
+        <IconButton onClick={openChat} sx={{ fontSize: '30px', cursor: 'pointer' }}>
+          <ChatBubbleIcon />
+        </IconButton>
+        {chatCount > 0 && (
+          <Box sx={{ backgroundColor: 'red', color: 'white', borderRadius: '50%', padding: '2px 6px', marginLeft: '-12px' }}>
+            {chatCount}
+          </Box>
+        )}
+ 
+  <FavoriteIcon color="error" fontSize="large" />
+  <Typography variant="h6" sx={{ marginLeft: '5px' }}>{heartCount}</Typography>
+</Box>
+      
+        
       <Box sx={{ height: '80vh' }}>
         <DndProvider backend={HTML5Backend}>
           {currentSlideData.type === 'dragDrop' && currentSlideData.options && (
@@ -268,9 +313,11 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
            <DeleteIcon fontSize="inherit" />
            </IconButton>
                </Box>)}
-              
+              <Box sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
           <TextSlide text={(currentSlideData as TextSlide).text} />
-          </Box>)}
+          </Box>
+          </Box>
+          )}
           {currentSlideData.type === 'multipleChoice' && (
             <Box>
                {userIsAddict && (<Box> 
@@ -351,12 +398,15 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides }) => {
             </Button>
           )}
         </Box>
-      </Box>
+        </Box>
+        <Drawer anchor="right" open={isChatOpen} onClose={closeChat}>
+
+        <ChatApp  />
+      </Drawer>
     </Box>
   );
 };
 
+
 export default LessonSlide;
-
-
 
