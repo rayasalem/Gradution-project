@@ -204,6 +204,7 @@ const HTMLCourse: React.FC = () => {
     if (createdCourseIdHTML) {
       navigate(`/DevLoom/admin/createLesson/${createdCourseIdHTML}`);
     } else {
+
       console.error('No course ID found in local storage');
     }  };
     const handleCreateQuiz = async () => {

@@ -15,6 +15,30 @@ const DoneLessonPage = () => {
   const { LessonId } = useParams<{ LessonId: string }>();
   const location = useLocation();
   const currentPathname = location.pathname;
+  const [continueClicked, setContinueClicked] = useState(false); // State to track if the "Continue" button is clicked
+
+  
+  useEffect(() => {
+    const createUserBitsAndHeartsAsync = async () => {
+      try {
+        const userBitsAndHeartsData: IUserBitsAndHearts = {
+          actionType: 'lesson',
+        };
+        const bitsAndHeartsResponse = await earnBitsBitsAndHearts(userBitsAndHeartsData);
+        await completeLesson(LessonId);
+      } catch (error) {
+        console.error('Failed to create user bits and hearts:', error);
+      }
+    };
+
+    if (continueClicked) {
+      createUserBitsAndHeartsAsync();
+    }
+  }, [continueClicked, LessonId]);
+
+  const handleContinueClick = () => {
+    setContinueClicked(true); 
+  };
 
   const removeLastPart = currentPathname.replace(/\/[^/]+$/, '');
   const rewards = [
@@ -58,7 +82,6 @@ const DoneLessonPage = () => {
     createUserBitsAndHeartsAsync();
   }, []);
   return (
-    <>
       <Box
         bgcolor="#f5f5f5"
         p={3}
@@ -103,10 +126,11 @@ const DoneLessonPage = () => {
       
       <hr style={{ width: '100%', margin: '0', padding: '0' }} />
       <Box mt={3} mb={3} sx={{ textAlign: 'center' }}>
-        <Button variant="contained" color="primary" component={Link} to={removeLastPart}>Continue</Button>
+        <Button variant="contained" color="primary" component={Link} to={removeLastPart} onClick={handleContinueClick}>
+          Continue
+        </Button>
       </Box>
       </Box>
-    </>
   );
 };
 

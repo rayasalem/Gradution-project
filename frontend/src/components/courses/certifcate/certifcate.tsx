@@ -9,58 +9,60 @@ interface CertificateProps {
 }
 
 const CertificateContainer = styled.div`
-  margin-top: 90px;
+  margin-top: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh; 
+  height: 50vh;
   background-color: #ffffff; /* White background for formality */
   font-family: 'Pacifico', cursive;
 `;
 
-
 const CertificateContent = styled.div`
-margin-top: 120px;
+  margin-top: 120px;
   flex: 1;
   padding: 20px;
-  border: 4px solid #005a8d; /* Dark Blue for formality */
+  border: 4px solid #008000; /* Change to Dark Green */
   text-align: center;
   background-color: #f2f2f2; /* Light Gray for formality */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 `;
 
+const CertificateImage = styled.img`
+  height: 20%; /* Adjust the height as needed */
+  width: 40%;
+  margin-left: 20px; /* Adjust the spacing between image and content */
+`;
+
 const CertificateText = styled.div`
   font-size: 24px;
   margin-bottom: 16px;
-  color: #333; /* Dark Gray for formality */
+  color: black; /* Change to Dark Green */
 `;
+
 const Signature = styled.div`
   font-size: 18px;
-  font-family: 'Typography';  
+  font-family: 'Typography';
   margin-left: 0px;
 `;
 
-
-const DevLOOM = styled.div`
+const DevLOOM = styled.img`
   font-size: 28px;
   font-weight: bold;
   margin-top: 16px;
-  color: #005a8d; /* Dark Blue for formality */
+  color: #008000; /* Change to Dark Green */
 `;
 
 const CertificateButton = styled.button`
-  margin-top: 20px;
+  margin-top: 40px;
   padding: 10px 20px;
   font-size: 16px;
   color: black;
-  border: 4px solid #005a8d; 
+  border: 4px solid #008000; /* Change to Dark Green */
   cursor: pointer;
-  display:block;
+  display: block;
 `;
-
-
-
 
 const Certificate: React.FC<CertificateProps> = ({ projectName, recipientName, issuedDate }) => {
   const certificateRef = useRef(null);
@@ -80,7 +82,8 @@ const Certificate: React.FC<CertificateProps> = ({ projectName, recipientName, i
     <>
       <CertificateContainer>
         <CertificateContent ref={certificateRef}>
-          <DevLOOM>DevLOOM</DevLOOM>
+          <DevLOOM></DevLOOM>
+          <CertificateImage src="/images/signature.png" alt="Signature" />
           <div>{projectName} Certificate</div>
           <CertificateText>This is to certify that</CertificateText>
           <CertificateText>
@@ -93,7 +96,6 @@ const Certificate: React.FC<CertificateProps> = ({ projectName, recipientName, i
         </CertificateContent>
         <CertificateButton onClick={downloadCertificate}>Download Certificate</CertificateButton>
       </CertificateContainer>
-   
     </>
   );
 };

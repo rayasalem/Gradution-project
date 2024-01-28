@@ -10,6 +10,7 @@ import VerifyEmailPage from './components/homePage/signUp/VerifyEmailPage';
 import SigninSection from './components/signIn';
 import ForgotPasswordPage from './components/signIn/forgetPassword';
 import ResetPasswordPage from './components/signIn/resetPassword';
+import { AuthProvider } from './components/AuthContext';
 import DoneLessonPage from './components/courses/lessons/LessonDone';
 import LessonOne from './components/courses/HTML/lessonHtml/LessonOne';
 import HTMLCourse from './components/courses/HTML';

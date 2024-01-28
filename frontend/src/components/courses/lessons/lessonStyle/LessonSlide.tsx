@@ -242,6 +242,7 @@ const closeChat = () => {
     setIsAnswerCorrect(null);
     setAttemptedAnswer(false);
     setShowContinueButton(false);
+
   };
 
   const handleBack = () => {
