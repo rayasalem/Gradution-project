@@ -7,8 +7,8 @@ form {
   border: 1px solid white;
   border-radius: 3%;
   background-color: rgb(111, 143, 111);
-  width: 40vw;
-  height: 50vh;
+  width: 400px !important;
+  height: 500px;
   margin-right: 0;
   display: flex;
   justify-content: center; 
@@ -19,7 +19,7 @@ form {
 
 @media (max-width: 768px) {
   form {
-    width: 90vw; 
+    width: 300px; 
     height: auto; 
   }
 }

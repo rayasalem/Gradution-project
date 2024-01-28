@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Lesson,{ILesson} from '../db/schemas/lessonSchema';
 import Course from '../db/schemas/courseSchema';
 import CourseModel from '../db/schemas/courseSchema';
+import mongoose, { Types } from 'mongoose';
 
 export const createLesson = async (req: Request, res: Response) => {
   try {
@@ -36,7 +37,6 @@ export const createLesson = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to create a new lesson' });
   }
 };
-
 export const editLesson = async (req: Request, res: Response) => {
   const {lessonId} = req.params;
   try {
@@ -51,7 +51,6 @@ export const editLesson = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to update lesson details' });
   }
 };
-
 export const deleteLesson = async (req: Request, res: Response) => {
   const {lessonId} = req.params;
   try {
@@ -66,7 +65,6 @@ export const deleteLesson = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to delete the lesson' });
   }
 };
-
 export const viewLessonDetails = async (req: Request, res: Response) => {
   const {lessonId} = req.params;
     try {
@@ -79,17 +77,53 @@ export const viewLessonDetails = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to retrieve lesson details' });
   }
 };
-
 export const listLessonsInCourse = async (req: Request, res: Response) => {
-  const {courseId} = req.params;
+  const { courseId} = req.params;
+    const userId=req.user?.id
   try {
-    const lessons = await Lesson.find({ course: courseId });
+    const lessons = await Lesson.aggregate([
+      {
+        $match: {
+          course: mongoose.Types.ObjectId.createFromHexString(courseId),
+        },
+      },
+      {
+        $lookup: {
+          from: 'userprogresses',
+          let: { lessonId: '$_id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ['$lesson_id', '$$lessonId'] },
+                    { $eq: ['$user_id', mongoose.Types.ObjectId.createFromHexString(userId)] },
+                  ],
+                },
+              },
+            },
+          ],
+          as: 'userProgress',
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          order: 1,
+          course: 1,
+          questions: 1,
+          is_completed: { $ifNull: [{ $arrayElemAt: ['$userProgress.is_completed', 0] }, false] },
+        },
+      },
+    ]);
 
     res.status(200).json({ message: 'List of lessons in the course', lessons });
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve lessons in the course' });
   }
 };
+
 export const listQuestionsInLesson = async (req: Request, res: Response) => {
   try{
     const {lessonId}=req.params

@@ -30,7 +30,9 @@ const LessonQuizCompletionButton: React.FC<LessonQuizCompletionButtonProps> = ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '50vh', 
+        height: '300px',
+        width:'560px',
+        backgroundColor:'#FFFF',
       }}
     >
       <Box>

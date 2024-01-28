@@ -148,16 +148,14 @@ const CSSCourse: React.FC = () => {
     
       const storedHasEffectRun = localStorage.getItem('hasEffectRun-');
 
-      if (!storedHasEffectRun) {
+     
         try {
           const createdCourseIdCss = localStorage.getItem('createdCourseIdJavacss');
           const progressData = await trackCourseProgress(createdCourseIdCss);
         } catch (error) {
           console.error('An unexpected error occurred:', error);
         }
-        setHasEffectRun(true);
-        localStorage.setItem('hasEffectRun-', 'true');
-      }
+  
     };
     fetchProgressData();
   }, []);
@@ -417,13 +415,14 @@ try {
           </Button>
           
         ))}
-      </Box>
-      <LessonQuizCompletionButton
+        <LessonQuizCompletionButton
         isCompleted={isQuizCompleted}
         projectName="CSS"
         recipientName={username}
         issuedDate={new Date().toLocaleDateString()}
       />
+      </Box>
+      
     </Box>
    );
 

@@ -119,16 +119,14 @@ const PythonCourse: React.FC = () => {
     
       const storedHasEffectRun = localStorage.getItem('hasEffectRun/');
 
-      if (!storedHasEffectRun) {
+   
         try {
           const createdCourseIdPython = localStorage.getItem('createdCourseIdPython');
           const progressData = await trackCourseProgress(createdCourseIdPython);
         } catch (error) {
           console.error('An unexpected error occurred:', error);
         }
-        setHasEffectRun(true);
-        localStorage.setItem('hasEffectRun/', 'true');
-      }
+ 
     };
     fetchProgressData();
   }, []);
@@ -419,13 +417,14 @@ try {
           </Button>
           
         ))}
-      </Box>
-      <LessonQuizCompletionButton
+        <LessonQuizCompletionButton
         isCompleted={isQuizCompleted}
         projectName="Python"
         recipientName={username}
         issuedDate={new Date().toLocaleDateString()}
       />
+      </Box>
+      
     </Box>
    );
 

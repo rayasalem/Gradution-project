@@ -7,6 +7,8 @@ interface CertificatePageProps {}
 
 const CertificatePage: React.FC<CertificatePageProps> = () => {
   const { projectName = 'Default Project', recipientName = 'Default Recipient' } = useParams();
+
+  // Get the current date
   const currentDate = new Date();
   const day = currentDate.getDate();
   const month = currentDate.getMonth() + 1; 

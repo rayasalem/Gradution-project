@@ -1,20 +1,34 @@
+// ChatMessage.tsx
 import React from 'react';
-import { Paper, Typography } from '@mui/material';
+import { Avatar, Paper, Typography } from '@mui/material';
 
 interface ChatMessageProps {
   message: string;
   sender: string;
-  avatar: string; 
+  avatar: string;
 }
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message, sender, avatar }) => {
+  const paperStyle: React.CSSProperties = {
+    padding: '16px',
+    backgroundColor: '#2979ff', 
+    marginBottom: '8px',
+    display: 'flex',
+    alignItems: 'center',
+  };
+
+  const avatarStyle: React.CSSProperties = {
+    marginRight: '16px',
+  };
+
   return (
-    <Paper style={{ padding: '10px', margin: '10px', maxWidth: '400px' }}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <img src={avatar} alt="User Avatar" style={{ width: '30px', height: '30px', marginRight: '10px' }} />
-        <Typography variant="body1" color="textPrimary">
-          <strong>{sender}:</strong> {message}
+    <Paper style={paperStyle} elevation={3}>
+      <Avatar style={avatarStyle} src={avatar} alt={sender} />
+      <div>
+        <Typography variant="subtitle1" gutterBottom>
+          {sender}
         </Typography>
+        <Typography variant="body1">{message}</Typography>
       </div>
     </Paper>
   );

@@ -155,17 +155,18 @@ const SQlCourse: React.FC = () => {
     
       const storedHasEffectRun = localStorage.getItem('hasEffectRun');
 
-      if (!storedHasEffectRun) {
+      // if (!storedHasEffectRun) {
         try {
           const createdCourseIdSQL = localStorage.getItem('createdCourseIdSQL');
           const progressData = await trackCourseProgress(createdCourseIdSQL);
+          console.log(progressData);
         } catch (error) {
           console.error('An unexpected error occurred:', error);
         }
         setHasEffectRun(true);
         localStorage.setItem('hasEffectRun', 'true');
-      }
-    };
+      // }
+    }
     fetchProgressData();
   }, []);
 
@@ -350,7 +351,7 @@ const SQlCourse: React.FC = () => {
           {item.type}
         </Typography>
         <Link
-            to={`/learn/SQLIntermediate/${item.type}/${item.type === 'lesson' ? item.lessonId : item.quizId}`}   
+            to={`/learn/SQL/${item.type}/${item.type === 'lesson' ? item.lessonId : item.quizId}`}   
        style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
         > 
         <Typography
@@ -426,13 +427,13 @@ const SQlCourse: React.FC = () => {
             </Paper>
             </Button>
         ))}
-      </Box>
-      <LessonQuizCompletionButton
+        <LessonQuizCompletionButton
         isCompleted={isQuizCompleted}
         projectName="SQL"
         recipientName={username}
         issuedDate={new Date().toLocaleDateString()}
       />
+      </Box>
     </Box>
    );
 

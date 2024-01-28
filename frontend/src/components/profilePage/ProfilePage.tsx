@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import { useRecoilState } from 'recoil';
 import { coursesState } from '../recoilState';
-import Admin from '../admin/Admin';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
 interface Course {
   

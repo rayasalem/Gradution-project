@@ -1,7 +1,7 @@
 import { Request,Response } from "express";
 import QuizModel,{IQuiz}  from '../db/schemas/quizSchema';
 import CourseModel from "../db/schemas/courseSchema";
-
+import mongoose, { Types } from 'mongoose';
 export const creatQuiz=async  (req :Request,res:Response) =>{
     try{
         const courseId = req.params.courseId;
@@ -56,14 +56,49 @@ export const deleteQuiz = async (req: Request, res: Response) => {
       res.status(500).json({ message: 'Server error' });
     }
   };
-export const listQuizesInCourse = async (req: Request, res: Response) => {
-    const {courseId} = req.params;
-    try {
-      const Quiz = await QuizModel.find({ course: courseId });
+  export const listQuizzesInCourse = async (req: Request, res: Response) => {
+    const { courseId, userId } = req.params;
   
-      res.status(200).json({ message: 'List of Quizes in the course', Quiz });
+    try {
+      const quizzes = await QuizModel.aggregate([
+        {
+          $match: {
+            course: mongoose.Types.ObjectId.createFromHexString(courseId),
+          },
+        },
+        {
+          $lookup: {
+            from: 'userprogresses',
+            let: { quizId: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$quiz_id', '$$quizId'] },
+                      { $eq: ['$user_id', mongoose.Types.ObjectId.createFromHexString(userId)] },
+                    ],
+                  },
+                },
+              },
+            ],
+            as: 'userProgress',
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            title: 1,
+            course: 1,
+            questions: 1,
+            is_completed: { $ifNull: [{ $arrayElemAt: ['$userProgress.is_completed', 0] }, false] },
+          },
+        },
+      ]);
+  
+      res.status(200).json({ message: 'List of quizzes in the course', quizzes });
     } catch (error) {
-      res.status(500).json({ error: 'Failed to retrieve Quizess in the course' });
+      res.status(500).json({ error: 'Failed to retrieve quizzes in the course' });
     }
   };
 export const editQuiz = async (req: Request, res: Response) => {

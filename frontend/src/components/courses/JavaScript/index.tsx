@@ -85,16 +85,14 @@ const JSCourse: React.FC = () => {
     
       const storedHasEffectRun = localStorage.getItem('hasEffectRun8');
 
-      if (!storedHasEffectRun) {
+      
         try {
           const createdCourseIdJS = localStorage.getItem('createdCourseIdJavaScript');
           const progressData = await trackCourseProgress(createdCourseIdJS);
         } catch (error) {
           console.error('An unexpected error occurred:', error);
         }
-        setHasEffectRun(true);
-        localStorage.setItem('hasEffectRun8', 'true');
-      }
+
     };
     fetchProgressData();
   }, []);

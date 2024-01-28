@@ -82,8 +82,6 @@ const [errors, setErrors] = useState({
       border: '1px solid white',
       borderRadius: '3%',
       backgroundColor: 'rgb(111, 143, 111)',
-      width: '40vw',
-      height: '60vh',
       marginRight: 0,
       display: 'flex',
       justifyContent: 'center',

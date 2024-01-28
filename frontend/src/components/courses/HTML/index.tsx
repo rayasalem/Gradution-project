@@ -151,17 +151,14 @@ const HTMLCourse: React.FC = () => {
     
       const storedHasEffectRun = localStorage.getItem('hasEffectRun2');
 
-      if (!storedHasEffectRun) {
         try {
           const createdCourseIdHTML = localStorage.getItem('createdCourseIdHTML');
           const progressData = await trackCourseProgress(createdCourseIdHTML);
         } catch (error) {
           console.error('An unexpected error occurred:', error);
         }
-        setHasEffectRun(true);
-        localStorage.setItem('hasEffectRun2', 'true');
-      }
-    };
+     
+    }
     fetchProgressData();
   }, []);
   useEffect(() => {
@@ -423,13 +420,14 @@ const HTMLCourse: React.FC = () => {
           </Button>
           
         ))}
-      </Box>
-      <LessonQuizCompletionButton
+        <LessonQuizCompletionButton
         isCompleted={isQuizCompleted}
         projectName="HTML"
         recipientName={username}
         issuedDate={new Date().toLocaleDateString()}
       />
+      </Box>
+      
     </Box>
    );
 

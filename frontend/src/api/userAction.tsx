@@ -1055,3 +1055,14 @@ export const getCommentCount = async (lessonId: string): Promise<number | undefi
     throw error;
   }
 };
+export const getBitLeaderboard = async () => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/user-bits-and-hearts/leaderBoard`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('Failed to get FeedBack', error);
+    throw error;
+  }
+};

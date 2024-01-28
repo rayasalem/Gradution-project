@@ -9,7 +9,6 @@ import VerifyEmailPage from './components/homePage/signUp/VerifyEmailPage';
 import SigninSection from './components/signIn';
 import ForgotPasswordPage from './components/signIn/forgetPassword';
 import ResetPasswordPage from './components/signIn/resetPassword';
-import { AuthProvider } from './components/AuthContext';
 import DoneLessonPage from './components/courses/lessons/LessonDone';
 import LessonOne from './components/courses/HTML/lessonHtml/LessonOne';
 import HTMLCourse from './components/courses/HTML';
@@ -116,25 +115,28 @@ import LessonSQL from './components/courses/sql/lessonSql/LessonSQL';
 import QuizSQL from './components/courses/sql/quizSql/QuizSQL';
 import SendFeedBack from './components/feedBack/SendFeedBack';
 import DisplayFeedBack from './components/admin/feedBack/displayFeedBack';
-import ChatApp from './components/courses/Chat';
 import CreateUser from './components/admin/createUser/CreateUser';
-
+import CertificatePage from './components/courses/certifcate/CertificatePage';
+import { useAuth } from './components/AuthContext';
+import Leaderboard from './components/Leaderboard/Leaderboard';
 function App() {
-  const [authenticated, setAuthenticated] = useState<boolean>(false); 
-  
+  const { authenticated } = useAuth();  
   return (
     <Router>
-      <AuthProvider>
+      
         <Navbar />
         <Routes>
-          <Route path="/" element={<HomePage />} /> 
+        <Route path="/" element={<HomePage />} />
+        {!authenticated ?( <>
           <Route path="/signin" element={<SigninSection />} /> 
           <Route path="SignUp" element={<SignupSection />} /> 
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/VerifyEmailPage" element={<VerifyEmailPage />} /> 
-          <Route path="/feedBack" element={<SendFeedBack />} /> 
           <Route path="*" element={<PageNotFound />} /> 
+          <Route path="/VerifyEmailPage" element={<VerifyEmailPage />} /> 
+          </>):(<>
+            <Route path='/leaderboard' element={<Leaderboard/>} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/feedBack" element={<SendFeedBack />} /> 
           <Route path='/DoneLesson' element={<DoneLessonPage/>} />
           <Route path='/profile' element={<ProfilePage/>} />
           <Route path='/discuss' element={<Discuss/>} />
@@ -152,8 +154,8 @@ function App() {
           <Route path='/learn/Java/lesson/:LessonId' element={<LessonOneInJava/>} />
           <Route path='/learn/Java/quiz/:quizId' element={<QuizJava/>} />
           <Route path='/learn/SQL/:courseId' element={<SQlCourse/>} />
-          <Route path='/learn/SQLIntermediate/lesson/:LessonId' element={<LessonSQL/>} />
-          <Route path='/learn/SQLIntermediate/quiz/:quizId' element={<QuizSQL/>} />          
+          <Route path='/learn/SQL/lesson/:LessonId' element={<LessonSQL/>} />
+          <Route path='/learn/SQL/quiz/:quizId' element={<QuizSQL/>} />          
           <Route path='/learn/html/:courseId' element={<HTMLCourse/>} />
           <Route path="/learn/html/:LessonId/lesson1"element={<LessonOne/>}/>
           <Route path="/learn/html/:LessonId/lesson2"element={<LessonTwo/>}/>
@@ -225,7 +227,6 @@ function App() {
           <Route path='/learn/javaScript/:LessonId/lesson10' element={<LessonTenjs/>} />
           <Route path='/learn/javaScript/:quizId/quiz3' element={<QuizThreejs/>} />
           <Route path='/profile/settings' element={<ModelSetting/>} />
-
           <Route path="/DevLoom/admin" element={<Admin/>} /> 
           <Route path="/DevLoom/admin/createUser" element={<CreateUser/>} /> 
           <Route path="/DevLoom/admin/AllFeedBack" element={<DisplayFeedBack/>} /> 
@@ -242,11 +243,11 @@ function App() {
           <Route path="/DevLoom/admin/updateQustion/:questionId" element={<UpdateQustion/>} />
           <Route path="/DevLoom/admin/updateTextSlide/:textSlideId" element={<UpdateTextSlide/>} />
           <Route path="/DevLoom/Compiler" element={<Compiler/>} />
-
+          <Route path="/certificate/:projectName/:recipientName/:day/:month/:year" element={<CertificatePage/>} />
           
-
+          </>)}
         </Routes>
-      </AuthProvider>
+      
     </Router>
   );
 }

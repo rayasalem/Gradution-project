@@ -32,10 +32,8 @@ interface ILessonQuiz {
 }
 const JavaCourse: React.FC = () => {
   const [hasEffectRun, setHasEffectRun] = useState(false);
-    const { CourseId } = useParams<{ CourseId: string }>();
-  const [courseId, setCourseId] = useState<string | null>(null);
-  const [heartsCount, setheartsCount] = useState<number>(0);
-  const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
+  const { CourseId } = useParams<{ CourseId: string }>();
+  const [courseId, setCourseId] = useState<string | null>(null); 
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -103,6 +101,8 @@ const JavaCourse: React.FC = () => {
               return item;
             });
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedLessonsAndQuizzes));
+            console.log(updatedLessonsAndQuizzes)
+
             return updatedLessonsAndQuizzes;
           });
         }
@@ -148,23 +148,21 @@ const JavaCourse: React.FC = () => {
     
       const storedHasEffectRun = localStorage.getItem('hasEffectRun');
 
-      if (!storedHasEffectRun) {
+   
         try {
           const createdCourseIdJAVA = localStorage.getItem('createdCourseIdJAVA');
           const progressData = await trackCourseProgress(createdCourseIdJAVA);
         } catch (error) {
           console.error('An unexpected error occurred:', error);
         }
-        setHasEffectRun(true);
-        localStorage.setItem('hasEffectRun', 'true');
-      }
+       
     };
     fetchProgressData();
   }, []);
   useEffect(() => {
     const checkQuizCompletion = () => {
       const allQuizzesCompleted = lessonsAndQuizzes.filter(item => item.type === 'quiz').every(quiz => quiz.is_completed);
-      setIsQuizCompleted(allQuizzesCompleted);
+      setIsQuizCompleted(true);
     };
 
     checkQuizCompletion();
@@ -432,14 +430,16 @@ const JavaCourse: React.FC = () => {
   )}
             </Paper>
             </Button>
+            
         ))}
-      </Box>
-      <LessonQuizCompletionButton
+         <LessonQuizCompletionButton
         isCompleted={isQuizCompleted}
         projectName="Java"
         recipientName={username}
         issuedDate={new Date().toLocaleDateString()}
       />
+      </Box>
+     
     </Box>
    );
 

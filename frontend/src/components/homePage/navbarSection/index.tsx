@@ -9,11 +9,9 @@ import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import { Link, useMediaQuery,Box } from '@mui/material';
 import Button from '@mui/material/Button';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useNavigate } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import Fade from '@mui/material/Fade';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
@@ -21,21 +19,18 @@ import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import { useAuth } from '../../AuthContext';
-import { COMPILER_LANGUAGES } from './constant';
 import { getprofileInfo } from '../../../api/userAction';
 import './navbar.css'
-import ModelSetting from './../../profilePage/setting/ModelSetting';
 const Navbar: React.FC = () =>{
   const isSmallScreen = useMediaQuery('(max-width:900px)');
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [uploadedImage, setUploadedImage] = useState('/images/user.png');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [userName, setUserName] = useState('');
-  const [uploadedImage, setUploadedImage] = useState('/images/user.png');
   const history =useNavigate();
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { authenticated } = useAuth();
-  const [userIsAddict, setuserIsAddict] = React.useState(false);
   const toggleDrawer = (open: boolean) => { setDrawerOpen(open);  };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => { setAnchorEl(event.currentTarget); };
   const handleSignIn= (event: React.MouseEvent<HTMLElement>) =>{ history('/signin'); }
@@ -43,9 +38,8 @@ const Navbar: React.FC = () =>{
   const handleCoursepage= (event: React.MouseEvent<HTMLElement>) =>{ history('/learn'); }
   const handleDiscuss= (event: React.MouseEvent<HTMLElement>) =>{ history('/discuss'); }
   const handleBlog= (event: React.MouseEvent<HTMLElement>) =>{ history('/Blogs'); }
-  const handleAdminPage= (event: React.MouseEvent<HTMLElement>) =>{ history('/DevLoom/admin'); }
-
-  
+  const handlecompiler  = (event: React.MouseEvent<HTMLElement>) => { history('/Compiler') };
+  const handleLeaderboardpage  = (event: React.MouseEvent<HTMLElement>) => { history('/leaderboard') };
   const handleSignUp = (event: React.MouseEvent<HTMLElement>) => {
     history('/signup');
   };  
@@ -53,13 +47,8 @@ const Navbar: React.FC = () =>{
      history('/profile/settings');
   }; 
   const handleMenuClose = () => {
-    setCompilerCategoryAnchorEl(null)
     setAnchorEl(null);
   };
-  const [compilerCategoryAnchorEl, setCompilerCategoryAnchorEl] = useState<null | HTMLElement>(null);
-
-
-  const [compilerCategoryOpen, setCompilerCategoryOpen] = useState<boolean>(false);
   const handleLogout = async () => {
     try {
       await logout();
@@ -75,9 +64,7 @@ const Navbar: React.FC = () =>{
           if (profileInfo) {
             setUserName(profileInfo?.user?.username);
             setUploadedImage(profileInfo?.user?.avatar || '')
-            if (profileInfo?.user?.role === 'admin') {
-              setuserIsAddict(true);
-            }
+                       console.log(profileInfo)
           }
       } catch (error) {
         console.error('Error fetching profile info:', error);
@@ -102,30 +89,34 @@ const Navbar: React.FC = () =>{
           </IconButton>
            <Typography variant="h5" component="div" className='title' sx={{ left: 0 }}>
             Devloom </Typography>
+            
         </Toolbar>
         </AppBar>
       ) : (
         <AppBar position="fixed"  sx={{ marginTop:0,background: '#f9f9fa',height:'10vh',width: '100vw',padding:'5px',top: 0, left: 0, right: 0 }}>
           <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography variant="h5" component="div" className='title' sx={{ left: 0 }}>
-           Devloom </Typography>
+          <Typography variant="h3" component="div" >
+          <Button onClick={handleMainpage} className='title' sx={{ left: 0,color:'black' ,fontSize:"25px"}}>
+          <img src='./images/logo.png' width={'200px'} height={'100px'}/>
+          </Button>
+          </Typography>
             <div style={{ display: 'flex', gap: '10px' }}>
-            <Button onClick={handleMainpage} className="item">
-              HomePage
-              </Button>
-              <Button onClick={handleCoursepage} className="item">
-              Courses
-              </Button>
-              <ListItem button  className="item"sx={{width:'auto'}}>
-                Compilers 
-            </ListItem>
-              <Button className="item" onClick={handleDiscuss}>Discuss</Button>
+            <Button className="item" onClick={handlecompiler}>Compilers </Button>
               <Button className="item" onClick={handleBlog}>Blog</Button>
       {authenticated ?( <>
+        <Button className="item" onClick={handleDiscuss}>Discuss</Button>
+
+        <Button onClick={handleCoursepage} className="item">
+              Courses
+              </Button>
+              <Button onClick={handleLeaderboardpage} className="item">
+              Leaderboard
+              </Button>
               <Tooltip title="Account settings">
               <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
               <Avatar sx={{ width: 32, height: 32 }} alt={userName} src={uploadedImage}></Avatar>
-              </IconButton>
+            
+  </IconButton>
                </Tooltip>
               <Menu
                 className='MuiPaper-root'
@@ -154,6 +145,10 @@ const Navbar: React.FC = () =>{
              </div>
           </Menu>
       </>):( <>
+        <Button className="item" >Discuss</Button>
+        <Button className="item">
+              Courses
+              </Button>
               <Button className="item" onClick={handleSignUp}>Sign Up</Button>
               <Button className="item" onClick={handleSignIn}>Sign In</Button>
               </>
@@ -164,26 +159,33 @@ const Navbar: React.FC = () =>{
       )}     
 <Drawer open={drawerOpen} onClose={() => toggleDrawer(false)}>
   <List>
-    <ListItem button  className="item"sx={{width:'auto'}}>
+    <ListItem button  className="item"sx={{width:'auto'}} onClick={handlecompiler}>
                 Compilers 
             </ListItem>
               <ListItem button onClick={() => toggleDrawer(false)}>
-              <Button onClick={handleCoursepage} className="item">
-              Courses
-              </Button>
+            
     </ListItem>
+    
+    <ListItem button onClick={() => toggleDrawer(false)}>
+      <Button className="item" onClick={handleBlog}>Blog</Button>
+    </ListItem>
+    {authenticated ? (
+    <> 
     <ListItem button onClick={() => toggleDrawer(false)}>
       <Button className="item" onClick={handleDiscuss}>Discuss</Button>
     </ListItem>
     <ListItem button onClick={() => toggleDrawer(false)}>
-      <Button className="item" onClick={handleBlog}>Blog</Button>
-    </ListItem>
-    
-    {authenticated ? (
-    <> 
+    <Button onClick={handleCoursepage} className="item">
+              Courses
+              </Button></ListItem>
+              <ListItem button onClick={() => toggleDrawer(false)}>
+              <Button onClick={handleLeaderboardpage} className="item">
+              Leaderboard
+              </Button></ListItem>
     <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <Avatar sx={{ width: 32, height: 32 }}alt={userName} src={uploadedImage}></Avatar>
+          <Avatar sx={{ width: 32, height: 32 }} alt={userName} src={uploadedImage}></Avatar>
+
           </IconButton>
         </Tooltip>
               <Menu
@@ -214,6 +216,12 @@ const Navbar: React.FC = () =>{
       </Menu>
     </>
     ):(<>
+    <ListItem button onClick={() => toggleDrawer(false)}>
+    <Button className="item">Courses</Button>
+    </ListItem>
+    <ListItem button onClick={() => toggleDrawer(false)}>
+    <Button className="item" >Discuss</Button>
+    </ListItem>
         <ListItem button onClick={() => toggleDrawer(false)}>
           <Button className="item" onClick={handleSignUp}>Sign Up</Button>
         </ListItem>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, TextField, Button, Box, Grid, Avatar } from '@mui/material';
+import { Container, TextField, Button, Box, Grid, Avatar, Typography } from '@mui/material';
 import ChatMessage from './ChatMessage';
 import { getprofileInfo } from '../../../api/userAction';
 
@@ -72,22 +72,28 @@ const ChatApp: React.FC<ChatAppProps> = () => {
 
   return (
     <Container maxWidth="sm">
-      <Box style={{ marginTop: '100px' }}>
+      <Box marginTop={4} textAlign="center">
+        <Typography variant="h4" gutterBottom>
+          Daily Note
+        </Typography>
+      </Box>
+      <Box>
         {messages.map((message) => (
-          <Grid item key={message.id}>
-            <ChatMessage
-              message={message.text}
-              sender={message.username}
-              avatar={message.avatar}
-            />
-          </Grid>
+          <ChatMessage
+            key={message.id}
+            message={message.text}
+            sender={message.username}
+            avatar={message.avatar}
+          />
         ))}
       </Box>
-      <Box style={{ marginTop: '20px' }}>
+      <Box marginTop={2}>
         <TextField
-          label="Type your message"
+          label="Write your note"
           variant="outlined"
           fullWidth
+          multiline
+          rows={4}
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
         />
@@ -98,7 +104,7 @@ const ChatApp: React.FC<ChatAppProps> = () => {
           style={{ marginTop: '10px' }}
           disabled={!newMessage.trim()}
         >
-          Send
+          Add Note
         </Button>
       </Box>
     </Container>
