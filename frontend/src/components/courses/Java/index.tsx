@@ -36,7 +36,8 @@ const JavaCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null); 
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [Title, setTitle] = useState<string | null>(null);
+  const [Discription, setDiscription] = useState<string | null>(null);
   const [username, setUsername] = useState("");
   const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
   const [lessonsAndQuizzes, setLessonsAndQuizzes] = useState<ILessonQuiz[]>([
@@ -69,7 +70,9 @@ const JavaCourse: React.FC = () => {
     const fetchData = async () => {
       try {
         const Course = await getCourseDetails('Java');
-        if (Course && Course.course) {
+        if (Course && Course.course && 'title' in Course.course && 'description' in Course.course) {
+          setTitle(Course.course?.title as string)
+          setDiscription(Course.course?.description as string)
           setCourseId(Course.course._id)
           localStorage.setItem('createdCourseIdJAVA', Course.course._id);
           navigate(`/learn/Java/${Course.course._id}`);
@@ -161,8 +164,11 @@ const JavaCourse: React.FC = () => {
   }, []);
   useEffect(() => {
     const checkQuizCompletion = () => {
-      const allQuizzesCompleted = lessonsAndQuizzes.filter(item => item.type === 'quiz').every(quiz => quiz.is_completed);
-      setIsQuizCompleted(true);
+      const allQuizzes = lessonsAndQuizzes.filter((item) => item.type === 'quiz');
+      const allQuizzesCompleted = allQuizzes.every((quiz) => quiz.is_completed);
+      const allLessons = lessonsAndQuizzes.filter((item) => item.type === 'lesson');
+      const allLessonsCompleted = allLessons.every((lesson) => lesson.is_completed);
+      setIsQuizCompleted(allQuizzesCompleted&&allLessonsCompleted);
     };
 
     checkQuizCompletion();
@@ -234,13 +240,13 @@ const JavaCourse: React.FC = () => {
         console.error('Error deleting quiz:', error);
       }
      };
-     const handleDrawerOpen = () => {
-      setIsDrawerOpen(true);
-    };
-    
-    const handleDrawerClose = () => {
-      setIsDrawerOpen(false);
-    };
+     const handleupdateClick = async () => {
+      const createdCourseIdJAVA = localStorage.getItem('createdCourseIdJAVA');
+      if (createdCourseIdJAVA) {
+        navigate(`/DevLoom/admin/updateCourse/${createdCourseIdJAVA}`);
+      } else {
+        console.error('No course ID found in local storage');
+      }  };
    return (
   <Box>
       <Box
@@ -283,7 +289,7 @@ const JavaCourse: React.FC = () => {
               }}
             />
             <Typography variant='h5' align='center' sx={{ color: '#2d3846', marginBottom: '16px' }}>
-              Java
+            {Title}
             </Typography>
           </Box>
           <Typography
@@ -291,11 +297,19 @@ const JavaCourse: React.FC = () => {
             align='justify'
             sx={{ color: '#6b7f99', fontWeight: '400', paddingLeft: '24px' }}
           >
-            This simple, beginner-friendly Java course requires no previous coding knowledge. All you need is a mobile phone or desktop computer and 5 minutes a day! You’ll learn all about the key concepts of Java, and will be writing clear, working code right from your first lesson.
-          </Typography>
+          {Discription}    
+      </Typography>
         </Paper>
         {userIsAddict && (
         <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <Button
+            size="small"
+            aria-label="add"
+            onClick={handleupdateClick}
+            sx={{ zIndex: '1', color: '#e91e63', backgroundColor: '#78909c' }}
+          >
+            update Course
+          </Button>
           <Button
             size="small"
             aria-label="add"

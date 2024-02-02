@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSectionByOrder, getprofileInfo, updateSection } from '../../../api/userAction';
-import { TextField, Button, Box } from '@mui/material';
+import { TextField, Button, Box ,Typography} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
@@ -54,8 +54,12 @@ const UpdateSection: React.FC = () => {
 
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',justifyContent:'center', 
+    marginTop: '130px' ,width: '20%',backgroundColor: '#9e9e9e',padding: '3%',margin: '6% auto -2%'}}>
       <div>
+      <Typography variant="h4" align="center" gutterBottom>
+                Update Section
+            </Typography>
         <TextField
           type="text"
           placeholder="Enter Subtitle"
@@ -63,24 +67,27 @@ const UpdateSection: React.FC = () => {
           onChange={(e) => setsubtitle(e.target.value)} 
           variant="outlined"
           multiline
-          sx={{ marginBottom: 2, width: 300 }}
+          fullWidth
+          sx={{ marginBottom: 2 }}
         />
         <TextField
+        fullWidth
           multiline
           rows={4}
           placeholder="Enter Content"
            value={content}
            onChange={(e) => setContent(e.target.value)}    
                  variant="outlined"
-          sx={{ marginBottom: 2, width: 300 }}
+          sx={{ marginBottom: 2}}
         />
         <TextField
+        fullWidth
         type="number"
         placeholder="Enter Time to Read"
         value={order}
         onChange={(e) => setorder(Number(e.target.value))}
         variant="outlined"
-        sx={{ marginBottom: 2, width: 300 }}
+        sx={{ marginBottom: 2 }}
       />
         <Button
           variant="contained"

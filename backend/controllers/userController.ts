@@ -9,7 +9,6 @@ declare module 'express-serve-static-core' {
     user?: IUser;
   }
 }
-
 export const getProfile = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
@@ -81,17 +80,14 @@ export const updatePassword = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'server error' });
   }
 };
-
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await userModel.find({
-      role:'user'});
+    const users = await userModel.find({role:'user'});
     res.json({ message: 'Success', users });
   } catch (error) {
     next(Object.assign(new Error("server error"), { cause: 500 }));
   }
 };
-
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const  id  = req.user?._id; 
@@ -118,7 +114,6 @@ export const deleteUserById = async (req: Request, res: Response) => {
 
   }
 };
-
 export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
@@ -131,7 +126,6 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
     next(Object.assign(new Error('server error'), { cause: 500 }));
   }
 };
-
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const  id  = req.user?._id; 
@@ -175,7 +169,6 @@ export const uploadImage = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'server error' });
   }
 };
-
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { username, email, password } = req.body;
@@ -209,4 +202,6 @@ export const listOfUserCoures = async (req: Request, res: Response) => {
   res.status(500).json({ message: 'Server error' });
 }
 };
+
+
 

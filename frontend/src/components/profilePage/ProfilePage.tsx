@@ -10,12 +10,10 @@ import { coursesState } from '../recoilState';
 import { useNavigate } from 'react-router';
 
 interface Course {
-  
 courseId:{
   _id: any;
   title: string;
 }
-  
 }
 const ProfilePage:React.FC = () => {
   const navigate = useNavigate();
@@ -43,7 +41,6 @@ const ProfilePage:React.FC = () => {
     const fetchDataCourse = async () => {
       try {
         const response = await getlistOfUserCoures();
-        console.log(response);
         const uniqueCourses = Array.from(new Set(response.userEnrollments.map((course: Course) => course.courseId._id)))
         .map((_id: any) => response.userEnrollments.find((course: Course) => course.courseId._id === _id) as Course);
 console.log(uniqueCourses)
@@ -80,7 +77,9 @@ console.log(uniqueCourses)
 }
 const handlemangeUser=()=>{
   navigate(`/DevLoom/admin`);
-
+}
+const handledisplayFeedBack=()=>{
+  navigate(`/DevLoom/admin/AllFeedBack`);
 }
   return (
     <Box>
@@ -144,7 +143,7 @@ const handlemangeUser=()=>{
     > 
       <Paper elevation={3} sx={{ maxHeight: '300px', 
         overflow: 'auto',}}>
-        <Typography sx={{color:'#2d3846',fontSize:'20px',fontWeight:'600',padding:'8px',marginBottom:'20px'}}> Courses Progress</Typography>
+        <Typography  sx={{color:'#2d3846',fontSize:'20px',fontWeight:'600',padding:'8px',marginBottom:'20px'}}> Courses Progress</Typography>
         {courses  && Array.isArray(courses) && courses.map((course) => (<Button
         key={course.courseId._id}
     component={Link}
@@ -182,6 +181,8 @@ const handlemangeUser=()=>{
             onClick={handlemangeUser}> Manage user </Button>
             <Button variant="outlined" color="primary" sx={{width:'300px',alignItems:"center",marginTop:'10px'}}
             onClick={handlecreateUser}> Create new User </Button>
+            <Button variant="outlined" color="primary" sx={{width:'300px',alignItems:"center",marginTop:'10px'}}
+            onClick={handledisplayFeedBack}> FeedBack page </Button>
     </Box>
   )}
   

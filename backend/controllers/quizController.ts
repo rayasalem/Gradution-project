@@ -6,7 +6,6 @@ export const creatQuiz=async  (req :Request,res:Response) =>{
     try{
         const courseId = req.params.courseId;
         const {order, title, passingScore  } = req.body;
-        
         const course = await CourseModel.findById(courseId);
         if (!course) {
           return res.status(404).json({ error: 'Course not found' });
@@ -56,11 +55,11 @@ export const deleteQuiz = async (req: Request, res: Response) => {
       res.status(500).json({ message: 'Server error' });
     }
   };
-  export const listQuizzesInCourse = async (req: Request, res: Response) => {
-    const { courseId, userId } = req.params;
-  
+export const listQuizzesInCourse = async (req: Request, res: Response) => {
+    const { courseId } = req.params;
+    const userId=req.user?.id
     try {
-      const quizzes = await QuizModel.aggregate([
+      const Quiz = await QuizModel.aggregate([
         {
           $match: {
             course: mongoose.Types.ObjectId.createFromHexString(courseId),
@@ -91,12 +90,13 @@ export const deleteQuiz = async (req: Request, res: Response) => {
             title: 1,
             course: 1,
             questions: 1,
+            order: 1,
             is_completed: { $ifNull: [{ $arrayElemAt: ['$userProgress.is_completed', 0] }, false] },
           },
         },
       ]);
   
-      res.status(200).json({ message: 'List of quizzes in the course', quizzes });
+      res.status(200).json({ message: 'List of quizzes in the course', Quiz });
     } catch (error) {
       res.status(500).json({ error: 'Failed to retrieve quizzes in the course' });
     }

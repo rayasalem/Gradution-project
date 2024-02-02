@@ -148,7 +148,7 @@ export const removeLike = async (req: Request, res: Response) => {
 };
 export const hasUserLikedComment = async (req: Request, res: Response) => {
   try {
-    const commentId = req.params.commentId;
+  const commentId = req.params.commentId;
   const userId = req.user?._id;
   if (!userId) {
     return res.status(401).json({ message: 'User not authenticated' });

@@ -11,37 +11,7 @@ declare global {
     }
   }
 }
-export const rateCourse = async (req: Request, res: Response) => {
-  try {
-    const userId: string | undefined = req.user?._id;
-    const courseId = req.query.courseId;
-    const rating = req.body.rating;
-    if (!userId) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    const user = await User.findById(userId);
 
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    const course = await CourseModel.findById(courseId);
-    if (!course) {
-      return res.status(404).json({ error: 'Course not found' });
-    }
-    if (course.ratings.some((rate: { userId: string }) => rate.userId.toString() === userId)) {
-      return res.status(400).json({ error: 'User has already rated this course' });
-    }
-    const newRating = {
-      userId: userId,
-      rating: rating,
-    };
-    course.ratings.push(newRating);
-    await course.save();
-    res.status(200).json({ message: 'Course rated successfully', course });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to rate the course' });
-  }
-}
 export const createCourse = async (req: Request, res: Response) => {
   try {
     const { title, description } = req.body;
@@ -63,7 +33,7 @@ export const createCourse = async (req: Request, res: Response) => {
   }
 }
 export const editCourse = async (req: Request, res: Response) => {
-  const courseId  = req.query.courseId;
+  const courseId  = req.params.courseId;
   try {    
     const updatedCourse = await CourseModel.findByIdAndUpdate(courseId, req.body, { new: true });
     if (!updatedCourse) {
@@ -95,6 +65,18 @@ export const viewCourseDetails = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Course not found' });
     }
     res.status(200).json({ message: 'Course details', course });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve course details' });
+  }
+}
+export const viewCourseDetail = async (req: Request, res: Response) => {
+  const {courseId} = req.params; 
+  try {
+    const course = await CourseModel.findOne({ _id:courseId });
+    if (!course) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+    res.status(201).json({ message: 'Course details', course });
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve course details' });
   }

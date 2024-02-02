@@ -7,13 +7,13 @@ import { roles } from '../services/roles';
 const courseRouter = Router();
 
 courseRouter.post('/createCourse',authorizeUser([roles.admin]), CourseController.createCourse);
-courseRouter.patch('/editCourse', authorizeUser([roles.admin]), validation(validators.editCourseSchema), CourseController.editCourse);
+courseRouter.patch('/editCourse/:courseId', authorizeUser([roles.admin]), CourseController.editCourse);
 courseRouter.delete('/deleteCourse',authorizeUser([roles.admin]),CourseController.deleteCourse);
 courseRouter.get('/CourseDetails/:title', CourseController.viewCourseDetails);
+courseRouter.get('/CourseDetail/:courseId', CourseController.viewCourseDetail);
 courseRouter.get('/Courses',CourseController.listAllCourses);
-// courseRouter.post('/enrollInCourse/:courseId',authorizeUser([roles.user]), CourseController.enrollInCourse);
 courseRouter.post('/unenrollCourse/:courseId',authorizeUser([roles.user]), CourseController.unenrollFromCourse);
-courseRouter.post('/rateCourse',authorizeUser([roles.user,roles.admin]), validation(validators.rateCourseSchema), CourseController.rateCourse);
+
 
 
 export default courseRouter;

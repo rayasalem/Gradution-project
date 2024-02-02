@@ -80,7 +80,6 @@ const Discuss = () => {
     try {
        const searchResults = await SearchInPost(query);
       if (searchResults && searchResults.posts) {
-        console.log(searchResults.posts);
         setPosts(searchResults.posts);
       } else {
         console.error('Invalid search results format:', searchResults);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Box } from '@mui/material';
+import { TextField, Button, Box, Typography } from '@mui/material';
 import { getprofileInfo, createBlog } from '../../../api/userAction';
 
 const CreateBlog: React.FC = () => {
@@ -61,7 +61,11 @@ const CreateBlog: React.FC = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 10 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',justifyContent:'center', 
+    marginTop: '130px' ,width: '30%',backgroundColor: '#9e9e9e',padding: '3%',margin: '6% auto -2%'}}>
+      <Typography variant="h4" align="center" gutterBottom>
+                Create new Blog
+            </Typography>
       <TextField
         type="text"
         placeholder="Enter Title"
@@ -101,7 +105,7 @@ const CreateBlog: React.FC = () => {
       />
       {isAdmin && (
         <Button variant="contained" onClick={addTitle} sx={{ padding: '12px 32px' }}>
-          Add 
+          Create Blog
         </Button>
       )}
     </Box>

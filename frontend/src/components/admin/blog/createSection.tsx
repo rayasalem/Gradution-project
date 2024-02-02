@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { createSection, uploadImageBlog, getprofileInfo } from '../../../api/userAction';
-import { TextField, Button, Box } from '@mui/material';
+import { TextField, Button, Box ,Typography} from '@mui/material';
 
 
 const AddSectionPage: React.FC = () => {
@@ -74,7 +74,11 @@ const AddSectionPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',justifyContent:'center', 
+    marginTop: '130px' ,width: '20%',backgroundColor: '#9e9e9e',padding: '3%',margin: '6% auto -2%'}}>
+      <Typography variant="h4" align="center" gutterBottom>
+                Create new section
+            </Typography>
       <div>
         <TextField
           type="text"
@@ -101,7 +105,10 @@ const AddSectionPage: React.FC = () => {
         variant="outlined"
         sx={{ marginBottom: 2, width: 300 }}
           />
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+          <Box>
+          <input type="file" accept="image/*" onChange={handleImageChange} />  
+          </Box>
+        
         <Button
           variant="contained"
           onClick={addSection}

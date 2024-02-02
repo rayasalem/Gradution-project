@@ -1,4 +1,3 @@
-// ChatMessage.tsx
 import React from 'react';
 import { Avatar, Paper, Typography } from '@mui/material';
 

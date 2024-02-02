@@ -17,7 +17,7 @@ const CreateCourse: React.FC = () => {
        const course = await createCourse(courseData)
        .then(result => {
         if (result && result.savedcourse && result.savedcourse._id) {
-          navigate(`/learn/${title}/${result.savedcourse._id}`);
+          navigate(`/learn/n/${result.savedcourse._id}`);
         }
       })
       .catch(error => {

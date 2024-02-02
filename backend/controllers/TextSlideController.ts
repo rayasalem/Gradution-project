@@ -6,7 +6,6 @@ export const createTextSlide = async (req: Request, res: Response) => {
   try {
     const {lessonId, type, order, text } = req.body;
     const lesson = await Lesson.findById(lessonId);
-
     if (!lesson) {
       return res.status(404).json({ error: 'Lesson not found' });
     }

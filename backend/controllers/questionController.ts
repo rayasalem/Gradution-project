@@ -6,10 +6,8 @@ import Lesson, { ILesson } from '../db/schemas/lessonSchema';
 export const creatQuestion = async (req: Request, res: Response) => {
   try {
     const { order, text, type, options, correctAnswer, quizId, lessonId } = req.body;
-   
     const newQuestion: IQuestion = new QuestionModel({ order, text, type, options, correctAnswer });
     const savedQuestion: IQuestion = await newQuestion.save();
-
     if (quizId) {
       const quiz: IQuiz | null = await QuizModel.findOneAndUpdate(
         { _id:quizId },

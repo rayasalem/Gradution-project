@@ -30,9 +30,8 @@ interface ILessonQuiz {
 const PythonCourse: React.FC = () => {
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [courseId, setCourseId] = useState<string | null>(null);
-  const [heartsCount, setheartsCount] = useState<number>(0);
-  const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
-  const [courseCreated, setCourseCreated] = useState<boolean>(false);
+  const [Title, setTitle] = useState<string | null>(null);
+  const [Discription, setDiscription] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [hasEffectRun, setHasEffectRun] = useState(false);
   const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
@@ -64,8 +63,11 @@ const PythonCourse: React.FC = () => {
   };
   useEffect(() => {
     const checkQuizCompletion = () => {
-      const allQuizzesCompleted = lessonsAndQuizzes.filter(item => item.type === 'quiz').every(quiz => quiz.is_completed);
-      setIsQuizCompleted(allQuizzesCompleted);
+      const allQuizzes = lessonsAndQuizzes.filter((item) => item.type === 'quiz');
+      const allQuizzesCompleted = allQuizzes.every((quiz) => quiz.is_completed);
+      const allLessons = lessonsAndQuizzes.filter((item) => item.type === 'lesson');
+      const allLessonsCompleted = allLessons.every((lesson) => lesson.is_completed);
+      setIsQuizCompleted(allQuizzesCompleted&&allLessonsCompleted);
     };
 
     checkQuizCompletion();
@@ -75,7 +77,9 @@ const PythonCourse: React.FC = () => {
     const fetchData = async () => {
       try {
         const Course = await getCourseDetails('Python');
-        if (Course && Course.course) {
+        if (Course && Course.course && 'title' in Course.course && 'description' in Course.course) {
+          setTitle(Course.course?.title as string)
+          setDiscription(Course.course?.description as string)
           setCourseId(Course.course._id)
           localStorage.setItem('createdCourseIdPython', Course.course._id);
           navigate(`/learn/Python/${Course.course._id}`);
@@ -227,6 +231,13 @@ try {
   console.error('Error deleting quiz:', error);
 }
 }; 
+const handleupdateClick = async () => {
+  const createdCourseIdPython = localStorage.getItem('createdCourseIdPython');
+    if (createdCourseIdPython) {
+    navigate(`/DevLoom/admin/updateCourse/${createdCourseIdPython}`);
+  } else {
+    console.error('No course ID found in local storage');
+  }  };
    return (
   <Box>
       <Box
@@ -268,7 +279,7 @@ try {
               }}
             />
             <Typography variant='h5' align='center' sx={{ color: '#2d3846', marginBottom: '16px' }}>
-            Python
+            {Title}
             </Typography>
           </Box>
           <Typography
@@ -276,12 +287,21 @@ try {
             align='justify'
             sx={{ color: '#6b7f99', fontWeight: '400', paddingLeft: '24px' }}
           >
-          Python is the world’s fastest growing programming language is easy to read, learn and code. You’ll learn to build interactive programs and automate your tasks, analyze and visualize even the most complex data and create AI and machine learning models. No previous coding experience needed.</Typography>
+          {Discription}       
+   </Typography>
         </Paper>
 
 
         {userIsAddict && (
         <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <Button
+            size="small"
+            aria-label="add"
+            onClick={handleupdateClick}
+            sx={{ zIndex: '1', color: '#e91e63', backgroundColor: '#78909c' }}
+          >
+            update Course
+          </Button>
           <Button
             size="small"
             aria-label="add"

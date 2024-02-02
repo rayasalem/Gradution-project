@@ -89,7 +89,7 @@ const DisplayFeedBack = () => {
                 position: 'relative',
                 padding: '15px',
                 marginTop:'15px',   
-                height:'200px' 
+                height:'100px' 
               }}
             >          
     <Box sx={{marginBottom:'10px'}}>      
@@ -101,10 +101,12 @@ const DisplayFeedBack = () => {
             color: 'black',
             marginBottom: '1px',
             fontFamily: 'Fira Sans,sans-seri' ,
-        width:'75%'}}
+        width:'75%',
+      }}
         >
                   {feed.text}
-                </Typography> </Box>
+                </Typography> 
+                </Box>
                 <Box>
 
            <Box sx={{ position: 'absolute', top: 0, right: 0, margin: '10px',display:'flex' ,flexDirection:'coulmn'}}>
@@ -136,7 +138,7 @@ const DisplayFeedBack = () => {
                 position: 'relative',
                 padding: '15px',
                 marginTop:'15px',   
-                height:'200px' 
+                height:'100px' 
               }}
             >          
     <Box sx={{marginBottom:'10px'}}>      
@@ -185,7 +187,7 @@ const DisplayFeedBack = () => {
                   position: 'relative',
                   padding: '15px',
                   marginTop:'15px',   
-                  height:'200px' 
+                  height:'100px' 
                 }}
               >          
       <Box sx={{marginBottom:'10px'}}>      

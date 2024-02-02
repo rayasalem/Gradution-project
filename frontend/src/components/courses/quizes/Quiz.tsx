@@ -128,6 +128,7 @@ const Quiz: React.FC<QuizProps> = ({  quizQuestions}) => {
    await deleteQustionById(questionId)
   };
   return (
+    
     <Container maxWidth="sm" sx={{ paddingTop: '30px' }}>
       {showScore ? (
         <div>

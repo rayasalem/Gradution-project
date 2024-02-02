@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { createCourse, deleteLessonById, deleteQuizById, enrollInCourse, getCourseDetails, getlistLessonsInCourse, getlistQuizsInCourse, getprofileInfo, retrieveUserBitsAndHearts, trackCourseProgress } from './../../../api/userAction';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { deleteLessonById, deleteQuizById, enrollInCourse, getCourseDetails, getlistLessonsInCourse, getlistQuizsInCourse, getprofileInfo, retrieveUserBitsAndHearts, trackCourseProgress } from './../../../api/userAction';
+import { useNavigate} from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import BookIcon from '@mui/icons-material/Book';
@@ -11,11 +11,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LessonQuizCompletionButton from '../LessonQuizCompletionButton';
+
 interface ICourse {
-  title: string;
-  description: string;
   savedcourse?: {
     _id: string;
+    
   };
 }
 interface ILessonQuiz {
@@ -29,11 +29,9 @@ interface ILessonQuiz {
 }
 const HTMLCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
-  const [hasEffectRun, setHasEffectRun] = useState(false);
+  const [Title, setTitle] = useState<string | null>(null);
+  const [Discription, setDiscription] = useState<string | null>(null);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
-  const [heartsCount, setheartsCount] = useState<number>(0);
-  const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
-  const [courseCreated, setCourseCreated] = useState<boolean>(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
   const [username, setUsername] = useState("");
@@ -68,7 +66,9 @@ const HTMLCourse: React.FC = () => {
     const fetchData = async () => {
       try {
         const Course = await getCourseDetails('HTML');
-        if (Course && Course.course) {
+        if (Course && Course.course && 'title' in Course.course && 'description' in Course.course) {
+          setTitle(Course.course?.title as string)
+          setDiscription(Course.course?.description as string)
           setCourseId(Course.course._id)
           localStorage.setItem('createdCourseIdHTML', Course.course._id);
           navigate(`/learn/html/${Course.course._id}`);
@@ -104,15 +104,15 @@ const HTMLCourse: React.FC = () => {
         console.error('Error fetching quizzes:', error);
       }
     };
-  
     fetchData();
   }, []);
   useEffect(() => {
     const checkQuizCompletion = () => {
       const allQuizzes = lessonsAndQuizzes.filter((item) => item.type === 'quiz');
       const allQuizzesCompleted = allQuizzes.every((quiz) => quiz.is_completed);
-
-      setIsQuizCompleted(allQuizzesCompleted);
+      const allLessons = lessonsAndQuizzes.filter((item) => item.type === 'lesson');
+      const allLessonsCompleted = allLessons.every((lesson) => lesson.is_completed);
+      setIsQuizCompleted(allQuizzesCompleted&&allLessonsCompleted);
     };
 
     checkQuizCompletion();
@@ -148,16 +148,12 @@ const HTMLCourse: React.FC = () => {
   }, []);
   useEffect(() => {
     const fetchProgressData = async () => {
-    
-      const storedHasEffectRun = localStorage.getItem('hasEffectRun2');
-
         try {
           const createdCourseIdHTML = localStorage.getItem('createdCourseIdHTML');
           const progressData = await trackCourseProgress(createdCourseIdHTML);
         } catch (error) {
           console.error('An unexpected error occurred:', error);
         }
-     
     }
     fetchProgressData();
   }, []);
@@ -193,6 +189,13 @@ const HTMLCourse: React.FC = () => {
     } else {
       console.error('No course ID found in local storage');
     }  };
+    const handleupdateClick = async () => {
+      const createdCourseIdHTML = localStorage.getItem('createdCourseIdHTML');
+      if (createdCourseIdHTML) {
+        navigate(`/DevLoom/admin/updateCourse/${createdCourseIdHTML}`);
+      } else {
+        console.error('No course ID found in local storage');
+      }  };
     const handleCreateQuiz = async () => {
       const createdCourseIdHTML = localStorage.getItem('createdCourseIdHTML');
         if (createdCourseIdHTML) {
@@ -268,7 +271,7 @@ const HTMLCourse: React.FC = () => {
               }}
             />
             <Typography variant='h5' align='center' sx={{ color: '#2d3846', marginBottom: '16px' }}>
-              HTML
+             {Title}
             </Typography>
           </Box>
           <Typography
@@ -276,15 +279,19 @@ const HTMLCourse: React.FC = () => {
             align='justify'
             sx={{ color: '#6b7f99', fontWeight: '400', paddingLeft: '24px' }}
           >
-            HTML is at the core of every web page. It’s beginner-friendly and knowing the basics is useful for everyone
-            who works in digital design, marketing, content, and more. If you’re interested in front-end web
-            development, this course is a great place to start! You don’t need any previous coding experience, and we
-            have plenty of other courses for you to deepen your knowledge once you’re finished, including CSS and
-            JavaScript.
+           {Discription}
           </Typography>
         </Paper>
         {userIsAddict && (
         <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <Button
+            size="small"
+            aria-label="add"
+            onClick={handleupdateClick}
+            sx={{ zIndex: '1', color: '#e91e63', backgroundColor: '#78909c' }}
+          >
+            update Course
+          </Button>
           <Button
             size="small"
             aria-label="add"

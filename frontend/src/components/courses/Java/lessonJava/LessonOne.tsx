@@ -93,7 +93,7 @@ const createTextSlide = async () => {
       )}
      <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
        {(recoilMergedArray as LessonSlide[]).length > 0 && (
-  <LessonSlide  slides={recoilMergedArray as LessonSlide[]} />
+  <LessonSlide slides={recoilMergedArray as LessonSlide[]} />
        )}
        </Box>
         </Box>

@@ -33,7 +33,8 @@ const JSCourse: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
   const [courseCreated, setCourseCreated] = useState<boolean>(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-  const [hasEffectRun, setHasEffectRun] = useState(false);
+  const [Title, setTitle] = useState<string | null>(null);
+  const [Discription, setDiscription] = useState<string | null>(null);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
   const [username, setUsername] = useState("");
@@ -69,7 +70,9 @@ const JSCourse: React.FC = () => {
     const fetchData = async () => {
       try {
         const Course = await getCourseDetails('JavaScript');
-        if (Course && Course.course) {
+        if (Course && Course.course && 'title' in Course.course && 'description' in Course.course) {
+          setTitle(Course.course?.title as string)
+          setDiscription(Course.course?.description as string)
           setCourseId(Course.course._id)
           localStorage.setItem('createdCourseIdJavaScript', Course.course._id);
           navigate(`/learn/javaScript/${Course.course._id}`);
@@ -127,8 +130,11 @@ const JSCourse: React.FC = () => {
   }, [lessonsAndQuizzes]);
   useEffect(() => {
     const checkQuizCompletion = () => {
-      const allQuizzesCompleted = lessonsAndQuizzes.filter(item => item.type === 'quiz').every(quiz => quiz.is_completed);
-      setIsQuizCompleted(allQuizzesCompleted);
+      const allQuizzes = lessonsAndQuizzes.filter((item) => item.type === 'quiz');
+      const allQuizzesCompleted = allQuizzes.every((quiz) => quiz.is_completed);
+      const allLessons = lessonsAndQuizzes.filter((item) => item.type === 'lesson');
+      const allLessonsCompleted = allLessons.every((lesson) => lesson.is_completed);
+      setIsQuizCompleted(allQuizzesCompleted&&allLessonsCompleted);
     };
 
     checkQuizCompletion();
@@ -234,6 +240,13 @@ setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
 console.error('Error deleting quiz:', error);
 }
 };
+const handleupdateClick = async () => {
+  const createdCourseIdJS = localStorage.getItem('createdCourseIdJavaScript');
+    if (createdCourseIdJS) {
+    navigate(`/DevLoom/admin/updateCourse/${createdCourseIdJS}`);
+  } else {
+    console.error('No course ID found in local storage');
+  }  };
   return (
       <Box
         sx={{
@@ -274,7 +287,7 @@ console.error('Error deleting quiz:', error);
               }}
             />
             <Typography variant='h5' align='center' sx={{ color: '#2d3846', marginBottom: '16px' }}>
-              JavaScript
+            {Title}
             </Typography>
           </Box>
           <Typography
@@ -282,13 +295,19 @@ console.error('Error deleting quiz:', error);
             align='justify'
             sx={{ color: '#6b7f99', fontWeight: '400', paddingLeft: '24px' }}
           >
-            JavaScript is a versatile programming language used in web development. This course covers fundamental
-            concepts such as variables, functions, control flow, DOM manipulation, asynchronous programming, error
-            handling, and more. It's a crucial language for both front-end and back-end web development.
+           {Discription}
           </Typography>
         </Paper>    
         {userIsAddict && (
         <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <Button
+            size="small"
+            aria-label="add"
+            onClick={handleupdateClick}
+            sx={{ zIndex: '1', color: '#e91e63', backgroundColor: '#78909c' }}
+          >
+            update Course
+          </Button>
           <Button
             size="small"
             aria-label="add"

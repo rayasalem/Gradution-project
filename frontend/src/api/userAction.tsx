@@ -75,6 +75,42 @@ export const createCourse = async (course: ICourse): Promise<ICourse | undefined
     throw error;
   }
 };
+export const EditCourse = async (courseId: string,course: ICourse): Promise<ICourse | undefined> => {
+  try {
+    const response: AxiosResponse<ICourse> = await axiosInstance.patch(`/api/v1/course/editCourse/${courseId}`, course);
+
+    if (response.status === 200) {
+      return response.data;
+    } 
+  } catch (error) {
+    console.error("Create course error:", error);
+    throw error;
+  }
+};
+export const getCourseDetails2 = async (courseId: string) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/course/CourseDetail/${courseId}`);
+
+    if (response.status === 201) {
+      return response.data;
+    } 
+  } catch (error) {
+    console.error("Create course error:", error);
+    throw error;
+  }
+};
+export const getlistCoures = async () => {
+  try {
+    const response= await axiosInstance.get(`/api/v1/Course/Courses`);
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error('create quiz error:', error);
+    throw error;
+  }
+};
 export const getlistOfUserCoures = async () => {
   try {
     const response= await axiosInstance.get(`/api/v1/Course/coursesForUser`);

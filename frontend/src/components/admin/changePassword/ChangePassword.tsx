@@ -13,7 +13,7 @@ const Update: React.FC = () => {
     const [newPass, setNewPass] = useState<string>('');
     const [cNewPass, setCNewPass] = useState<string>('');
     const [successMessage, setSuccessMessage] = useState('');
-    const navigate = useNavigate();
+    
 
     const handleSubmit = async () => {
         try {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { TextField, Button, Box, Avatar } from '@mui/material';
+import { TextField, Button, Box, Avatar  ,Typography} from '@mui/material';
 import { getprofileInfo, createBlog, updateBlog, getBlogById, uploadImageBlog } from '../../../api/userAction';
 
 const UpdateBlog: React.FC = () => {
@@ -81,14 +81,18 @@ const UpdateBlog: React.FC = () => {
     }
   };
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 10 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',justifyContent:'center', 
+    marginTop: '130px' ,width: '20%',backgroundColor: '#9e9e9e',padding: '3%',margin: '6% auto -2%'}}>
+      <Typography variant="h4" align="center" gutterBottom>
+                Update Blog
+            </Typography>
       <TextField
         type="text"
         placeholder="Enter Title"
         value={newTitle}
         onChange={handleTitleChange}
         variant="outlined"
-        multiline
+        fullWidth
         sx={{ marginBottom: 2, width: 300 }}
       />
       <TextField
@@ -98,7 +102,9 @@ const UpdateBlog: React.FC = () => {
         onChange={handleContentChange}
         variant="outlined"
         multiline
-        sx={{ marginBottom: 2, width: 300 }}
+        fullWidth
+        rows={4}
+        sx={{ marginBottom: 2 }}
       />
       <TextField
         type="text"
@@ -106,7 +112,8 @@ const UpdateBlog: React.FC = () => {
         value={topic}
         onChange={handleTopicChange}
         variant="outlined"
-        sx={{ marginBottom: 2, width: 300 }}
+        fullWidth
+        sx={{ marginBottom: 2 }}
       />
       <TextField
         type="number"
@@ -114,13 +121,14 @@ const UpdateBlog: React.FC = () => {
         value={timeToRead || ''}
         onChange={handleTimeToReadChange}
         variant="outlined"
-        sx={{ marginBottom: 2, width: 300 }}
+        fullWidth
+        sx={{ marginBottom: 2 }}
       />
       {imageUrl && (
         <Avatar
           alt="Blog Image"
           src={imageUrl}
-          sx={{ mb: 4, width: 200, height: 200 }}
+          sx={{ mb: 4, width: 100 ,height:100}}
         />
       )}
       <input type="file" accept="image/*" onChange={handleImageChange} />

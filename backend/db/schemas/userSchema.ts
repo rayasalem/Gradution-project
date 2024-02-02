@@ -5,7 +5,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   confirmEmail: boolean;
-  dateOfBirth: Date | null; // Date or null
+  dateOfBirth: Date | null; 
   role: 'admin' | 'user';
   enrolledCourses: Types.ObjectId[]; 
   completedLessons: Types.ObjectId[]; 

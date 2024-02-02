@@ -54,11 +54,9 @@ export const setFeedbackRead = async (req: Request, res: Response) => {
       { isRead: true },
       { new: true }
     );
-
     if (!updatedFeedback) {
       return res.status(404).json({ error: 'Feedback not found' });
     }
-
     res.status(200).json({ message: 'Feedback marked as read', feedback: updatedFeedback });
   } catch (error) {
     res.status(500).json({ error: 'Failed to mark feedback as read' });

@@ -29,13 +29,10 @@ export const enrollInCourse = async (req: Request, res: Response) => {
       res.status(500).json({ error: 'Failed to enroll in the course' });
     }
   }
-  export const getCoursesForUser = async (req: Request, res: Response) => {
+export const getCoursesForUser = async (req: Request, res: Response) => {
     const userId = req.user?._id;
-  
     try {
       const userEnrollments: IEnrollment[] = await EnrollmentModel.find({ userId }).populate('courseId');
-      
-  
       res.status(200).json({ userEnrollments });
     } catch (error) {
       console.error('Error fetching courses for user:', error);

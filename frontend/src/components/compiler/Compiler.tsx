@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Box } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
+
 
 const darkTheme = createTheme({
   palette: {
@@ -10,32 +12,12 @@ const darkTheme = createTheme({
 });
 
 const CompilerPage: React.FC = () => {
+  const navigate = useNavigate();
   const [clickedButton, setClickedButton] = useState('');
 
   const compileCode = (language: string) => {
-    let url = '';
-    switch (language) {
-      case 'Python':
-        url = 'https://onecompiler.com/python';
-        break;
-      case 'Java':
-        url = 'https://onecompiler.com/java';
-        break;
-      case 'HTML':
-        url = 'https://onecompiler.com/html';
-        break;
-      case 'JavaScript':
-        url = 'https://onecompiler.com/javascript';
-        break;
-      case 'CSS':
-        url = 'https://onecompiler.com/html/3x8tm5td6';
-        break;
-      default:
-        break;
-    }
-    if (url) {
-      window.location.href = url;
-    }
+    navigate(`/DevLoom/Compiler`);
+    
   };
 
   const buttonStyle = {
@@ -50,7 +32,7 @@ const CompilerPage: React.FC = () => {
     boxShadow: '0px 5px 0px #2E8026, 0px 8px 6px rgba(0, 0, 0, 0.2)',
     transition: 'transform 0.3s ease-out, width 0.3s ease-out, height 0.3s ease-out',
     '&:hover': {
-      transform: 'scale(1.1)', // Change in scale on hover
+      transform: 'scale(1.1)', 
       width: '35%',
       height: '55px',
     },
@@ -61,12 +43,12 @@ const CompilerPage: React.FC = () => {
     background: '#282c34',
     boxShadow: '0px 2px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.08)',
     '&:hover': {
-      transform: 'scale(1.1)', // Change in scale on hover
+      transform: 'scale(1.1)', 
       width: '35%',
       height: '55px',
     },
   };
-
+ 
   return (
     <ThemeProvider theme={darkTheme}>
       <Box

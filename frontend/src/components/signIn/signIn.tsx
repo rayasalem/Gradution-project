@@ -3,7 +3,6 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Joi from 'joi';
-// import Social from '../homepage/signUP/SocialLoginButton';
 import { signIn } from '../../api/user';
 import { useAuth } from '../AuthContext';
 
@@ -71,10 +70,6 @@ const [errors, setErrors] = useState({
       console.error('Error:', error);
       setError(error.message);
     }
-  };
-
-  const handleSocialLogin = (accessToken: string, provider: string) => {
-    console.log(`Logged in with ${provider} using access token: ${accessToken}`);
   };
 
   return (

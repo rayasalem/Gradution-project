@@ -45,8 +45,6 @@ export const earnBits = async (req: Request, res: Response) => {
     }
   
     const bitsEarned = actionTypes[actionType];
-  
-
       const userBitsAndHearts = await UserBitsAndHearts.findOne({ user_id: userId });
   
       if (!userBitsAndHearts) {
@@ -74,7 +72,6 @@ export const updateHearts = async (req: Request, res: Response) => {
       return res.status(401).json({ message: 'Authentication required' });
     }
     const userId = req.user._id;
-    
       const userBitsAndHearts = await UserBitsAndHearts.findOne({ user_id: userId });
       if (!userBitsAndHearts) {
         return res.status(404).json({ message: 'User bits and hearts record not found' });
@@ -87,26 +84,22 @@ export const updateHearts = async (req: Request, res: Response) => {
       res.status(400).json({ message: 'Failed to update hearts', error });
     }
   };
-  export const updateHeartsAT = async (req: Request, res: Response) => {
+export const updateHeartsAT = async (req: Request, res: Response) => {
     try {
       if (!req.user) {
         return res.status(401).json({ message: 'Authentication required' });
       }
-  
       const userId = req.user._id;
-  
       const userBitsAndHearts = await UserBitsAndHearts.findOne({ user_id: userId });
-  
       if (!userBitsAndHearts) {
         return res.status(404).json({ message: 'User bits and hearts record not found' });
       }
-  
       const currentTime = new Date();
       const lastUpdate = userBitsAndHearts.timestamp || new Date(0);
       const timeDifference = currentTime.getTime() - lastUpdate.getTime();
       const hoursPassed = timeDifference / (1000 * 60 * 60);
   
-      if (hoursPassed >= 1) {
+      if (hoursPassed >= 4) {
         userBitsAndHearts.hearts_earned += 3;
         userBitsAndHearts.timestamp = currentTime;
         await userBitsAndHearts.save();
@@ -136,7 +129,7 @@ export const deductHearts = async (req: Request, res: Response) => {
       res.status(400).json({ message: 'Failed to deduct hearts', error });
     }
   };
-  export const deductBits = async (req: Request, res: Response) => {
+export const deductBits = async (req: Request, res: Response) => {
     try {
       if (!req.user) {
         return res.status(401).json({ message: 'Authentication required' });
@@ -172,19 +165,17 @@ export const retrieveUserBitsAndHearts = async (req: Request, res: Response, nex
     }
   };  
 export const getBitLeaderboard = async (req: Request, res: Response) => {
-    try {
-        const leaderboard = await UserBitsAndHearts.find()
+try {
+      const leaderboard = await UserBitsAndHearts.find()
           .sort({ bits_earned: -1 }) 
-          .limit(10); 
+          .limit(5); 
             const userIDs = leaderboard.map((entry) => entry.user_id);
             const leaderboardWithUserInfo = await Promise.all(
                 leaderboard.map(async (entry) => {
                   const user = await userModel.findById(entry.user_id);
-          
                   const userName = user?.username || 'Anonymous';
                   const userPhoto = user?.avatar || null;
                   const bitsEarned = entry.bits_earned;
-          
                   return {
                     name: userName,
                     photo: userPhoto,
@@ -192,7 +183,6 @@ export const getBitLeaderboard = async (req: Request, res: Response) => {
                   };
                 })
               );
-          
               res.json(leaderboardWithUserInfo);
       } catch (error) {
         res.status(400).json({ message: 'Failed to retrieve bit leaderboard', error });

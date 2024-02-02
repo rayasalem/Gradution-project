@@ -43,33 +43,7 @@ export const trackCourseProgress = async (req: Request, res: Response) => {
       res.status(500).json({ message: 'Server error', error });
     }
   };
-export const getUserProgress = async (req: Request, res: Response) => {
-    try {
-      if (!req.user) {
-        return res.status(401).json({ message: 'Authentication required' });
-      }
-      const userId = req.user._id;
-      const completedLessons = await UserProgress
-        .find({ user_id: userId, is_completed: true })
-        .populate('lesson_id','title')
-        .populate('quiz_id','title');
-      const progressData = completedLessons.map((entry) => {
-        const data: ProgressData = {
-          is_completed: entry.is_completed,
-          timestamp: entry.timestamp,
-        };
-        if (entry.lesson_id) {
-          data['lesson'] = entry.lesson_id as unknown as IL;
-        } else if (entry.quiz_id) {
-          data['quiz'] = entry.quiz_id as unknown as IQ;
-        }
-        return data;
-      });
-      res.json({ message: 'User progress retrieved successfully', progress: progressData });
-    } catch (error) {
-      res.status(500).json({ message: 'Internal server error', error });
-    }
-};
+
 export const completeLesson = async (req: Request, res: Response) => {
     try {
       if (!req.user) {

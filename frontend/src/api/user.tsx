@@ -268,3 +268,48 @@ export const updateUserbyAdmin = async (userId: string,username:string,email:str
     throw error;
   }
 };
+export const com = async (userCode: string, selectedLanguage: string) => {
+  const options = {
+    method: 'POST',
+    url: 'https://code-compiler10.p.rapidapi.com/',
+    headers: {
+      'content-type': 'application/json',
+      'x-compile': 'rapidapi',
+      'Content-Type': 'application/json',
+      'X-RapidAPI-Key': 'fbfa9a65c9msh797bf133424f58cp12a1ccjsn148144f8143a',
+      'X-RapidAPI-Host': 'code-compiler10.p.rapidapi.com'
+    },
+    data: {
+      langEnum: [
+        'php',
+        'python',
+        'c',
+        'c_cpp',
+        'csharp',
+        'kotlin',
+        'golang',
+        'r',
+        'java',
+        'typescript',
+        'nodejs',
+        'ruby',
+        'perl',
+        'swift',
+        'fortran',
+        'bash'
+      ],
+      lang: selectedLanguage,
+      code: userCode,
+      input: ''
+    }
+  };
+
+  try {
+    const response = await axiosInstance.request(options);
+    console.log(response.data);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

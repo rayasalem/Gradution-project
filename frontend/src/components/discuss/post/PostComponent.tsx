@@ -204,18 +204,10 @@ const PostComponent: React.FC = () => {
   };
 
   const handleUpdatePost = (newTitle: string, newText: string) => {
-    
     setPostTitle(newTitle);
     setPostText(newText);
   };
   
-  const getTimeElapsed = (postDate: Date): string => {
-    const currentDate = new Date();
-    const timeDifference = currentDate.getTime() - postDate.getTime();
-    return '';
-  };
- 
-
   const handleAddComment = async() => {
        const newCommentData = await CreateComment(postId,newComment)
       setNewComment('');

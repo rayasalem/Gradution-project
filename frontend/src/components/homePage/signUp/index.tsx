@@ -1,9 +1,7 @@
 import React from 'react';
 import { Typography, Container, Grid, Box } from '@mui/material';
 import SignupForm from './Signup';
-interface SignupFormProps {
-  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-}
+
 const SignupSection: React.FC = () => {
   return (
     <Box

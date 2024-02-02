@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { topStudentsState } from '../recoilState';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
+import './leader.css'
 interface topStudents{
     name: string;
     photo: string;
@@ -62,17 +63,17 @@ useEffect(() => {
             <Typography variant="h4" gutterBottom sx={{ color: '#fff', fontSize: '26px', fontWeight: '600' }}>
               LeaderBoard
             </Typography>
-            <Typography variant="body1" gutterBottom sx={{ color: '#fff', fontSize: '23px', fontWeight: '300' }}>
+            <Typography className='leaderText' variant="body1" gutterBottom sx={{ color: '#fff', fontSize: '23px', fontWeight: '300' }}>
             Complete the lesson and Earn bits to join this leaderboard!
             </Typography> 
           </Box>
           
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Paper elevation={3} sx={{ padding: '20px', minWidth: '30%' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+          <Paper elevation={3} className='topStudents' sx={{ padding: '20px', width: '35%' ,height:'45%',marginBottom:'20px'}}>
             
             {topStudents.map((student, index) => (
-              <Box key={index} sx={{ marginBottom: '20px' ,display: 'flex', justifyContent: 'center',width:'500px'}}>
+              <Box key={index} className='topStudents' sx={{ marginBottom: '20px' ,display: 'flex', justifyContent: 'center',alignItems:'center'}}>
                
                 <MilitaryTechIcon sx={{color:'#ffc107',fontSize:'35px'}}></MilitaryTechIcon>
                 <Box >

@@ -32,8 +32,8 @@ const CSSCourse: React.FC = () => {
   const [hasEffectRun, setHasEffectRun] = useState(false);
   const [heartsCount, setheartsCount] = useState<number>(0);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
-  const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
-  const [courseCreated, setCourseCreated] = useState<boolean>(false);
+  const [Title, setTitle] = useState<string | null>(null);
+  const [Discription, setDiscription] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false);
   const [username, setUsername] = useState("");
@@ -67,7 +67,9 @@ const CSSCourse: React.FC = () => {
     const fetchData = async () => {
       try {
         const Course = await getCourseDetails('CSS');
-        if (Course && Course.course) {
+        if (Course && Course.course && 'title' in Course.course && 'description' in Course.course) {
+          setTitle(Course.course?.title as string)
+          setDiscription(Course.course?.description as string)
           setCourseId(Course.course._id)
           localStorage.setItem('createdCourseIdJavacss', Course.course._id);
           navigate(`/learn/css/${Course.course._id}`);
@@ -108,8 +110,11 @@ const CSSCourse: React.FC = () => {
   }, []);
   useEffect(() => {
     const checkQuizCompletion = () => {
-      const allQuizzesCompleted = lessonsAndQuizzes.filter(item => item.type === 'quiz').every(quiz => quiz.is_completed);
-      setIsQuizCompleted(allQuizzesCompleted);
+      const allQuizzes = lessonsAndQuizzes.filter((item) => item.type === 'quiz');
+      const allQuizzesCompleted = allQuizzes.every((quiz) => quiz.is_completed);
+      const allLessons = lessonsAndQuizzes.filter((item) => item.type === 'lesson');
+      const allLessonsCompleted = allLessons.every((lesson) => lesson.is_completed);
+      setIsQuizCompleted(allQuizzesCompleted&&allLessonsCompleted);
     };
 
     checkQuizCompletion();
@@ -145,10 +150,7 @@ const CSSCourse: React.FC = () => {
   }, []);
   useEffect(() => {
     const fetchProgressData = async () => {
-    
       const storedHasEffectRun = localStorage.getItem('hasEffectRun-');
-
-     
         try {
           const createdCourseIdCss = localStorage.getItem('createdCourseIdJavacss');
           const progressData = await trackCourseProgress(createdCourseIdCss);
@@ -225,6 +227,13 @@ try {
   console.error('Error deleting quiz:', error);
 }
 };
+const handleupdateClick = async () => {
+  const createdCourseIdCss = localStorage.getItem('createdCourseIdJavacss');
+    if (createdCourseIdCss) {
+    navigate(`/DevLoom/admin/updateCourse/${createdCourseIdCss}`);
+  } else {
+    console.error('No course ID found in local storage');
+  }  };
    return (
   <Box>
       <Box
@@ -267,7 +276,7 @@ try {
               }}
             />
             <Typography variant='h5' align='center' sx={{ color: '#2d3846', marginBottom: '16px' }}>
-              CSS
+            {Title}
             </Typography>
           </Box>
           <Typography
@@ -275,11 +284,20 @@ try {
             align='justify'
             sx={{ color: '#6b7f99', fontWeight: '400', paddingLeft: '24px' }}
           >
-          Ever seen a website and thought “Wow, that’s beautiful”? Chances are that a CSS whiz had a hand in creating it! If you’re interested in visual design, CSS is the perfect language for you. CSS is also great for those interested in front-end web development. It’s an essential tool for styling web content, and is used to define the visual appearance of design and layout variations for different screen and device sizes. CSS is a perfect partner for those learning HTML and JavaScript.           </Typography>
+            {Discription}          
+         </Typography>
         </Paper>
 
         {userIsAddict && (
         <Box sx={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <Button
+            size="small"
+            aria-label="add"
+            onClick={handleupdateClick}
+            sx={{ zIndex: '1', color: '#e91e63', backgroundColor: '#78909c' }}
+          >
+            update Course
+          </Button>
           <Button
             size="small"
             aria-label="add"

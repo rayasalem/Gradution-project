@@ -66,7 +66,9 @@ const ModalBitsEnd: React.FC<ModalComponentProps> = ({open, onClose}) => {
             <Typography variant="body2" sx={{color:'#6b7f99',textAlign:'center'}}>
             You’re out of Hearts. Want to try again?    
             </Typography> 
-            
+            <Typography variant="body2" sx={{color:'#6b7f99',textAlign:'center'}}>
+            You’ll have Hearts again in 3h 39m. 
+            </Typography>
         </Grid>
         <Grid item  xs={6} >  
             <Box sx={{padding:'16px',border:'2px solid #d2d2d2',borderRadius:'10px',display: 'flex', alignItems: 'center'}}>

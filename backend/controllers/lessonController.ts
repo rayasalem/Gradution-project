@@ -123,7 +123,6 @@ export const listLessonsInCourse = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to retrieve lessons in the course' });
   }
 };
-
 export const listQuestionsInLesson = async (req: Request, res: Response) => {
   try{
     const {lessonId}=req.params

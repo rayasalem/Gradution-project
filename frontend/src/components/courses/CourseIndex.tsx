@@ -11,8 +11,13 @@ import { Link } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router';
 import Footer from './../homePage/footer/Footer';
-import { getprofileInfo } from '../../api/userAction';
-
+import { getlistCoures, getprofileInfo } from '../../api/userAction';
+interface Course {
+  _id: any;
+  title: string;
+  description: string;
+  
+}
 const CourseContent: React.FC<{ link: string; imageUrl: string; title: string; description: string }> = 
 ({ link, imageUrl, title, description }) => (
   <Button
@@ -62,14 +67,28 @@ const CourseContent: React.FC<{ link: string; imageUrl: string; title: string; d
     </Paper>
   </Button>
 );
+           
 
 const IndexCourse: React.FC = () => {
   const [value, setValue] = React.useState("1");
+  const [courses, setCourses] = useState<Course[]>([]);
   const [userIsAddict, setuserIsAddict] = React.useState(false);
   const isSmallScreen = useMediaQuery('(max-width:900px)');
   const isSmall = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getlistCoures();
+        setCourses(response?.courses);
+      } catch (error) {
+        console.error('Error fetching course data:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -114,11 +133,10 @@ const IndexCourse: React.FC = () => {
           <TabList onChange={handleChange}   variant="scrollable"  scrollButtons="auto"  allowScrollButtonsMobile
                aria-label="scrollable auto tabs example">
           <Tab label="All Course" value="1" />
-          <Tab label="Websites" value="2"/>
-          <Tab label="Mobile apps" value="3"/>
-          <Tab label="Games for mobile and web" value="4" />
-          <Tab label="Backend System" value="5"/>
-          <Tab label="Data Science" value="6"/>
+          <Tab label="Mobile apps" value="2"/>
+          <Tab label="Games for mobile and web" value="3" />
+          <Tab label="Backend System" value="4"/>
+          <Tab label="Data Science" value="5"/>
     </TabList>
   </Box>
         <TabPanel value="1">
@@ -127,7 +145,16 @@ const IndexCourse: React.FC = () => {
             <AddIcon />
            </Fab>
             )}
+            {courses?.map(course => (
         <CourseContent
+          key={course?._id} 
+          link={`/learn/${course?.title}/:`}
+          imageUrl={`/images/${course?.title}.png`}
+          title={course?.title}
+          description={course?.description}
+        />
+      ))}
+        {/* <CourseContent
               link={`/learn/html/:`} imageUrl="/images/HTML.png" title="HTML"
               description="HTML is at the core of every web page. It’s beginner-friendly and knowing the basics is useful for everyone who works in digital design, marketing, content, and more. If you’re interested in front-end web development, this course is a great place to start!"
            />
@@ -135,10 +162,6 @@ const IndexCourse: React.FC = () => {
               link={`/learn/Java/:`} imageUrl="/images/Java.png" title="Java"
               description="This simple, beginner-friendly Java course requires no previous coding knowledge. All you need is a mobile phone or desktop computer and 5 minutes a day! You’ll learn all about the key concepts of Java, and will be writing clear"
             />
-        <CourseContent
-              link={`/learn/c-plus-plus/:`} imageUrl="/images/cpp.png" title="Introduction to C++"
-              description="Learn the basics of this popular coding language. Our C++ course covers basic concepts, data types, arrays, pointers, conditional statements, loops, functions. You don’t need any previous coding experience to do this course."
-        />
         <CourseContent
               link={`/learn/python/:`} imageUrl="/images/python.png" title="Python Developer"
               description="Python is the world’s fastest growing programming language is easy to read, learn and code. You’ll learn to build interactive programs and automate your tasks. No previous coding experience needed."
@@ -158,16 +181,12 @@ const IndexCourse: React.FC = () => {
         <CourseContent
               link={`/learn/SQL/:`} imageUrl="/images/sql.png" title="SQL Intermediate"
               description="Advance your SQL skills by delving into multi-table databases, learning essential techniques for data manipulation, and ensuring data integrity. Building upon the fundamentals covered in our Introduction to SQL course, this Intermediate SQL course equips you to handle more complex, interrelated tables and extract powerful insights from your data."
-            />
-        <CourseContent
-              link={`/learn/Angular/:`} imageUrl="/images/angular.png" title="Angular"
-              description="This course will enable you to understand and use the Angular framework, create scalable and dynamic web applications using Angular , employ components for organized and structured code, implement user interaction features, and so much more."
-            />
+            /> */}
         </TabPanel>
         <TabPanel value="2">
         <CourseContent
-              link={`/learn/Angular/:`} imageUrl="/images/angular.png" title="Angular"
-              description="This course will enable you to understand and use the Angular framework, create scalable and dynamic web applications using Angular , employ components for organized and structured code, implement user interaction features, and so much more."
+              link={`/learn/Java/:`} imageUrl="/images/Java-.png" title="Java"
+              description="This simple, beginner-friendly Java course requires no previous coding knowledge. All you need is a mobile phone or desktop computer and 5 minutes a day! You’ll learn all about the key concepts of Java, and will be writing clear"
             />
         </TabPanel>
         <TabPanel value="3">
@@ -176,22 +195,8 @@ const IndexCourse: React.FC = () => {
               description="This simple, beginner-friendly Java course requires no previous coding knowledge. All you need is a mobile phone or desktop computer and 5 minutes a day! You’ll learn all about the key concepts of Java, and will be writing clear"
             />
         </TabPanel>
-        <TabPanel value="4">
-        <CourseContent
-              link={`/learn/Java/:`} imageUrl="/images/Java-.png" title="Java"
-              description="This simple, beginner-friendly Java course requires no previous coding knowledge. All you need is a mobile phone or desktop computer and 5 minutes a day! You’ll learn all about the key concepts of Java, and will be writing clear"
-            />
-            <CourseContent
-              link={`/learn/c-plus-plus/:`} imageUrl="/images/cpp.png" title="Introduction to C++"
-              description="Learn the basics of this popular coding language. Our C++ course covers basic concepts, data types, arrays, pointers, conditional statements, loops, functions. You don’t need any previous coding experience to do this course."
-            />
-        </TabPanel>
         
-        <TabPanel value="5">
-        <CourseContent
-              link={`/learn/c-plus-plus/:`} imageUrl="/images/cpp.png" title="Introduction to C++"
-              description="Learn the basics of this popular coding language. Our C++ course covers basic concepts, data types, arrays, pointers, conditional statements, loops, functions. You don’t need any previous coding experience to do this course."
-            />
+        <TabPanel value="4">
             <CourseContent
               link={`/learn/Java/:`} imageUrl="/images/Java-.png" title="Java"
               description="This simple, beginner-friendly Java course requires no previous coding knowledge. All you need is a mobile phone or desktop computer and 5 minutes a day! You’ll learn all about the key concepts of Java, and will be writing clear"
@@ -201,7 +206,7 @@ const IndexCourse: React.FC = () => {
               description="Python is the world’s fastest growing programming language is easy to read, learn and code. You’ll learn to build interactive programs and automate your tasks. No previous coding experience needed."
             />
         </TabPanel>
-        <TabPanel value="6">
+        <TabPanel value="5">
         <CourseContent
               link={`/learn/python/:`} imageUrl="/images/python.png" title="Python Developer"
               description="Python is the world’s fastest growing programming language is easy to read, learn and code. You’ll learn to build interactive programs and automate your tasks. No previous coding experience needed."

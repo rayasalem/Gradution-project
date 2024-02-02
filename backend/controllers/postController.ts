@@ -102,7 +102,7 @@ export const removeLike = async (req: Request, res: Response) => {
   };
 export const hasUserLikedPost = async (req: Request, res: Response) => {
     try {
-      const postId = req.params.postId;
+    const postId = req.params.postId;
     const userId = req.user?._id;
     if (!userId) {
       return res.status(401).json({ message: 'User not authenticated' });
@@ -227,7 +227,6 @@ export const getTrendingPost = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'server error' });
   }
 };
-
 export const getUnansweredPost = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page);
@@ -235,9 +234,7 @@ export const getUnansweredPost = async (req: Request, res: Response) => {
     if (!page || !size) {
       return res.status(400).json({ message: 'Invalid or missing query parameters' });
     }
-
     const { limit, skip } = pagination(page, size);
-
     const UnansweredPosts = await Post.find({ comments: { $size: 0 } })
       .skip(skip)
       .populate({

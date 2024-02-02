@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createCourse, deleteLessonById, deleteQuizById, enrollInCourse, getCourseDetails, getlistLessonsInCourse, getlistQuizsInCourse, getprofileInfo, trackCourseProgress } from './../../../api/userAction';
+import { deleteLessonById, deleteQuizById, enrollInCourse, getCourseDetails, getCourseDetails2, getlistLessonsInCourse, getlistQuizsInCourse, getprofileInfo, trackCourseProgress } from './../../api/userAction';
 import { useNavigate } from 'react-router-dom';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -10,7 +10,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import LessonQuizCompletionButton from '../LessonQuizCompletionButton';
+// import LessonQuizCompletionButton from '../LessonQuizCompletionButton';
+import { useParams } from 'react-router-dom';
 interface ICourse {
   title: string;
   description: string;
@@ -29,8 +30,8 @@ interface ILessonQuiz {
   is_completed?: boolean;
 }
 
-const ReactCourse: React.FC = () => {
-  const [courseId, setCourseId] = useState<string | null>(null);
+const Course: React.FC = () => {
+    const { courseId } = useParams<{ courseId: string }>();
   const [Title, setTitle] = useState<string | null>(null);
   const [Discription, setDiscription] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
@@ -55,7 +56,7 @@ const ReactCourse: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const LOCAL_STORAGE_KEY = 'lessonsAndQuizzesStatusreactreact';
+  const LOCAL_STORAGE_KEY = `lessonsAndQuizzesStatus${courseId}`;
 
     const initializeLessonsAndQuizzes = () => {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
@@ -68,14 +69,15 @@ const ReactCourse: React.FC = () => {
       initializeLessonsAndQuizzes();
       const fetchData = async () => {
         try {
-          const Course = await getCourseDetails('React');
+            if(courseId){
+          const Course = await getCourseDetails2(courseId);
           if (Course && Course.course && 'title' in Course.course && 'description' in Course.course) {
             setTitle(Course.course?.title as string)
             setDiscription(Course.course?.description as string)
-            setCourseId(Course.course._id)
-            localStorage.setItem('createdCourseIdReact', Course.course._id);
-            navigate(`/learn/React/${Course.course._id}`);
+            localStorage.setItem(`createdCourseId${Title}`, Course.course._id);
+            navigate(`/learn/n/${Course.course._id}`);
           }
+        }
         } catch (error) {
           console.error('An unexpected error occurred:', error);
         }
@@ -98,11 +100,8 @@ const ReactCourse: React.FC = () => {
     }, []);
     useEffect(() => {
       const checkQuizCompletion = () => {
-        const allQuizzes = lessonsAndQuizzes.filter((item) => item.type === 'quiz');
-        const allQuizzesCompleted = allQuizzes.every((quiz) => quiz.is_completed);
-        const allLessons = lessonsAndQuizzes.filter((item) => item.type === 'lesson');
-        const allLessonsCompleted = allLessons.every((lesson) => lesson.is_completed);
-        setIsQuizCompleted(allQuizzesCompleted&&allLessonsCompleted);
+        const allQuizzesCompleted = lessonsAndQuizzes.filter(item => item.type === 'quiz').every(quiz => quiz.is_completed);
+        setIsQuizCompleted(allQuizzesCompleted);
       };
   
       checkQuizCompletion();
@@ -110,7 +109,7 @@ const ReactCourse: React.FC = () => {
     useEffect(() => {
       const fetchenrolledCourses = async () => {
           try {
-            const createdCourseIdReact = localStorage.getItem('createdCourseIdReact');
+            const createdCourseIdReact = localStorage.getItem(`createdCourseId${Title}`);
             const res =await enrollInCourse(createdCourseIdReact)
         } catch (error) {
           console.error('Error fetching enrolledCourses:', error);
@@ -120,11 +119,9 @@ const ReactCourse: React.FC = () => {
     }, []);
     useEffect(() => {
       const fetchProgressData = async () => {
-      
-        const storedHasEffectRun = localStorage.getItem('hasEffectRun7');
   
           try {
-            const createdCourseIdReact = localStorage.getItem('createdCourseIdReact');
+            const createdCourseIdReact = localStorage.getItem(`createdCourseId${Title}`);
             const progressData = await trackCourseProgress(createdCourseIdReact);
           } catch (error) {
             console.error('An unexpected error occurred:', error);
@@ -136,7 +133,7 @@ const ReactCourse: React.FC = () => {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const createdCourseIdReact = localStorage.getItem('createdCourseIdReact');
+          const createdCourseIdReact = localStorage.getItem(`createdCourseId${Title}`);
           const allQuizzes = await  getlistQuizsInCourse(createdCourseIdReact);
           if (allQuizzes?.Quiz) {
             setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
@@ -165,7 +162,7 @@ const ReactCourse: React.FC = () => {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const createdCourseIdReact = localStorage.getItem('createdCourseIdReact');
+          const createdCourseIdReact = localStorage.getItem(`createdCourseId${Title}`);
           const allLessons = await getlistLessonsInCourse(createdCourseIdReact);
           if (allLessons?.lessons) {
             setLessonsAndQuizzes((prevLessonsAndQuizzes) => {
@@ -188,23 +185,23 @@ const ReactCourse: React.FC = () => {
           console.error('error in getAllLesson:', error);
         }
       };
+    
       fetchData();
     }, []);
-
   useEffect(() => {
   }, [lessonsAndQuizzes]);
   const handleClick = async () => {
-    const createdCourseIdReact = localStorage.getItem('createdCourseIdReact');
+    const createdCourseIdReact = localStorage.getItem(`createdCourseId${Title}`);
 
-    if (createdCourseIdReact) {
-      navigate(`/DevLoom/admin/createLesson/${createdCourseIdReact}`);
+    if (courseId) {
+      navigate(`/DevLoom/admin/createLesson/${courseId}`);
     } else {
       console.error('No course ID found in local storage');
     }  };
     const handleCreateQuiz = async () => {
-      const createdCourseIdReact = localStorage.getItem('createdCourseIdReact');
-      if (createdCourseIdReact) {
-          navigate(`/DevLoom/admin/createQuiz/${createdCourseIdReact}`);
+      const createdCourseIdReact = localStorage.getItem(`createdCourseId${Title}`);
+      if (courseId) {
+          navigate(`/DevLoom/admin/createQuiz/${courseId}`);
         } else {
           console.error('No course ID found in local storage');
         }  };
@@ -235,9 +232,9 @@ try {
 }
 };
 const handleupdateClick = async () => {
-  const createdCourseIdReact = localStorage.getItem('createdCourseIdReact');
-    if (createdCourseIdReact) {
-    navigate(`/DevLoom/admin/updateCourse/${createdCourseIdReact}`);
+  const createdCourseIdReact = localStorage.getItem(`createdCourseId${Title}`);
+    if (courseId) {
+    navigate(`/DevLoom/admin/updateCourse/${courseId}`);
   } else {
     console.error('No course ID found in local storage');
   }  };
@@ -270,8 +267,8 @@ const handleupdateClick = async () => {
         >
           <Box>
             <img
-              src='/images/React.png'
-              alt='React'
+              src={`/images/${Title}.png`}
+              alt={`${Title}`}
               style={{
                 width: '100px',
                 maxWidth: '100px',
@@ -360,7 +357,7 @@ const handleupdateClick = async () => {
           {item.type}
         </Typography>
         <Link
-            to={`/learn/React/${item.type === 'lesson' ? item.lessonId : item.quizId}/${item.type}${item.OriginalID}`}   
+          to={item.type === 'lesson' ? `/learn/nl/${item.lessonId}` : `/learn/nq/${item.quizId}`} 
        style={{ textDecoration: 'none', width: '100%', marginBottom: '20px' }}
         > 
         <Typography
@@ -391,7 +388,7 @@ const handleupdateClick = async () => {
                       <CheckIcon sx={{ color: 'green', fontSize: 30 }} />
                           </Box>
                        ) : null} 
-{userIsAddict && item.type === 'lesson' && (
+                       {userIsAddict && item.type === 'lesson' && (
             <Box>
              <Button
                color="primary"
@@ -436,14 +433,14 @@ const handleupdateClick = async () => {
           </Paper>
         </Button>
       ))}
-       <LessonQuizCompletionButton
+       {/* <LessonQuizCompletionButton
         isCompleted={isQuizCompleted}
         projectName="React"
         recipientName={username}
         issuedDate={new Date().toLocaleDateString()}
-      />
+      /> */}
     </Box>
   );
 };
 
-export default ReactCourse;
+export default Course;

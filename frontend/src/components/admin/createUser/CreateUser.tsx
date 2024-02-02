@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {  createUserByAdmin, updateuser } from '../../../api/user';
+import {  createUserByAdmin } from '../../../api/user';
 import { useNavigate, useParams } from 'react-router';
 import { TextField, Button, Typography, Container, Grid } from '@mui/material';
 import Joi from 'joi';
@@ -8,8 +8,6 @@ interface User {
 }
 
 const CreateUser: React.FC = () => {
-    const { userId } = useParams();
-    const [user, setUser] = useState<User | null>(null);
     const [errors, setErrors] = useState({
         newPassword: "",
       });
@@ -17,7 +15,7 @@ const CreateUser: React.FC = () => {
     const [password, setPassword] = useState<string>('');
     const [username, setusername] = useState<string>('');
     const [successMessage, setSuccessMessage] = useState('');
-    const navigate = useNavigate();
+  
 
     const ResetPasswordSchema = Joi.object().required().keys({
         newPassword: Joi.string()

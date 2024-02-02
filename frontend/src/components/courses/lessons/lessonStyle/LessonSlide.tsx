@@ -7,9 +7,9 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import DoneLessonPage from '../LessonDone';
-import { createLesson, deductHeartUser, deleteQustionById, deleteTextSlideById, getprofileInfo } from '../../../../api/userAction';
+import {deductHeartUser, deleteQustionById, deleteTextSlideById, getprofileInfo } from '../../../../api/userAction';
 import { createBitAndHeartUser } from '../../../../api/userAction';
-import { Typography, Icon, TextField } from '@mui/material';
+import { Typography } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -55,7 +55,6 @@ interface LessonSlideProps {
 
 const LessonSlide: React.FC<LessonSlideProps> = ({ slides  }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [bitsLessonStart, setBitsLessonStart] = useState<boolean>(false); 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [attemptedAnswer, setAttemptedAnswer] = useState<boolean>(false);
@@ -71,25 +70,6 @@ const LessonSlide: React.FC<LessonSlideProps> = ({ slides  }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatCount, setChatCount] = useState<number>(0);
 
-    useEffect(() => {
-      const fetchChatCount = async () => {
-        try {
-          const response = await getCommentCount(LessonID ? LessonID : "");
-  
-          if (typeof response === 'number') {
-            setChatCount(response);
-          } else {
-            console.error('Invalid response format or missing count property');
-          }
-        } catch (error) {
-          console.error('Error fetching chat count:', error);
-        }
-      };
-  
-      fetchChatCount();
-    }, [LessonID]);
-
-
 const openChat = () => {
   setIsChatOpen(true);
 };
@@ -98,8 +78,7 @@ const closeChat = () => {
   setIsChatOpen(false);
 };
 
-
-  useEffect(() => {
+useEffect(() => {
     const fetchData = async () => {
         try {
           const profileInfo = await getprofileInfo(); 
@@ -221,9 +200,7 @@ const closeChat = () => {
     } else if (currentSlideData.type === 'multipleChoice') {
       const correctAnswers = (currentSlideData as multipleChoice).correctAnswer;
       const isAnswerCorrect = correctAnswers.includes(selectedAnswer || '');
-  
       setIsAnswerCorrect(isAnswerCorrect);
-  
       if (isAnswerCorrect) {
         console.log('Correct answer!');
       } else {
@@ -269,11 +246,6 @@ const closeChat = () => {
         <IconButton onClick={openChat} sx={{ fontSize: '30px', cursor: 'pointer' }}>
           <ChatBubbleIcon />
         </IconButton>
-        {chatCount > 0 && (
-          <Box sx={{ backgroundColor: 'red', color: 'white', borderRadius: '50%', padding: '2px 6px', marginLeft: '-12px' }}>
-            {chatCount}
-          </Box>
-        )}
  
   <FavoriteIcon color="error" fontSize="large" />
   <Typography variant="h6" sx={{ marginLeft: '5px' }}>{heartCount}</Typography>
