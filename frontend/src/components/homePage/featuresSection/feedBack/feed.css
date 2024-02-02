@@ -1,0 +1,57 @@
+.client {
+    padding: 20px;
+  }
+  
+  .client h2 {
+    text-transform: capitalize;
+  }
+    
+ .client p {
+    font-size: 1.5rem;
+    line-height: 1.5;
+  }
+  
+.titleFeed{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.description{
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+.icon-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.icon{
+  font-size:50px !important;
+  color: #3CB371 !important;
+}
+.author{
+  font-weight:bold !important;
+  color:#000000 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+.text{
+  display: flex ;
+  justify-content: center ;
+  align-items: center ;
+  flex-direction: column ;
+  color:#6c757d !important;
+  font-size: 18px !important;
+  min-height:200px !important;
+  text-align: center;
+}
+.span{
+  color: #6c757d;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}

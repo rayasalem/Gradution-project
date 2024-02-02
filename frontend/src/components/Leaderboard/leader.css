@@ -1,0 +1,26 @@
+.leaderText{
+    width: 100%;
+ }
+.topStudents{
+    width: 500px;
+}
+@media (max-width: 1160px) {
+    .topStudents{
+       width: 300px !important;
+    }
+}
+@media (max-width: 730px) {
+    .topStudents{
+       width: 200px !important;
+    }
+}
+@media (max-width: 500px) {
+    .topStudents{
+       width: 150px !important;
+    }
+}
+@media (max-width: 1100px) {
+    .leaderText{
+       width: 70% !important;
+    }
+}

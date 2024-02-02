@@ -1,0 +1,21 @@
+.paperInFeedBack{
+    width: 700px !important
+}
+@media (max-width: 740px) {
+    .paperInFeedBack{ 
+        width: 500px !important;
+    }
+
+}
+@media (max-width: 600px) {
+    .paperInFeedBack{ 
+        width: 450px !important;
+    }
+
+}
+@media (max-width: 494px) {
+    .paperInFeedBack{ 
+        width: 350px !important;
+    }
+
+}

@@ -1,0 +1,27 @@
+form {
+    border: 1px solid white;
+    border-radius: 3%;
+    background-color: rgb(111, 143, 111);
+    width: 500px;
+    height: 500px;
+    margin-right: 0;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    font-weight: bold;
+    padding-top: '60px';
+
+  }
+  @media (max-width: 1060px) {
+    form{
+      width: 400px;
+    }
+
+}
+@media (max-width: 850px) {
+  form{
+    width: 300px;
+  }
+
+}
+
