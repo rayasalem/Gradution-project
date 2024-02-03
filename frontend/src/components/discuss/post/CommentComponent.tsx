@@ -10,11 +10,12 @@ import {
 } from '@mui/material';
 import { Favorite, FavoriteBorder, Edit, Delete, Sync } from '@mui/icons-material';
 import { LikeComment, deleteCommentById, hasUserLikedComment, removelikeinComment, updateComment } from '../../../api/userAction';
-
+import { getprofileInfo } from '../../../api/userAction';
 export interface CommentData {
   _id: any;
   text: string;
   author: {
+    _id:string
     username: string;
     avatar: string;
   };
@@ -44,6 +45,26 @@ const CommentComponent: React.FC<{
   const [liked, setLiked] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editedText, setEditedText] = useState<string>(comment.text);
+  const [userIsAddict, setuserIsAddict] = React.useState(false);
+const[isAuth,setIsAuth]=useState();
+const[isUser,setIsUser]=useState(comment.author?._id);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+          const profileInfo = await getprofileInfo(); 
+          if (profileInfo) {
+  
+      setIsAuth(profileInfo?.user?._id)
+            if (profileInfo?.user?.role === 'admin') {
+              setuserIsAddict(true);
+            }
+          }
+      } catch (error) {
+        console.error('Error fetching profile info:', error);
+      }
+    };
+    fetchData();
+  }, []);
   useEffect(() => {
     const checkUserLiked = async ()=>{
      const userLike= await hasUserLikedComment(comment._id)  
@@ -79,8 +100,11 @@ const CommentComponent: React.FC<{
   };
 
   const handleDelete = async () => {
+    if (((isUser === isAuth) || userIsAddict)) {
+
     onDeleteComment(comment._id);
      await deleteCommentById(comment._id)
+    }
   };
 
   return (
@@ -112,12 +136,14 @@ const CommentComponent: React.FC<{
             {!liked ? <FavoriteBorder /> : <Favorite sx={{ color: 'red' }} />}
             <LikesTypography commentLikes={comment.likes?.length} />
           </IconButton>
+          {((isUser === isAuth)||userIsAddict) &&<>
           <IconButton onClick={() => setEditMode(true)}>
             <Edit />
           </IconButton>
           <IconButton onClick={handleDelete}>
             <Delete />
           </IconButton>
+          </>}
         </div>
       </div>
     </div>

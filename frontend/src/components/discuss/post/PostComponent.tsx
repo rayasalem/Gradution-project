@@ -33,6 +33,7 @@ import {
 import CommentComponent, { CommentData } from './CommentComponent'; 
 import { CreateComment, GetCommentByPostId, GetPostById, LikePost, deletePostById, hasUserLikedPost, removelike, updatePost } from '../../../api/userAction';
 import PostNotAvailable from './PostNotAvaliable';
+import { getprofileInfo } from '../../../api/userAction';
 import { Box } from '@mui/system';
 const LikesTypography = ({ children }: { children: React.ReactNode }) => (
   <Typography
@@ -150,7 +151,28 @@ const PostComponent: React.FC = () => {
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState<boolean>(false);
   const [updatedTags, setUpdatedTags] = useState<string[]>([]);
   const [isPostAvailable, setIsPostAvailable] = useState<boolean>(true);
+  const [userIsAddict, setuserIsAddict] = React.useState(false);
+const[isAuth,setIsAuth]=useState<string>();
+const[isUser,setIsUser]=useState<string>();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+          const profileInfo = await getprofileInfo(); 
+          if (profileInfo) {
+  
+      setIsAuth(profileInfo?.user?._id)
+            if (profileInfo?.user?.role === 'admin') {
+              setuserIsAddict(true);
+            }
+    
 
+          }
+      } catch (error) {
+        console.error('Error fetching profile info:', error);
+      }
+    };
+    fetchData();
+  }, []);
   const handleGetPost = async () => {
     try {
       if(postId){
@@ -158,6 +180,7 @@ const PostComponent: React.FC = () => {
         setPostTitle(specificpost?.post?.title)
         setPostText(specificpost?.post?.content)
         setPostAuther(specificpost?.post?.author?.username)
+        setIsUser(specificpost?.post?.author._id)
         setavatar(specificpost?.post?.author?.avatar)
         setpostDate(specificpost?.post?.created_at)
         setpostTags(specificpost?.post?.tags)
@@ -264,10 +287,12 @@ const PostComponent: React.FC = () => {
   };
 
   const handleOpenMenu = (postId: number) => (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedPostId(postId);
-    setUpdatedText(getPostText(postId));
-    setEditing(true);
+    if (userIsAddict|| (isAuth==isUser)) {
+      setAnchorEl(event.currentTarget);
+      setSelectedPostId(postId);
+      setUpdatedText(getPostText(postId));
+      setEditing(true);
+    }
   };
 
 
@@ -330,6 +355,7 @@ const PostComponent: React.FC = () => {
     {/* <Typography variant="caption">{getTimeElapsed(postDate)}</Typography> */}
    
   </div>
+  {((isUser === isAuth) || userIsAddict) &&<>
   <IconButton
         aria-label="more"
         aria-controls="post-menu"
@@ -339,6 +365,8 @@ const PostComponent: React.FC = () => {
       >
     <MoreVertIcon />
   </IconButton>
+  </>}
+
   <Menu
         id="post-menu"
         anchorEl={anchorEl}
